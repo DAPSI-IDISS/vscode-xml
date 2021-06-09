@@ -483,11 +483,13 @@
     "configurationDefaults": {
       "[xml]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "editor.linkedEditing": true
       },
       "[xsl]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "editor.linkedEditing": true
       }
     },
     "commands": [
