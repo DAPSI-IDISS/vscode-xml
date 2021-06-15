@@ -308,7 +308,7 @@ async function acceptZipDownloadResponse(response: http.IncomingMessage): Promis
   const serverBinaryZipPath: string = serverBinaryPath + '.zip';
 
   // Download zip
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     const serverBinaryZipWriteStream: fs.WriteStream = fs.createWriteStream(serverBinaryZipPath);
     let capturedError: any = null;
     serverBinaryZipWriteStream.on('finish', () => {
