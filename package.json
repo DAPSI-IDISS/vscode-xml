@@ -522,7 +522,8 @@
         "id": "xml",
         "extensions": [
           ".ent",
-          ".mod"
+          ".mod",
+          ".xxx"
         ]
       }
     ],
