@@ -27,7 +27,7 @@ export namespace Telemetry {
     if (!!_telemetryManager) {
       throw new Error("The telemetry service for vscode-xml has already been started")
     }
-    _telemetryManager = await getTelemetryService("redhat.vscode-xml");
+    _telemetryManager = await getTelemetryService("DAPSI-IDISS.semantic-crosswalk-editor");
     return _telemetryManager.sendStartupEvent();
   }
 
