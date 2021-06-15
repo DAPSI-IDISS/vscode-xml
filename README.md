@@ -1,6 +1,6 @@
-# XML Language Support by Red Hat
+# Semantic Crosswalk for XML
 
-[![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/redhat.vscode-xml.svg "Current Release")](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
+_This fork adopted [vscode-xml by Red Hat](https://github.com/redhat-developer/vscode-xml) for the [semantic-crosswalk-editor by DAPSI-IDISS](https://github.com/DAPSI-IDISS/semantic-crosswalk-editor)_
 
 ### [**NO LONGER REQUIRES JAVA!**](#Requirements) *since v0.15.0*
 

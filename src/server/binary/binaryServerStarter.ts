@@ -218,7 +218,7 @@ function getServerBinaryExtension(): string {
  * @return the URL of the server where the binary version of LemMinX should be downloaded from
  */
 function getServerBinaryDownloadUrl(): string {
-  return extensions.getExtension("redhat.vscode-xml").packageJSON['binaryServerDownloadUrl'][getServerBinaryNameWithoutExtension().substring(8)] as string;
+  return extensions.getExtension("DAPSI-IDISS.semantic-crosswalk-editor").packageJSON['binaryServerDownloadUrl'][getServerBinaryNameWithoutExtension().substring(8)] as string;
 }
 
 /**

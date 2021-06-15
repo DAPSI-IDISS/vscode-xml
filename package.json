@@ -1,13 +1,13 @@
 {
-  "name": "vscode-xml",
-  "displayName": "XML",
-  "description": "XML Language Support by Red Hat",
+  "name": "semantic-crosswalk-editor",
+  "displayName": "Semantic Crosswalk Editor",
+  "description": "Semantic Crosswalk for XML formats by DAPSI-IDISS, based on the XML extension by Red Hat",
   "version": "0.17.0",
-  "author": "Red Hat",
-  "publisher": "redhat",
+  "author": "DAPSI-IDISS",
+  "publisher": "DAPSI-IDISS",
   "icon": "icons/icon128.png",
   "license": "EPL-2.0",
-  "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
+  "bugs": "https://github.com/DAPSI-IDISS/semantic-crosswalk-editor/issues",
   "preview": true,
   "keywords": [
     "xml",
@@ -47,7 +47,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/redhat-developer/vscode-xml"
+    "url": "https://github.com/DAPSI-IDISS/semantic-crosswalk-editor"
   },
   "categories": [
     "Programming Languages",
