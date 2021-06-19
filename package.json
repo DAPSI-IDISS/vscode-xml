@@ -519,6 +519,13 @@
         ]
       }
     ],
+    "grammars": [
+      {
+        "language": "xxx",
+        "scopeName": "text.xxx",
+        "path": "./syntaxes/xxx.tmLanguage.json"
+      }
+    ],
     "jsonValidation": [
       {
         "fileMatch": "package.json",
