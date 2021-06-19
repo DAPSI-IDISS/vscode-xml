@@ -1,4 +1,7 @@
 {
+  "DAPSIAdditionsAndComments": {
+    "licenseNotice": "Adopted from https://github.com/microsoft/vscode-textmate/blob/main/test-cases/themes/syntaxes/xml.json, see /syntaxes/LICENSE.md"
+  },
 	"scopeName": "text.xxx",
 	"name": "XXX",
 	"fileTypes": [
