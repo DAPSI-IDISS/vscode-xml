@@ -38,7 +38,7 @@ let languageClient: LanguageClient;
 export async function startLanguageClient(context: ExtensionContext, executable: Executable, logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): Promise<LanguageClient> {
 
   const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXmlSettings, requirementsData);
-  languageClient = new LanguageClient('xml', 'XML Support', executable, languageClientOptions);
+  languageClient = new LanguageClient('xxx', 'XXX Support', executable, languageClientOptions);
 
   languageClient.onTelemetry(async (e: TelemetryEvent) => {
     return Telemetry.sendTelemetry(e.name, e.properties);
@@ -67,7 +67,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     let text = languageClient.sendRequest(TagCloseRequest.type, param);
     return text;
   };
-  context.subscriptions.push(activateTagClosing(tagProvider, { xml: true, xsl: true }, CommandConstants.AUTO_CLOSE_TAGS));
+  context.subscriptions.push(activateTagClosing(tagProvider, { xxx: true }, CommandConstants.AUTO_CLOSE_TAGS));
 
   if (extensions.onDidChange) {// Theia doesn't support this API yet
     context.subscriptions.push(extensions.onDidChange(() => {
@@ -108,12 +108,10 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
 function getLanguageClientOptions(logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): LanguageClientOptions {
   return {
-    // Register the server for xml and xsl
+    // Register the server for xxx
     documentSelector: [
-      { scheme: 'file', language: 'xml' },
-      { scheme: 'file', language: 'xsl' },
-      { scheme: 'untitled', language: 'xml' },
-      { scheme: 'untitled', language: 'xsl' }
+      { scheme: 'file', language: 'xxx' },
+      { scheme: 'untitled', language: 'xxx' },
     ],
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
@@ -131,10 +129,10 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
         openSettingsCommandSupport: true
       }
     },
-    errorHandler: new ClientErrorHandler('XML'),
+    errorHandler: new ClientErrorHandler('XXX'),
     synchronize: {
       //preferences starting with these will trigger didChangeConfiguration
-      configurationSection: ['xml', '[xml]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
+      configurationSection: ['xxx', '[xxx]', 'files.trimFinalNewlines', 'files.trimTrailingWhitespace', 'files.insertFinalNewline']
     },
     middleware: {
       workspace: {

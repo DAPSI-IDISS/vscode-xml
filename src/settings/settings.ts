@@ -106,16 +106,16 @@ function verifyVMArgs() {
 function verifyAutoClosing() {
   let configXML = workspace.getConfiguration();
   let closeTags = configXML.get("xml.completion.autoCloseTags");
-  let closeBrackets = configXML.get("[xml]")["editor.autoClosingBrackets"];
+  let closeBrackets = configXML.get("[xxx]")["editor.autoClosingBrackets"];
   if (closeTags && closeBrackets != "never") {
     window.showWarningMessage(
-      "The [xml].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
+      "The [xxx].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
       "Disable",
       ignoreButton).then((selection) => {
         if (selection == "Disable") {
-          let scopeInfo : ScopeInfo = getScopeLevel("", "[xml]");
-          workspace.getConfiguration().update("[xml]", { "editor.autoClosingBrackets": "never" }, scopeInfo.configurationTarget).then(
-            () => console.log('[xml].editor.autoClosingBrackets globally set to never'),
+          let scopeInfo : ScopeInfo = getScopeLevel("", "[xxx]");
+          workspace.getConfiguration().update("[xxx]", { "editor.autoClosingBrackets": "never" }, scopeInfo.configurationTarget).then(
+            () => console.log('[xxx].editor.autoClosingBrackets globally set to never'),
             (error) => console.log(error)
           );
         }

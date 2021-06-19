@@ -27,8 +27,7 @@
     "vscode": "^1.37.0"
   },
   "activationEvents": [
-    "onLanguage:xml",
-    "onLanguage:xsl",
+    "onLanguage:xxx",
     "onCommand:xml.open.docs",
     "onCommand:xml.open.docs.home"
   ],
@@ -481,12 +480,7 @@
       }
     },
     "configurationDefaults": {
-      "[xml]": {
-        "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true,
-        "editor.linkedEditing": true
-      },
-      "[xsl]": {
+      "[xxx]": {
         "editor.autoClosingBrackets": "never",
         "files.trimFinalNewlines": true,
         "editor.linkedEditing": true
@@ -495,34 +489,32 @@
     "commands": [
       {
         "command": "xml.open.docs.home",
-        "title": "Open XML Documentation",
-        "category": "XML"
+        "title": "Open XXX Documentation",
+        "category": "XXX"
       },
       {
         "command": "xml.validation.current.file",
-        "title": "Revalidate current XML file",
-        "category": "XML"
+        "title": "Revalidate current XXX file",
+        "category": "XXX"
       },
       {
         "command": "xml.validation.all.files",
-        "title": "Revalidate all opened XML files",
-        "category": "XML"
+        "title": "Revalidate all opened XXX files",
+        "category": "XXX"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "xml.validation.current.file",
-          "when": "editorLangId == xml"
+          "when": "editorLangId == xxx"
         }
       ]
     },
     "languages": [
       {
-        "id": "xml",
+        "id": "xxx",
         "extensions": [
-          ".ent",
-          ".mod",
           ".xxx"
         ]
       }

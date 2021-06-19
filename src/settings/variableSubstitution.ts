@@ -99,7 +99,7 @@ const VARIABLE_SUBSTITUTIONS: VariableSubstitution[] = [
 export function getVariableSubstitutedAssociations(associations: XMLFileAssociation[]): XMLFileAssociation[] {
 
   // Collect properties needed to resolve variables
-  const currentFile: TextDocument = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xml') ?  window.activeTextEditor.document : undefined;
+  const currentFile: TextDocument = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xxx') ?  window.activeTextEditor.document : undefined;
   const currentFileUri: string = (currentFile && currentFile.uri) ? currentFile.uri.fsPath : undefined;
   const currentWorkspace: WorkspaceFolder = (currentFile && currentFile.uri) ?  workspace.getWorkspaceFolder(currentFile.uri) : undefined;
   const currentWorkspaceUri: string = (currentWorkspace && currentWorkspace.uri.fsPath)

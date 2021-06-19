@@ -50,7 +50,7 @@ async function registerDocsCommands(context: ExtensionContext): Promise<void> {
   context.subscriptions.push(markdownPreviewProvider);
   context.subscriptions.push(commands.registerCommand(CommandConstants.OPEN_DOCS_HOME, async () => {
     const uri = 'README.md';
-    const title = 'XML Documentation';
+    const title = 'XXX Documentation';
     const sectionId = '';
     markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
   }));
@@ -58,7 +58,7 @@ async function registerDocsCommands(context: ExtensionContext): Promise<void> {
     const page = params.page.endsWith('.md') ? params.page.substr(0, params.page.length - 3) : params.page;
     const uri = page + '.md';
     const sectionId = params.section || '';
-    const title = 'XML ' + page;
+    const title = 'XXX ' + page;
     markdownPreviewProvider.show(context.asAbsolutePath(path.join('docs', uri)), title, sectionId, context);
   }));
 }
@@ -94,18 +94,18 @@ async function registerValidationCommands(context: ExtensionContext): Promise<vo
     const identifier = TextDocumentIdentifier.create(uri.toString());
     commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_CURRENT_FILE, identifier).
       then(() => {
-        window.showInformationMessage('The current XML file was successfully validated.');
+        window.showInformationMessage('The current XXX file was successfully validated.');
       }, error => {
-        window.showErrorMessage('Error during XML validation ' + error.message);
+        window.showErrorMessage('Error during XXX validation ' + error.message);
       });
   }));
   // Revalidate all open files
   context.subscriptions.push(commands.registerCommand(CommandConstants.VALIDATE_ALL_FILES, async () => {
     commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_ALL_FILES).
       then(() => {
-        window.showInformationMessage('All open XML files were successfully validated.');
+        window.showInformationMessage('All open XXX files were successfully validated.');
       }, error => {
-        window.showErrorMessage('Error during XML validation: ' + error.message);
+        window.showErrorMessage('Error during XXX validation: ' + error.message);
       });
   }));
 }

@@ -34,8 +34,7 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
   });
 
-  languages.setLanguageConfiguration('xml', getIndentationRules());
-  languages.setLanguageConfiguration('xsl', getIndentationRules());
+  languages.setLanguageConfiguration('xxx', getIndentationRules());
 
   let requirementsData: requirements.RequirementsData;
   try {
