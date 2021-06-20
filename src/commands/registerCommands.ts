@@ -92,7 +92,9 @@ async function registerValidationCommands(context: ExtensionContext): Promise<vo
   context.subscriptions.push(commands.registerCommand(CommandConstants.VALIDATE_CURRENT_FILE, async (params) => {
     const uri = window.activeTextEditor.document.uri;
     const identifier = TextDocumentIdentifier.create(uri.toString());
-    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_CURRENT_FILE, identifier).
+    // Command ('xml.validation.current.file') is hardcoded in lemminx:
+    // https://github.com/DAPSI-IDISS/lemminx/blob/master/org.eclipse.lemminx/src/main/java/org/eclipse/lemminx/extensions/contentmodel/commands/XMLValidationFileCommand.java#L37
+    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, 'xml.validation.current.file', identifier).
       then(() => {
         window.showInformationMessage('The current XXX file was successfully validated.');
       }, error => {
@@ -101,7 +103,9 @@ async function registerValidationCommands(context: ExtensionContext): Promise<vo
   }));
   // Revalidate all open files
   context.subscriptions.push(commands.registerCommand(CommandConstants.VALIDATE_ALL_FILES, async () => {
-    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, CommandConstants.VALIDATE_ALL_FILES).
+    // Command ('xml.validation.all.files') is hardcoded in lemminx:
+    // https://github.com/DAPSI-IDISS/lemminx/blob/master/org.eclipse.lemminx/src/main/java/org/eclipse/lemminx/extensions/contentmodel/commands/XMLValidationAllFilesCommand.java#L39
+    commands.executeCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, 'xml.validation.all.files').
       then(() => {
         window.showInformationMessage('All open XXX files were successfully validated.');
       }, error => {
