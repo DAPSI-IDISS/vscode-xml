@@ -14,24 +14,24 @@ import * as os from 'os';
 import * as path from 'path';
 import { ExtensionContext, extensions, languages } from "vscode";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
-import { XMLExtensionApi } from './api/xmlExtensionApi';
-import { getXmlExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
+import { XXXExtensionApi } from './api/xmlExtensionApi';
+import { getXxxExtensionApiImplementation } from './api/xmlExtensionApiImplementation';
 import { getIndentationRules } from './client/indentation';
 import { startLanguageClient } from './client/xmlClient';
-import { collectXmlJavaExtensions } from './plugin';
+import { collectXxxJavaExtensions } from './plugin';
 import * as requirements from './server/requirements';
 import { prepareExecutable } from './server/serverStarter';
-import { ExternalXmlSettings } from "./settings/externalXmlSettings";
-import { getXMLConfiguration } from './settings/settings';
+import { ExternalXxxSettings } from "./settings/externalXmlSettings";
+import { getXXXConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
 
 let languageClient: LanguageClient;
 
-export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
+export async function activate(context: ExtensionContext): Promise<XXXExtensionApi> {
 
   await Telemetry.startTelemetry();
   Telemetry.sendTelemetry(Telemetry.SETTINGS_EVT, {
-    preferBinary: (getXMLConfiguration()['server']['preferBinary'] as boolean)
+    preferBinary: (getXXXConfiguration()['server']['preferBinary'] as boolean)
   });
 
   languages.setLanguageConfiguration('xxx', getIndentationRules());
@@ -49,14 +49,14 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   }
   const logfile = path.resolve(storagePath + '/lemminx.log');
 
-  const externalXmlSettings: ExternalXmlSettings = new ExternalXmlSettings();
+  const externalXxxSettings: ExternalXxxSettings = new ExternalXxxSettings();
 
   const serverOptions: Executable = await prepareExecutable(
-    requirementsData, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
+    requirementsData, collectXxxJavaExtensions(extensions.all, getXXXConfiguration().get("extension.jars", [])), context);
 
-  languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
+  languageClient = await startLanguageClient(context, serverOptions, logfile, externalXxxSettings, requirementsData);
 
-  return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
+  return getXxxExtensionApiImplementation(languageClient, logfile, externalXxxSettings, requirementsData);
 }
 
 export async function deactivate(): Promise<void> {

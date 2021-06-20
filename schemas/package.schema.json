@@ -1,17 +1,17 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
-	"title": "XML Language server contributions to package.json",
+	"title": "XXX Language server contributions to package.json",
 	"type": "object",
 	"properties": {
 		"contributes": {
 			"type": "object",
 			"properties": {
-				"xml.javaExtensions": {
+				"xxx.javaExtensions": {
 					"type": "array",
-					"markdownDescription": "XML language server extensions",
+					"markdownDescription": "XXX language server extensions",
 					"items": {
 						"type": "string",
-						"description": "Relative path to a XML language server extension JAR file"
+						"description": "Relative path to a XXX language server extension JAR file"
 					}
 				}
 			}

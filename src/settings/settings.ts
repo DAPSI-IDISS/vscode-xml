@@ -10,19 +10,19 @@ export interface ScopeInfo {
 let vmArgsCache;
 let ignoreAutoCloseTags = false;
 let ignoreVMArgs = false;
-let oldXMLConfig: WorkspaceConfiguration = getXMLConfiguration();
+let oldXXXConfig: WorkspaceConfiguration = getXXXConfiguration();
 let oldJavaConfig: WorkspaceConfiguration = getJavaConfiguration();
 
 const restartButton = 'Restart Now';
 const ignoreButton = 'Ignore'
 const restartId = "workbench.action.reloadWindow";
 export const IS_WORKSPACE_JDK_ALLOWED = "java.ls.isJdkAllowed";
-export const IS_WORKSPACE_JDK_XML_ALLOWED = "java.ls.isJdkXmlAllowed";
-export const IS_WORKSPACE_VMARGS_XML_ALLOWED = "java.ls.isVmargsXmlAllowed";
-export const xmlServerVmargs = 'xml.server.vmargs';
+export const IS_WORKSPACE_JDK_XXX_ALLOWED = "java.ls.isJdkXxxAllowed";
+export const IS_WORKSPACE_VMARGS_XXX_ALLOWED = "java.ls.isVmargsXxxAllowed";
+export const xxxServerVmargs = 'xxx.server.vmargs';
 
-export function getXMLConfiguration(): WorkspaceConfiguration {
-  return getXConfiguration("xml")
+export function getXXXConfiguration(): WorkspaceConfiguration {
+  return getXConfiguration("xxx")
 }
 
 export function getJavaConfiguration(): WorkspaceConfiguration {
@@ -46,19 +46,19 @@ export function onConfigurationChange() {
 export function subscribeJDKChangeConfiguration() {
   return workspace.onDidChangeConfiguration(params => {
 
-    //handle "xml.java.home" change
-    if(params.affectsConfiguration("xml")) {
-      const newXMLConfig = getXMLConfiguration();
-      if(hasPreferenceChanged(oldXMLConfig, newXMLConfig, "java.home")) { // checks "xml.java.home", not "java.home"
-        createReloadWindowMessage("`xml.java.home` path has changed. Please restart VS Code.");
+    //handle "xxx.java.home" change
+    if(params.affectsConfiguration("xxx")) {
+      const newXXXConfig = getXXXConfiguration();
+      if(hasPreferenceChanged(oldXXXConfig, newXXXConfig, "java.home")) { // checks "xxx.java.home", not "java.home"
+        createReloadWindowMessage("`xxx.java.home` path has changed. Please restart VS Code.");
       }
       // update to newest version of config
-      oldXMLConfig = newXMLConfig;
+      oldXXXConfig = newXXXConfig;
       return;
     }
 
     //handle "java.home" change
-    if(oldXMLConfig.get("java.home") == null) { // if "xml.java.home" exists, dont even look at "java.home"
+    if(oldXXXConfig.get("java.home") == null) { // if "xxx.java.home" exists, dont even look at "java.home"
       if(params.affectsConfiguration("java")) {
         const newJavaConfig = getJavaConfiguration();
         //don't need to handle reload message if redhat.java extension exists (it will handle it)
@@ -89,10 +89,10 @@ function createReloadWindowMessage(message: string) : string{
 }
 
 function verifyVMArgs() {
-  let currentVMArgs = workspace.getConfiguration("xml.server").get("vmargs");
+  let currentVMArgs = workspace.getConfiguration("xxx.server").get("vmargs");
   if(vmArgsCache != undefined) {
     if(vmArgsCache != currentVMArgs) {
-      let selection = createReloadWindowMessage("XML Language Server configuration changed, please restart VS Code.");
+      let selection = createReloadWindowMessage("XXX Language Server configuration changed, please restart VS Code.");
       if(selection == ignoreButton) {
         ignoreVMArgs = true;
       }
@@ -104,12 +104,12 @@ function verifyVMArgs() {
 }
 
 function verifyAutoClosing() {
-  let configXML = workspace.getConfiguration();
-  let closeTags = configXML.get("xml.completion.autoCloseTags");
-  let closeBrackets = configXML.get("[xxx]")["editor.autoClosingBrackets"];
+  let configXXX = workspace.getConfiguration();
+  let closeTags = configXXX.get("xxx.completion.autoCloseTags");
+  let closeBrackets = configXXX.get("[xxx]")["editor.autoClosingBrackets"];
   if (closeTags && closeBrackets != "never") {
     window.showWarningMessage(
-      "The [xxx].editor.autoClosingBrackets setting conflicts with xml.completion.autoCloseTags. It's recommended to disable it.",
+      "The [xxx].editor.autoClosingBrackets setting conflicts with xxx.completion.autoCloseTags. It's recommended to disable it.",
       "Disable",
       ignoreButton).then((selection) => {
         if (selection == "Disable") {
@@ -127,8 +127,8 @@ function verifyAutoClosing() {
 }
 
 function getScopeLevel(configurationKey : string, key : string) : ScopeInfo{
-  let configXML = workspace.getConfiguration(configurationKey);
-  let result = configXML.inspect(key);
+  let configXXX = workspace.getConfiguration(configurationKey);
+  let result = configXXX.inspect(key);
   let scope, configurationTarget;
   if(result.workspaceFolderValue == undefined) {
     if(result.workspaceValue == undefined) {
@@ -178,20 +178,20 @@ export function getJavaagentFlag(vmargs) {
 }
 
 /**
- * Returns a json object with key 'xml' and a json object value that
- * holds all xml. settings.
+ * Returns a json object with key 'xxx' and a json object value that
+ * holds all xxx. settings.
  *
  * Returns: {
- *            'xml': {...}
+ *            'xxx': {...}
  *          }
  */
-export function getXMLSettings(javaHome: string | undefined, logfile: string, externalXmlSettings: any): JSON {
-  let configXML = workspace.getConfiguration().get('xml');
-  let xml;
-  if (!configXML) { //Set default preferences if not provided
+export function getXXXSettings(javaHome: string | undefined, logfile: string, externalXxxSettings: any): JSON {
+  let configXXX = workspace.getConfiguration().get('xxx');
+  let xxx;
+  if (!configXXX) { //Set default preferences if not provided
     const defaultValue =
     {
-      xml: {
+      xxx: {
         trace: {
           server: 'verbose'
         },
@@ -207,29 +207,29 @@ export function getXMLSettings(javaHome: string | undefined, logfile: string, ex
         }
       }
     }
-    xml = defaultValue;
+    xxx = defaultValue;
   } else {
-    let x = JSON.stringify(configXML); //configXML is not a JSON type
-    xml = { "xml": JSON.parse(x) };
+    let x = JSON.stringify(configXXX); //configXXX is not a JSON type
+    xxx = { "xxx": JSON.parse(x) };
   }
-  xml['xml']['logs']['file'] = logfile;
-  xml['xml']['useCache'] = true;
-  xml['xml']['java']['home'] = javaHome;
-  xml['xml']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
-  xml['xml']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
-  xml['xml']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
-  xml['xml']['telemetry'] = {
+  xxx['xxx']['logs']['file'] = logfile;
+  xxx['xxx']['useCache'] = true;
+  xxx['xxx']['java']['home'] = javaHome;
+  xxx['xxx']['format']['trimFinalNewlines'] = workspace.getConfiguration('files').get('trimFinalNewlines', true);
+  xxx['xxx']['format']['trimTrailingWhitespace'] = workspace.getConfiguration('files').get('trimTrailingWhitespace', false);
+  xxx['xxx']['format']['insertFinalNewline'] = workspace.getConfiguration('files').get('insertFinalNewline', false);
+  xxx['xxx']['telemetry'] = {
     enabled: workspace.getConfiguration('redhat.telemetry').get('enabled', false)
   };
 
-  //applying externalXmlSettings to the xmlSettings
-  externalXmlSettings.xmlCatalogs.forEach(catalog => {
-    if (!xml['xml']['catalogs'].includes(catalog)) {
-      xml['xml']['catalogs'].push(catalog);
+  //applying externalXxxSettings to the xxxSettings
+  externalXxxSettings.xxxCatalogs.forEach(catalog => {
+    if (!xxx['xxx']['catalogs'].includes(catalog)) {
+      xxx['xxx']['catalogs'].push(catalog);
     }
   })
   // Apply variable substitutions for file associations
-  xml['xml']['fileAssociations'] = [...getVariableSubstitutedAssociations(xml['xml']['fileAssociations'])];
+  xxx['xxx']['fileAssociations'] = [...getVariableSubstitutedAssociations(xxx['xxx']['fileAssociations'])];
 
-  return xml;
+  return xxx;
 }

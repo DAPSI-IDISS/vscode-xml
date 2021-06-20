@@ -3,7 +3,7 @@ import * as path from 'path';
 import { ExtensionContext, workspace } from 'vscode';
 import { Executable } from 'vscode-languageclient/node';
 import { getProxySettings, getProxySettingsAsJVMArgs, jvmArgsContainsProxySettings, ProxySettings } from '../../settings/proxySettings';
-import { getJavaagentFlag, getKey, getXMLConfiguration, IS_WORKSPACE_VMARGS_XML_ALLOWED, xmlServerVmargs } from '../../settings/settings';
+import { getJavaagentFlag, getKey, getXXXConfiguration, IS_WORKSPACE_VMARGS_XXX_ALLOWED, xxxServerVmargs } from '../../settings/settings';
 import { RequirementsData } from '../requirements';
 const glob = require('glob');
 
@@ -14,16 +14,16 @@ const DEBUG = (typeof v8debug === 'object') || startedInDebugMode();
 export async function prepareJavaExecutable(
   context: ExtensionContext,
   requirements: RequirementsData,
-  xmlJavaExtensions: string[]
+  xxxJavaExtensions: string[]
 ): Promise<Executable> {
 
   return {
     command: path.resolve(requirements.java_home + '/bin/java'),
-    args: prepareParams(requirements, xmlJavaExtensions, context)
+    args: prepareParams(requirements, xxxJavaExtensions, context)
   } as Executable;
 }
 
-function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string[], context: ExtensionContext): string[] {
+function prepareParams(requirements: RequirementsData, xxxJavaExtensions: string[], context: ExtensionContext): string[] {
   let params: string[] = [];
   if (DEBUG) {
     if (process.env['SUSPEND_SERVER'] === 'true') {
@@ -32,18 +32,18 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
       params.push('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1054,quiet=y');
     }
   }
-  let vmargsCheck = workspace.getConfiguration().inspect(xmlServerVmargs).workspaceValue;
+  let vmargsCheck = workspace.getConfiguration().inspect(xxxServerVmargs).workspaceValue;
   if (vmargsCheck !== undefined) {
     const agentFlag = getJavaagentFlag(vmargsCheck);
     if (agentFlag !== null) {
-      const keyVmargs = getKey(IS_WORKSPACE_VMARGS_XML_ALLOWED, context.storagePath, vmargsCheck);
+      const keyVmargs = getKey(IS_WORKSPACE_VMARGS_XXX_ALLOWED, context.storagePath, vmargsCheck);
       const key = context.globalState.get(keyVmargs);
       if (key !== true) {
-        vmargsCheck = workspace.getConfiguration().inspect(xmlServerVmargs).globalValue;
+        vmargsCheck = workspace.getConfiguration().inspect(xxxServerVmargs).globalValue;
       }
     }
   } else {
-    vmargsCheck = getXMLConfiguration().get('server.vmargs');
+    vmargsCheck = getXXXConfiguration().get('server.vmargs');
   }
   let vmargs: string;
   if (vmargsCheck !== undefined) {
@@ -73,12 +73,12 @@ function prepareParams(requirements: RequirementsData, xmlJavaExtensions: string
   let server_home: string = path.resolve(__dirname, '../server');
   let launchersFound: Array<string> = glob.sync('**/org.eclipse.lemminx*-uber.jar', { cwd: server_home });
   if (launchersFound.length) {
-    let xmlJavaExtensionsClasspath = '';
-    if (xmlJavaExtensions.length > 0) {
+    let xxxJavaExtensionsClasspath = '';
+    if (xxxJavaExtensions.length > 0) {
       const pathSeparator = os.platform() == 'win32' ? ';' : ':';
-      xmlJavaExtensionsClasspath = pathSeparator + xmlJavaExtensions.join(pathSeparator);
+      xxxJavaExtensionsClasspath = pathSeparator + xxxJavaExtensions.join(pathSeparator);
     }
-    params.push('-cp'); params.push(path.resolve(server_home, launchersFound[0]) + xmlJavaExtensionsClasspath);
+    params.push('-cp'); params.push(path.resolve(server_home, launchersFound[0]) + xxxJavaExtensionsClasspath);
     params.push('org.eclipse.lemminx.XMLServerLauncher');
   } else {
     return null;

@@ -4,72 +4,72 @@
  * @remarks
  * A sample code to use these APIs are as following:
  * const ext = await vscode.extensions.getExtension('redhat.vscode-xml').activate();
- * ext.addXMLCatalogs(...);
- * ext.removeXMLCatalogs(...);
- * ext.addXMLFileAssociations(...);
- * ext.removeXMLFileAssociations(...);
+ * ext.addXXXCatalogs(...);
+ * ext.removeXXXCatalogs(...);
+ * ext.addXXXFileAssociations(...);
+ * ext.removeXXXFileAssociations(...);
  */
-export interface XMLExtensionApi {
+export interface XXXExtensionApi {
   /**
-   * Adds XML Catalogs in addition to the catalogs defined in the settings.json file.
+   * Adds XXX Catalogs in addition to the catalogs defined in the settings.json file.
    *
    * @remarks
    * An example is to call this API:
    * ```ts
-   * addXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
+   * addXXXCatalogs(['path/to/catalog.xxx', 'path/to/anotherCatalog.xxx'])
    * ```
-   * @param catalogs - A list of path to XML catalogs
+   * @param catalogs - A list of path to XXX catalogs
    * @returns None
    */
-  addXMLCatalogs(catalogs: string[]): void;
+  addXXXCatalogs(catalogs: string[]): void;
   /**
-   * Removes XML Catalogs from the extension.
+   * Removes XXX Catalogs from the extension.
    *
    * @remarks
    * An example is to call this API:
    * ```ts
-   * removeXMLCatalogs(['path/to/catalog.xml', 'path/to/anotherCatalog.xml'])
+   * removeXXXCatalogs(['path/to/catalog.xxx', 'path/to/anotherCatalog.xxx'])
    * ```
-   * @param catalogs - A list of path to XML catalogs
+   * @param catalogs - A list of path to XXX catalogs
    * @returns None
    */
-  removeXMLCatalogs(catalogs: string[]): void;
+  removeXXXCatalogs(catalogs: string[]): void;
   /**
-   * Adds XML File Associations in addition to the catalogs defined in the settings.json file.
+   * Adds XXX File Associations in addition to the catalogs defined in the settings.json file.
    *
    * @remarks
    * An example is to call this API:
    * ```ts
-   * addXMLFileAssociations([{
+   * addXXXFileAssociations([{
    *    "systemId": "path/to/file.xsd",
-   *    "pattern": "file1.xml"
+   *    "pattern": "file1.xxx"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
-   *    "pattern": "file2.xml"
+   *    "pattern": "file2.xxx"
    *  }])
    * ```
    * @param fileAssociations - A list of file association
    * @returns None
    */
-  addXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
+  addXXXFileAssociations(fileAssociations: XXXFileAssociation[]): void;
   /**
-   * Removes XML File Associations from the extension.
+   * Removes XXX File Associations from the extension.
    *
    * @remarks
    * An example is to call this API:
    * ```ts
-   * removeXMLFileAssociations([{
+   * removeXXXFileAssociations([{
    *    "systemId": "path/to/file.xsd",
-   *    "pattern": "file1.xml"
+   *    "pattern": "file1.xxx"
    *  },{
    *    "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
-   *    "pattern": "file2.xml"
+   *    "pattern": "file2.xxx"
    *  }])
    * ```
    * @param fileAssociations - A list of file association
    * @returns None
    */
-  removeXMLFileAssociations(fileAssociations: XMLFileAssociation[]): void;
+  removeXXXFileAssociations(fileAssociations: XXXFileAssociation[]): void;
 
 }
 
@@ -80,7 +80,7 @@ export interface XMLExtensionApi {
  *
  * @returns None
  */
-export interface XMLFileAssociation {
+export interface XXXFileAssociation {
   systemId: string,
   pattern: string;
 }

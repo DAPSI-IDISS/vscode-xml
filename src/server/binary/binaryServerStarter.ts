@@ -9,7 +9,7 @@ import { ExtensionContext, extensions, ProgressLocation, ProgressOptions, window
 import { Executable } from "vscode-languageclient/node";
 import * as yauzl from 'yauzl';
 import { getProxySettings, getProxySettingsAsEnvironmentVariables, ProxySettings } from '../../settings/proxySettings';
-import { getXMLConfiguration } from "../../settings/settings";
+import { getXXXConfiguration } from "../../settings/settings";
 import { Telemetry } from '../../telemetry';
 import { addTrustedHash, getTrustedHashes } from './binaryHashManager';
 const glob = require('glob');
@@ -17,17 +17,17 @@ const glob = require('glob');
 const HTTPS_PATTERN = /^https:\/\//;
 const JAR_ZIP_AND_HASH_REJECTOR = /(?:\.jar)|(?:\.zip)|(?:\.sha256)$/;
 
-export const ABORTED_ERROR: Error = new Error('XML Language Server download cancelled by user');
+export const ABORTED_ERROR: Error = new Error('XXX Language Server download cancelled by user');
 
 /**
- * Returns the executable to launch LemMinX (the XML Language Server) as a binary
+ * Returns the executable to launch LemMinX (the XXX Language Server) as a binary
  *
  * @param context the extension context
  * @throws if the binary doesn't exist and can't be downloaded, or if the binary is not trusted
- * @returns Returns the executable to launch LemMinX (the XML Language Server) as a binary
+ * @returns Returns the executable to launch LemMinX (the XXX Language Server) as a binary
  */
 export async function prepareBinaryExecutable(context: ExtensionContext): Promise<Executable> {
-  const binaryArgs: string = getXMLConfiguration().get("server.binary.args");
+  const binaryArgs: string = getXXXConfiguration().get("server.binary.args");
   let binaryExecutable: Executable;
   return getServerBinaryPath()
     .then((binaryPath: string) => {
@@ -45,7 +45,7 @@ export async function prepareBinaryExecutable(context: ExtensionContext): Promis
       if (hashOk) {
         return binaryExecutable;
       } else {
-        throw new Error("The binary XML language server is not trusted");
+        throw new Error("The binary XXX language server is not trusted");
       }
     });
 }
@@ -59,13 +59,13 @@ export async function prepareBinaryExecutable(context: ExtensionContext): Promis
  * @throws If the LemMinX binary can't be located or downloaded
  */
 async function getServerBinaryPath(): Promise<string> {
-  const config: WorkspaceConfiguration = getXMLConfiguration();
+  const config: WorkspaceConfiguration = getXXXConfiguration();
   const binaryPath: string = config.get("server.binary.path");
   if (binaryPath) {
     if (fs.existsSync(binaryPath)) {
       return Promise.resolve(binaryPath);
     }
-    window.showErrorMessage('The specified XML language server binary could not be found. Using the default binary...');
+    window.showErrorMessage('The specified XXX language server binary could not be found. Using the default binary...');
   }
   const server_home: string = path.resolve(__dirname, '../server');
   let binaries: Array<string> = glob.sync(`**/${getServerBinaryNameWithoutExtension()}*`, { cwd: server_home });
@@ -267,7 +267,7 @@ function showProgressForDownload(response: http.IncomingMessage, httpClient: htt
   const progressOptions: ProgressOptions = {
     location: ProgressLocation.Notification,
     cancellable: true,
-    title: "Downloading the XML Language Server..."
+    title: "Downloading the XXX Language Server..."
   };
   window.withProgress(
     progressOptions,

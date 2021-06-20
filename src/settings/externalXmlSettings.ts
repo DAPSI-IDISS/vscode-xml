@@ -1,24 +1,24 @@
-import { XMLFileAssociation } from "../api/xmlExtensionApi";
+import { XXXFileAssociation } from "../api/xmlExtensionApi";
 
 /**
  * Represents vscode-xml settings that other vscode extensions can contribute to
  */
-export class ExternalXmlSettings {
+export class ExternalXxxSettings {
 
-  private _xmlCatalogs: string[]
-  private _xmlFileAssociations: XMLFileAssociation[]
+  private _xxxCatalogs: string[]
+  private _xxxFileAssociations: XXXFileAssociation[]
 
   constructor() {
-    this._xmlCatalogs = [];
-    this._xmlFileAssociations = [];
+    this._xxxCatalogs = [];
+    this._xxxFileAssociations = [];
   }
 
-  get xmlCatalogs(): string[] {
-    return this._xmlCatalogs;
+  get xxxCatalogs(): string[] {
+    return this._xxxCatalogs;
   }
 
-  get xmlFileAssociations(): any[] {
-    return this._xmlFileAssociations;
+  get xxxFileAssociations(): any[] {
+    return this._xxxFileAssociations;
   }
 
 }

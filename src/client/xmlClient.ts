@@ -2,24 +2,24 @@ import { TelemetryEvent } from '@redhat-developer/vscode-redhat-telemetry/lib';
 import { commands, ExtensionContext, extensions, Position, TextDocument, TextEditor, Uri, window, workspace } from 'vscode';
 import { Command, ConfigurationParams, ConfigurationRequest, DidChangeConfigurationNotification, ExecuteCommandParams, LanguageClientOptions, MessageType, NotificationType, RequestType, RevealOutputChannelOn, TextDocumentPositionParams } from "vscode-languageclient";
 import { Executable, LanguageClient } from 'vscode-languageclient/node';
-import { XMLFileAssociation } from '../api/xmlExtensionApi';
+import { XXXFileAssociation } from '../api/xmlExtensionApi';
 import { CommandConstants } from '../commands/commandConstants';
 import { registerCommands } from '../commands/registerCommands';
 import { onExtensionChange } from '../plugin';
 import { RequirementsData } from "../server/requirements";
-import { ExternalXmlSettings } from "../settings/externalXmlSettings";
-import { getXMLConfiguration, getXMLSettings, onConfigurationChange, subscribeJDKChangeConfiguration } from "../settings/settings";
+import { ExternalXxxSettings } from "../settings/externalXmlSettings";
+import { getXXXConfiguration, getXXXSettings, onConfigurationChange, subscribeJDKChangeConfiguration } from "../settings/settings";
 import { containsVariableReferenceToCurrentFile } from '../settings/variableSubstitution';
 import { Telemetry } from '../telemetry';
 import { ClientErrorHandler } from './clientErrorHandler';
 import { activateTagClosing, AutoCloseResult } from './tagClosing';
 
 namespace ExecuteClientCommandRequest {
-  export const type: RequestType<ExecuteCommandParams, any, void> = new RequestType('xml/executeClientCommand');
+  export const type: RequestType<ExecuteCommandParams, any, void> = new RequestType('xxx/executeClientCommand');
 }
 
 namespace TagCloseRequest {
-  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xml/closeTag');
+  export const type: RequestType<TextDocumentPositionParams, AutoCloseResult, any> = new RequestType('xxx/closeTag');
 }
 
 interface ActionableMessage {
@@ -30,14 +30,14 @@ interface ActionableMessage {
 }
 
 namespace ActionableNotification {
-  export const type = new NotificationType<ActionableMessage>('xml/actionableNotification');
+  export const type = new NotificationType<ActionableMessage>('xxx/actionableNotification');
 }
 
 let languageClient: LanguageClient;
 
-export async function startLanguageClient(context: ExtensionContext, executable: Executable, logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): Promise<LanguageClient> {
+export async function startLanguageClient(context: ExtensionContext, executable: Executable, logfile: string, externalXxxSettings: ExternalXxxSettings, requirementsData: RequirementsData): Promise<LanguageClient> {
 
-  const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXmlSettings, requirementsData);
+  const languageClientOptions: LanguageClientOptions = getLanguageClientOptions(logfile, externalXxxSettings, requirementsData);
   languageClient = new LanguageClient('xxx', 'XXX Support', executable, languageClientOptions);
 
   languageClient.onTelemetry(async (e: TelemetryEvent) => {
@@ -54,7 +54,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
   setupActionableNotificationListener(languageClient);
 
-  // Handler for 'xml/executeClientCommand` request message that executes a command on the client
+  // Handler for 'xxx/executeClientCommand` request message that executes a command on the client
   languageClient.onRequest(ExecuteClientCommandRequest.type, async (params: ExecuteCommandParams) => {
     return await commands.executeCommand(params.command, ...params.arguments);
   });
@@ -71,7 +71,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
 
   if (extensions.onDidChange) {// Theia doesn't support this API yet
     context.subscriptions.push(extensions.onDidChange(() => {
-      onExtensionChange(extensions.all, getXMLConfiguration().get("extension.jars", []));
+      onExtensionChange(extensions.all, getXXXConfiguration().get("extension.jars", []));
     }));
   }
 
@@ -82,9 +82,9 @@ export async function startLanguageClient(context: ExtensionContext, executable:
     const activeEditor: TextEditor | undefined = window.activeTextEditor;
     for (const item of params.items) {
       if (activeEditor && activeEditor.document.uri.toString() === Uri.parse(item.scopeUri).toString()) {
-        if (item.section === "xml.format.insertSpaces") {
+        if (item.section === "xxx.format.insertSpaces") {
           result.push(activeEditor.options.insertSpaces);
-        } else if (item.section === "xml.format.tabSize") {
+        } else if (item.section === "xxx.format.tabSize") {
           result.push(activeEditor.options.tabSize);
         }
       } else {
@@ -97,8 +97,8 @@ export async function startLanguageClient(context: ExtensionContext, executable:
   // When the current document changes, update variable values that refer to the current file if these variables are referenced,
   // and send the updated settings to the server
   context.subscriptions.push(window.onDidChangeActiveTextEditor(() => {
-    if (containsVariableReferenceToCurrentFile(getXMLConfiguration().get('fileAssociations') as XMLFileAssociation[])) {
-      languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
+    if (containsVariableReferenceToCurrentFile(getXXXConfiguration().get('fileAssociations') as XXXFileAssociation[])) {
+      languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXXXSettings(requirementsData.java_home, logfile, externalXxxSettings) });
       onConfigurationChange();
     }
   }));
@@ -106,7 +106,7 @@ export async function startLanguageClient(context: ExtensionContext, executable:
   return languageClient;
 }
 
-function getLanguageClientOptions(logfile: string, externalXmlSettings: ExternalXmlSettings, requirementsData: RequirementsData): LanguageClientOptions {
+function getLanguageClientOptions(logfile: string, externalXxxSettings: ExternalXxxSettings, requirementsData: RequirementsData): LanguageClientOptions {
   return {
     // Register the server for xxx
     documentSelector: [
@@ -116,7 +116,7 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     //wrap with key 'settings' so it can be handled same a DidChangeConfiguration
     initializationOptions: {
-      settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings),
+      settings: getXXXSettings(requirementsData.java_home, logfile, externalXxxSettings),
       extendedClientCapabilities: {
         codeLens: {
           codeLensKind: {
@@ -137,7 +137,7 @@ function getLanguageClientOptions(logfile: string, externalXmlSettings: External
     middleware: {
       workspace: {
         didChangeConfiguration: () => {
-          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXMLSettings(requirementsData.java_home, logfile, externalXmlSettings) });
+          languageClient.sendNotification(DidChangeConfigurationNotification.type, { settings: getXXXSettings(requirementsData.java_home, logfile, externalXxxSettings) });
           onConfigurationChange();
         }
       }

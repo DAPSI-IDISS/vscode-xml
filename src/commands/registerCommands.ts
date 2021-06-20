@@ -16,7 +16,7 @@ export async function registerCommands(context: ExtensionContext, languageClient
   registerCodeLensCommands(context, languageClient);
   registerValidationCommands(context);
 
-  // Register client command to execute custom XML Language Server command
+  // Register client command to execute custom XXX Language Server command
   context.subscriptions.push(commands.registerCommand(CommandConstants.EXECUTE_WORKSPACE_COMMAND, (command, ...rest) => {
     let token: CancellationToken;
     let commandArgs: any[] = rest;
@@ -73,7 +73,7 @@ async function registerCodeLensCommands(context: ExtensionContext, languageClien
   context.subscriptions.push(commands.registerCommand(CommandConstants.SHOW_REFERENCES, (uriString: string, position: Position) => {
     const uri = Uri.parse(uriString);
     workspace.openTextDocument(uri).then(document => {
-      // Consume references service from the XML Language Server
+      // Consume references service from the XXX Language Server
       let param = languageClient.code2ProtocolConverter.asTextDocumentPositionParams(document, position);
       languageClient.sendRequest(ReferencesRequest.type, param).then(locations => {
         commands.executeCommand(CommandConstants.EDITOR_SHOW_REFERENCES, uri, languageClient.protocol2CodeConverter.asPosition(position), locations.map(languageClient.protocol2CodeConverter.asLocation));
@@ -83,7 +83,7 @@ async function registerCodeLensCommands(context: ExtensionContext, languageClien
 }
 
 /**
- * Register commands used for revalidating XML files
+ * Register commands used for revalidating XXX files
  *
  * @param context the extension context
  */

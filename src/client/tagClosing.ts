@@ -72,14 +72,14 @@ export function activateTagClosing(tagProvider: (document: TextDocument, positio
                 // multiple cusror case
                 activeEditor.insertSnippet(new SnippetString(text), selections.map(s => s.active));
               } else {
-                // no multiple cursor we use the range coming from le LSP closeTag request to support 'xml.completion.autoCloseRemovesContent' setting
+                // no multiple cursor we use the range coming from le LSP closeTag request to support 'xxx.completion.autoCloseRemovesContent' setting
                 activeEditor.insertSnippet(new SnippetString(text), getReplaceLocation(result.range, position));
               }
             }
           }
         }
       }, (reason: any) => {
-        console.log('xml/closeTag request has been cancelled');
+        console.log('xxx/closeTag request has been cancelled');
       });
       timeout = void 0;
     }, 100);

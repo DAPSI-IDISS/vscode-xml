@@ -5,9 +5,9 @@ import { getTelemetryService, TelemetryService } from "@redhat-developer/vscode-
  */
 export namespace Telemetry {
 
-  export const OPEN_JAVA_DOWNLOAD_LINK_EVT = "xml.open.java.download.link";
-  export const SETTINGS_EVT = "xml.settings";
-  export const BINARY_DOWNLOAD_EVT = "xml.binary.download";
+  export const OPEN_JAVA_DOWNLOAD_LINK_EVT = "xxx.open.java.download.link";
+  export const SETTINGS_EVT = "xxx.settings";
+  export const BINARY_DOWNLOAD_EVT = "xxx.binary.download";
 
   export const BINARY_DOWNLOAD_STATUS_PROP = "status";
 

@@ -7,16 +7,16 @@ const glob = require('glob');
 
 let existingExtensions: Array<string>;
 
-export function collectXmlJavaExtensions(extensions: readonly vscode.Extension<any>[], jars: string[]): string[] {
+export function collectXxxJavaExtensions(extensions: readonly vscode.Extension<any>[], jars: string[]): string[] {
 	const result = [];
 	if (extensions && extensions.length) {
 		for (const extension of extensions) {
 			const contributesSection = extension.packageJSON['contributes'];
 			if (contributesSection) {
-				const xmlJavaExtensions = contributesSection['xml.javaExtensions'];
-				if (Array.isArray(xmlJavaExtensions) && xmlJavaExtensions.length) {
-					for (const xmLJavaExtensionPath of xmlJavaExtensions) {
-						result.push(...glob.sync(path.resolve(extension.extensionPath, xmLJavaExtensionPath)));
+				const xxxJavaExtensions = contributesSection['xxx.javaExtensions'];
+				if (Array.isArray(xxxJavaExtensions) && xxxJavaExtensions.length) {
+					for (const xxxJavaExtensionPath of xxxJavaExtensions) {
+						result.push(...glob.sync(path.resolve(extension.extensionPath, xxxJavaExtensionPath)));
 					}
 				}
 			}
@@ -35,7 +35,7 @@ export function onExtensionChange(extensions: readonly vscode.Extension<any>[], 
 		return;
 	}
 	const oldExtensions = new Set(existingExtensions.slice());
-	const newExtensions = collectXmlJavaExtensions(extensions, jars);
+	const newExtensions = collectXxxJavaExtensions(extensions, jars);
 	let hasChanged = ( oldExtensions.size !== newExtensions.length);
 	if (!hasChanged) {
 		for (const newExtension of newExtensions) {
@@ -47,7 +47,7 @@ export function onExtensionChange(extensions: readonly vscode.Extension<any>[], 
 	}
 
 	if (hasChanged) {
-		const msg = `Extensions to the XML Language Server changed, reloading ${vscode.env.appName} is required for the changes to take effect.`;
+		const msg = `Extensions to the XXX Language Server changed, reloading ${vscode.env.appName} is required for the changes to take effect.`;
 		const action = 'Reload';
 		const restartId = CommandConstants.RELOAD_WINDOW;
 		vscode.window.showWarningMessage(msg, action).then((selection) => {

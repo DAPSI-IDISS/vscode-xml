@@ -1,6 +1,6 @@
 import * as path from "path";
 import { TextDocument, window, workspace, WorkspaceFolder } from "vscode";
-import { XMLFileAssociation } from "../api/xmlExtensionApi";
+import { XXXFileAssociation } from "../api/xmlExtensionApi";
 
 /**
  * Represents a variable that refers to a value that can be resolved
@@ -96,7 +96,7 @@ const VARIABLE_SUBSTITUTIONS: VariableSubstitution[] = [
  * @param associations the file associations to resolve the variable references in
  * @returns the file associations with as many variable references resolved as possible
  */
-export function getVariableSubstitutedAssociations(associations: XMLFileAssociation[]): XMLFileAssociation[] {
+export function getVariableSubstitutedAssociations(associations: XXXFileAssociation[]): XXXFileAssociation[] {
 
   // Collect properties needed to resolve variables
   const currentFile: TextDocument = (window.activeTextEditor && window.activeTextEditor.document && window.activeTextEditor.document.languageId === 'xxx') ?  window.activeTextEditor.document : undefined;
@@ -128,7 +128,7 @@ export function getVariableSubstitutedAssociations(associations: XMLFileAssociat
     return newVal;
   }
 
-  return associations.map((association: XMLFileAssociation) => {
+  return associations.map((association: XXXFileAssociation) => {
     return {
       pattern: subVars(association.pattern),
       systemId: subVars(association.systemId)
@@ -142,7 +142,7 @@ export function getVariableSubstitutedAssociations(associations: XMLFileAssociat
  * @param associations A list of file associations to check
  * @returns true if any of the file associations contain references to variables that refer to current file, and false otherwise
  */
-export function containsVariableReferenceToCurrentFile(associations: XMLFileAssociation[]): boolean {
+export function containsVariableReferenceToCurrentFile(associations: XXXFileAssociation[]): boolean {
   const fileVariables: VariableSubstitution[] = VARIABLE_SUBSTITUTIONS.filter(variable => variable.kind === VariableSubstitutionKind.File);
   for (const association of associations) {
     for (const variable of fileVariables) {

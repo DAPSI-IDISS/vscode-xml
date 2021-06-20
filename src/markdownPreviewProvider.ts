@@ -11,7 +11,7 @@ class MarkdownPreviewProvider implements Disposable {
 
     public async show(markdownFilePath: string, title: string, section: string, context: ExtensionContext): Promise<void> {
         if (!this.panel) {
-            this.panel = window.createWebviewPanel('xml.markdownPreview', title, ViewColumn.Active, {
+            this.panel = window.createWebviewPanel('xxx.markdownPreview', title, ViewColumn.Active, {
                 localResourceRoots: [
                     Uri.file(path.join(context.extensionPath, 'webview-resources')),
                     Uri.file(path.dirname(markdownFilePath)),
@@ -55,7 +55,7 @@ class MarkdownPreviewProvider implements Disposable {
             // where $1, $2, $3 are non empty strings that are then passed to the replace function
             markdownString = markdownString.replace(/\[([^\]]+)\]\(([^#\)]+)#([^)]*)\)/g,
                     (_match: string, linkText: string, page: string, section: string) => {
-                return `<a href="command:xml.open.docs?%5B%7B%22page%22%3A%22${page}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
+                return `<a href="command:xxx.open.docs?%5B%7B%22page%22%3A%22${page}%22%2C%22section%22%3A%22${section}%22%7D%5D">${linkText}</a>`
             });
             body = await commands.executeCommand(CommandConstants.MARKDOWN_API_RENDER, markdownString);
             this.documentCache.set(markdownFilePath, body);
