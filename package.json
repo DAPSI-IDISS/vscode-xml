@@ -533,6 +533,25 @@
         "fileMatch": "package.json",
         "url": "./schemas/package.schema.json"
       }
-    ]
+    ],
+    "viewsContainers": {
+			"activitybar": [
+				{
+					"id": "semantic-crosswalk-explorer",
+					"title": "Semantic Crosswalk Explorer",
+					"icon": "icons/project-diagram-solid.svg"
+				}
+			]
+		},
+    "views": {
+			"semantic-crosswalk-explorer": [
+				{
+					"id": "semanticCrosswalkExplorer",
+					"name": "Semantic Crosswalk Explorer",
+					"icon": "icons/project-diagram-solid.svg",
+					"contextualTitle": "Semantic Crosswalk Explorer"
+				}
+			]
+    }
   }
 }
