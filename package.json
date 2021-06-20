@@ -516,7 +516,8 @@
         "id": "xxx",
         "extensions": [
           ".xxx"
-        ]
+        ],
+        "aliases": ["Triple-X", "XXX"]
       }
     ],
     "grammars": [
