@@ -1,13 +1,13 @@
 {
-  "name": "vscode-xml",
-  "displayName": "XML",
-  "description": "XML Language Support by Red Hat",
+  "name": "semantic-crosswalk-editor",
+  "displayName": "Semantic Crosswalk Editor",
+  "description": "Semantic Crosswalk for XML formats by DAPSI-IDISS, based on the XML extension by Red Hat",
   "version": "0.18.3",
-  "author": "Red Hat",
-  "publisher": "redhat",
-  "icon": "icons/icon128.png",
+  "author": "DAPSI-IDISS",
+  "publisher": "DAPSI-IDISS",
+  "icon": "icons/idiss-icon128.png",
   "license": "EPL-2.0",
-  "bugs": "https://github.com/redhat-developer/vscode-xml/issues",
+  "bugs": "https://github.com/DAPSI-IDISS/semantic-crosswalk-editor/issues",
   "preview": true,
   "keywords": [
     "xml",
@@ -58,7 +58,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/redhat-developer/vscode-xml"
+    "url": "https://github.com/DAPSI-IDISS/semantic-crosswalk-editor"
   },
   "categories": [
     "Programming Languages",
@@ -503,11 +503,13 @@
     "configurationDefaults": {
       "[xml]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "editor.linkedEditing": true
       },
       "[xsl]": {
         "editor.autoClosingBrackets": "never",
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "editor.linkedEditing": true
       }
     },
     "commands": [
@@ -548,6 +550,7 @@
       {
         "id": "xml",
         "extensions": [
+          ".ssb",
           ".ent",
           ".mod"
         ]
@@ -558,6 +561,25 @@
         "fileMatch": "package.json",
         "url": "./schemas/package.schema.json"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "semantic-crosswalk-explorer",
+          "title": "Semantic Crosswalk Explorer",
+          "icon": "icons/project-diagram-solid.svg"
+        }
+      ]
+    },
+    "views": {
+      "semantic-crosswalk-explorer": [
+        {
+          "id": "semanticCrosswalkExplorer",
+          "name": "Semantic Crosswalk Explorer",
+          "icon": "icons/project-diagram-solid.svg",
+          "contextualTitle": "Semantic Crosswalk Explorer"
+        }
+      ]
+    }
   }
 }

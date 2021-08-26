@@ -1,3 +1,11 @@
+# Semantic Crosswalk for XML
+
+_This fork adopted [vscode-xml by Red Hat](https://github.com/redhat-developer/vscode-xml) for the [semantic-crosswalk-editor by DAPSI-IDISS](https://github.com/DAPSI-IDISS/semantic-crosswalk-editor)_
+
+_Documentation below refers only to the original vscode-xml extension, see [semantic-crosswalk-editor](https://github.com/DAPSI-IDISS/semantic-crosswalk-editor) for documentation of the DAPSI-IDISS changes, plugins, etc._
+
+__
+
 # XML Language Support by Red Hat
 
 [![Join the chat at https://gitter.im/redhat-developer/vscode-xml](https://badges.gitter.im/redhat-developer/vscode-xml.svg)](https://gitter.im/redhat-developer/vscode-xml?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version/redhat.vscode-xml.svg "Current Release")](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml)
