@@ -8,6 +8,7 @@
  *  Contributors:
  *  Red Hat Inc. - initial API and implementation
  *  Microsoft Corporation - Auto Closing Tags
+ *  DAPSI IDISS - Semantic Crosswalk Extensions
  */
 
 import * as fs from 'fs-extra';
@@ -27,6 +28,10 @@ import { prepareExecutable } from './server/serverStarter';
 import { ExternalXmlSettings } from "./settings/externalXmlSettings";
 import { getXMLConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
+// DAPSI additions
+import { commands, window } from "vscode";
+import { SemanticView } from './semanticView';
+import { XMLView } from './xmlView';
 
 let languageClient: LanguageClient;
 
@@ -63,6 +68,26 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     requirementsData, collectXmlJavaExtensions(extensions.all, getXMLConfiguration().get("extension.jars", [])), context);
 
   languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
+
+  // <-- DAPSI addition start
+  new SemanticView(context);
+
+  const xmlViewProvider = new XMLView(context.extensionUri);
+
+  // part below should be probably moved to registerCommands.ts
+  context.subscriptions.push(
+    window.registerWebviewViewProvider(XMLView.viewType, xmlViewProvider));
+
+  context.subscriptions.push(
+    commands.registerCommand('xmlView.addSnippet', () => {
+      xmlViewProvider.addSnippet();
+    }));
+
+  context.subscriptions.push(
+    commands.registerCommand('xmlView.clearSnippets', () => {
+      xmlViewProvider.clearSnippets();
+    }));
+  // -- DAPSI addition end -->
 
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
 }
