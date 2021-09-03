@@ -1,128 +1,215 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
-export class XMLView implements vscode.WebviewViewProvider {
-  public static readonly viewType = "xmlView";
+// Top-level-await with import would be a better solution but requires to use system: esnext and target: es2017 or higher >> ts(1378)
+// See: https://v8.dev/features/top-level-await#dependency-fallbacks and https://github.com/tc39/proposal-top-level-await#dependency-fallbacks
+// (it should be safe to use in VSCode - chromium, however, for now we just use a conditional require)
+let xmlData;
+try {
+  xmlData = require('./../sample-data/xmlData.json');
+} catch {
+  xmlData = require('./../sample-data/xmlData_public.json');
+}
 
-  private _view?: vscode.WebviewView;
+export class XMLView implements vscode.TreeDataProvider<Node> {
+  private _onDidChangeTreeData: vscode.EventEmitter<Node[] | undefined> = new vscode.EventEmitter<Node[] | undefined>();
+  // We want to use an array as the event type, so we use the proposed onDidChangeTreeData2.
+  public onDidChangeTreeData2: vscode.Event<Node[] | undefined> = this._onDidChangeTreeData.event;
+  // Add sample tree data
+  public tree = xmlData; // TODO: correctly parse the keys required for Tree elements/nodes so we can get rid of the empty object props and provide additional infos in the JSON
+  // Keep track of any nodes we create so that we can re-use the same objects.
+  private nodes = {};
 
-  constructor(private readonly _extensionUri: vscode.Uri) {}
-
-  public resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    context: vscode.WebviewViewResolveContext,
-    _token: vscode.CancellationToken
-  ) {
-    this._view = webviewView;
-
-    webviewView.webview.options = {
-      // Allow scripts in the webview
-      enableScripts: true,
-
-      localResourceRoots: [this._extensionUri],
-    };
-
-    webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage((data) => {
-      switch (data.type) {
-        case "snippetSelected": {
-          vscode.window.activeTextEditor?.insertSnippet(
-            new vscode.SnippetString(
-              `
-<semantic id="BG-1" level="1" card="0..n" bt="${data.value}" desc="Add a description for this subject...">
-  <xml path="null" type="ELEMENT" card="0..n"/>
-</semantic>`
-            )
-          );
-          break;
+  constructor(context: vscode.ExtensionContext) {
+    const view = vscode.window.createTreeView('xmlView', { treeDataProvider: this, showCollapseAll: true, canSelectMany: true });
+    context.subscriptions.push(view);
+    vscode.commands.registerCommand('xmlView.reveal', async () => {
+      const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the XML item to reveal' });
+      if (key) {
+        await view.reveal({ key }, { focus: true, select: false, expand: true });
+      }
+    });
+    vscode.commands.registerCommand('xmlView.changeTitle', async (args) => {
+      if (args.title && args.description) {
+        view.title = args.title;
+        view.description = args.description;
+      } else {
+        const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the XML View', placeHolder: view.title });
+        if (title) {
+          view.title = title;
         }
       }
     });
+    // probably better practice than 'search.action.openNewEditor' to allow quickly jumping to the lines in the current file
+    // FindInFilesCommand details: https://github.com/microsoft/vscode/blob/17de08a829e56657e44213a70cf69d18f06e74a5/src/vs/workbench/contrib/search/browser/searchActions.ts#L160-L188
+    vscode.commands.registerCommand('xmlView.searchEntry', (node: Node) => vscode.commands.executeCommand('workbench.action.findInFiles', {query: node.key, isCaseSensitive: true}));
   }
 
-  public addSnippet() {
-    if (this._view) {
-      this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
-      this._view.webview.postMessage({ type: "xmlView.addSnippet" });
+  // Tree data provider 
+
+  public getChildren(element: Node): Node[] {
+    return this._getChildren(element ? element.key : undefined).map(key => this._getNode(key));
+  }
+
+  public getTreeItem(element: Node): vscode.TreeItem {
+    const treeItem = this._getTreeItem(element.key);
+    treeItem.id = element.key;
+    // treeItem.resourceUri = vscode.Uri.parse('xmlView:' + treeItem.id);
+    return treeItem;
+  }
+  public getParent(element: Node): Node {
+    return this._getParent(element.key);
+  }
+
+  dispose(): void {
+    console.log('destroy');
+  }
+
+  // Drag and drop controller (requires update)
+
+  public async onDrop(sources: Node[], target: Node): Promise<void> {
+    let roots = this._getLocalRoots(sources);
+    // Remove nodes that are already target's parent nodes
+    roots = roots.filter(r => !this._isChild(this._getTreeElement(r.key), target));
+    if (roots.length > 0) {
+      // Reload parents of the moving elements
+      const parents = roots.map(r => this.getParent(r));
+      roots.forEach(r => this._reparentNode(r, target));
+      this._onDidChangeTreeData.fire([...parents, target]);
     }
   }
 
-  public clearSnippets() {
-    if (this._view) {
-      this._view.webview.postMessage({ type: "xmlView.clearSnippets" });
+  // ----------------------------------------
+  // Helper methods
+  // ----------------------------------------
+
+  _isChild(node: Node, child: Node): boolean {
+    for (const prop in node) {
+      if (prop === child.key) {
+        return true;
+      } else {
+        const isChild = this._isChild(node[prop], child);
+        if (isChild) {
+          return isChild;
+        }
+      }
+    }
+    return false;
+  }
+
+  // From the given nodes, filter out all nodes who's parent is already in the the array of Nodes.
+  _getLocalRoots(nodes: Node[]): Node[] {
+    const localRoots = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const parent = this.getParent(nodes[i]);
+      if (parent) {
+        const isInList = nodes.find(n => n.key === parent.key);
+        if (isInList === undefined) {
+          localRoots.push(nodes[i]);
+        }
+      } else {
+        localRoots.push(nodes[i]);
+      }
+    }
+    return localRoots;
+  }
+
+  // Remove node from current position and add node to new target element
+  _reparentNode(node: Node, target: Node): void {
+    const element = {};
+    element[node.key] = this._getTreeElement(node.key);
+    const elementCopy = { ...element };
+    this._removeNode(node);
+    const targetElement = this._getTreeElement(target.key);
+    if (Object.keys(element).length === 0) {
+      targetElement[node.key] = {};
+    } else {
+      Object.assign(targetElement, elementCopy);
     }
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
-    // Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
-    const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "webview-resources", "xmlView.js")
-    );
+  // Remove node from tree
+  _removeNode(element: Node, tree?: any): void {
+    const subTree = tree ? tree : this.tree;
+    for (const prop in subTree) {
+      if (prop === element.key) {
+        const parent = this.getParent(element);
+        if (parent) {
+          const parentObject = this._getTreeElement(parent.key);
+          delete parentObject[prop];
+        } else {
+          delete this.tree[prop];
+        }
+      } else {
+        this._removeNode(element, subTree[prop]);
+      }
+    }
+  }
 
-    // Do the same for the stylesheet.
-    const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "webview-resources", "reset.css")
-    );
-    const styleVSCodeUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "webview-resources", "vscode.css")
-    );
-    const styleMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "webview-resources", "xmlView.css")
-    );
+  _getChildren(key: string): string[] {
+    if (!key) {
+      return Object.keys(this.tree);
+    }
+    const treeElement = this._getTreeElement(key);
+    if (treeElement) {
+      return Object.keys(treeElement);
+    }
+    return [];
+  }
 
-    // And images.
-    const xmlLogoUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "webview-resources", "xml-logo-alt.png")
-    );
+  _getTreeItem(key: string): vscode.TreeItem {
+    const treeElement = this._getTreeElement(key);
+    // An example of how to use codicons in a MarkdownString in a tree item tooltip.
+    // const tooltip = new vscode.MarkdownString(`$(arrow-right) Jump to '${key}' mapping in .ssb`, true);
+    return {
+      label: /**vscode.TreeItemLabel**/<any>{ label: key }, // TreeItemLabel not implemented yet?
+      tooltip: key,
+      // Use TreeItemCollapsibleState.Collapsed instead of .Expanded for a compact view by default (could be added to settings)
+      collapsibleState: treeElement && Object.keys(treeElement).length ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None,
+      resourceUri: vscode.Uri.parse(`xmlView:${key}`),
+      iconPath: new vscode.ThemeIcon('symbol-field'),
+    };
+  }
 
-    // Use a nonce to only allow a specific script to be run.
-    const nonce = getNonce();
+  _getTreeElement(element: string, tree?: any): Node {
+    const currentNode = tree ?? this.tree;
+    for (const prop in currentNode) {
+      if (prop === element) {
+        return currentNode[prop];
+      } else {
+        const treeElement = this._getTreeElement(element, currentNode[prop]);
+        if (treeElement) {
+          return treeElement;
+        }
+      }
+    }
+  }
 
-    return `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
+  _getParent(element: string, parent?: string, tree?): any {
+    const currentNode = tree ?? this.tree;
+    for (const prop in currentNode) {
+      if (prop === element && parent) {
+        return this._getNode(parent);
+      } else {
+        const parent = this._getParent(element, prop, currentNode[prop]);
+        if (parent) {
+          return parent;
+        }
+      }
+    }
+  }
 
-        <!--
-          Use a content security policy to only allow loading images from https or from our extension directory,
-          and only allow scripts that have a specific nonce.
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}'; img-src 'self' *;">
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link href="${styleResetUri}" rel="stylesheet">
-        <link href="${styleVSCodeUri}" rel="stylesheet">
-        <link href="${styleMainUri}" rel="stylesheet">
-        
-        <title>Custom Web View</title>
-      </head>
-      <body>
-        <div style="width: 100%; text-align: center; display: inline-block; margin-bottom: 20px; border: 1px dashed; border-color: #666; border-radius: 10px; padding: 15px;">
-          <img src="${xmlLogoUri}" width="70" />
-          <p>
-            <small>Custom Web-View Renderer injected to the Side Bar</small><br>
-            <small>(This area could be used as Dropzone target)</small>
-          </p>
-        </div>
-        
-        <ul class="snippet-list">
-        </ul>
-
-        <button class="add-snippet-button">Add XML Binding</button>
-
-        <script nonce="${nonce}" src="${scriptUri}"></script>
-      </body>
-      </html>`;
+  _getNode(key: string): Node {
+    if (!this.nodes[key]) {
+      this.nodes[key] = new Key(key);
+    }
+    return this.nodes[key];
   }
 }
 
-function getNonce() {
-  let text = "";
-  const possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
+type Node = { 
+  key: string,
+};
+
+class Key {
+  constructor(readonly key: string) { }
 }

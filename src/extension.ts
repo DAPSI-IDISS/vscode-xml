@@ -75,6 +75,7 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 
   // <-- DAPSI addition start
   new SemanticView(context);
+  new XMLView(context);
 
   // Register decoration
   const decorationProvider = new DecorationProvider();
@@ -137,6 +138,7 @@ const updateStatusBarItem = (): void => {
   }
   // For now, update TreeView title & description at the same time (update "fake badge" via description)
   vscode.commands.executeCommand('semanticView.changeTitle', {title: 'Semantic View', description: `(${semanticsCount})`});
+  vscode.commands.executeCommand('xmlView.changeTitle', {title: 'XML View', description: `(${xmlCount})`});
 }
 
 const getNumberFromSemanticsAttribute = (editor: vscode.TextEditor | undefined, attributeName: string): number => {
@@ -180,6 +182,9 @@ class DecorationProvider implements vscode.FileDecorationProvider {
     // Apply different decorators per view "uri.scheme"
     if(uri.scheme === 'semanticView') {
       return this.provideDecoratorPerScheme(uri);
+    }
+    if(uri.scheme === 'xmlView') {
+      return this.provideDecoratorPerScheme(uri, new vscode.ThemeColor('debugTokenExpression.string'));
     }
   }
 }

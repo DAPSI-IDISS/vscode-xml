@@ -23,7 +23,7 @@ export class SemanticView implements vscode.TreeDataProvider<Node> {
     const view = vscode.window.createTreeView('semanticView', { treeDataProvider: this, showCollapseAll: true, canSelectMany: true });
     context.subscriptions.push(view);
     vscode.commands.registerCommand('semanticView.reveal', async () => {
-      const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the item to reveal' });
+      const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the Semantic item to reveal' });
       if (key) {
         await view.reveal({ key }, { focus: true, select: false, expand: true });
       }
@@ -33,9 +33,9 @@ export class SemanticView implements vscode.TreeDataProvider<Node> {
         view.title = args.title;
         view.description = args.description;
       } else {
-      const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Semantic View', placeHolder: view.title });
-      if (title) {
-        view.title = title;
+        const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Semantic View', placeHolder: view.title });
+        if (title) {
+          view.title = title;
         }
       }
     });

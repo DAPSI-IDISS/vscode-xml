@@ -529,8 +529,18 @@
         "icon": "$(search)"
       },
       {
-        "command": "xmlView.addSnippet",
-        "title": "XML View: Add Snippet"
+        "command": "xmlView.reveal",
+        "title": "Semantic View: Reveal"
+      },
+      {
+        "command": "xmlView.changeTitle",
+        "title": "Semantic View: Change Title",
+        "args": "title"
+      },
+      {
+        "command": "xmlView.searchEntry",
+        "title": "Semantic View: Search Entry",
+        "icon": "$(search)"
       },
       {
         "command": "experimentalView.addSnippet",
@@ -575,6 +585,11 @@
           "command": "semanticView.searchEntry",
           "when": "view == semanticView",
           "group": "inline"
+        },
+        {
+          "command": "xmlView.searchEntry",
+          "when": "view == xmlView",
+          "group": "inline"
         }
       ],
       "commandPalette": [
@@ -618,10 +633,10 @@
         {
           "type": "tree",
           "id": "semanticView",
-          "name": "Semantic Path View"
+          "name": "Semantic View"
         },
         {
-          "type": "webview",
+          "type": "tree",
           "id": "xmlView",
           "name": "XML View"
         },
