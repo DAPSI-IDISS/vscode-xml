@@ -30,6 +30,7 @@ import { getXMLConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
 // DAPSI additions
 import { commands, window } from "vscode";
+import { ExperimentalView } from './experimentalView';
 import { SemanticView } from './semanticView';
 import { XMLView } from './xmlView';
 
@@ -74,18 +75,20 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 
   const xmlViewProvider = new XMLView(context.extensionUri);
 
-  // part below should be probably moved to registerCommands.ts
+  const experimentalViewProvider = new ExperimentalView(context.extensionUri);
+
+  // Part below should be probably moved to registerCommands.ts
   context.subscriptions.push(
-    window.registerWebviewViewProvider(XMLView.viewType, xmlViewProvider));
+    window.registerWebviewViewProvider(ExperimentalView.viewType, experimentalViewProvider));
 
   context.subscriptions.push(
-    commands.registerCommand('xmlView.addSnippet', () => {
-      xmlViewProvider.addSnippet();
+    commands.registerCommand('experimentalView.addSnippet', () => {
+      experimentalViewProvider.addSnippet();
     }));
 
   context.subscriptions.push(
-    commands.registerCommand('xmlView.clearSnippets', () => {
-      xmlViewProvider.clearSnippets();
+    commands.registerCommand('experimentalView.clearSnippets', () => {
+      experimentalViewProvider.clearSnippets();
     }));
   // -- DAPSI addition end -->
 

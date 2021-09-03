@@ -21,12 +21,12 @@
   window.addEventListener('message', event => {
     const message = event.data; // The json data that the extension sent
     switch (message.type) {
-      case 'xmlView.addSnippet':
+      case 'experimentalView.addSnippet':
         {
           addSnippet();
           break;
         }
-      case 'xmlView.clearSnippets':
+      case 'experimentalView.clearSnippets':
         {
           snippets = [];
           updateSnippetList(snippets);

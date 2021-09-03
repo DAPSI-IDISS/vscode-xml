@@ -38,7 +38,7 @@
     "vscode": "^1.52.0"
   },
   "activationEvents": [
-    "onView:xmlView",
+    "onView:experimentalView",
     "onLanguage:xml",
     "onLanguage:xsl",
     "onCommand:xml.open.docs",
@@ -527,8 +527,12 @@
         "title": "XML View: Add Snippet"
       },
       {
-        "command": "xmlView.clearSnippets",
-        "title": "XML View: Clear Snippets",
+        "command": "experimentalView.addSnippet",
+        "title": "Experimental View: Add Snippet"
+      },
+      {
+        "command": "experimentalView.clearSnippets",
+        "title": "Experimental View: Clear Snippets",
         "icon": "$(clear-all)"
       },
       {
@@ -555,9 +559,9 @@
     "menus": {
       "view/title": [
         {
-          "command": "xmlView.clearSnippets",
+          "command": "experimentalView.clearSnippets",
           "group": "navigation",
-          "when": "view == xmlView"
+          "when": "view == experimentalView"
         }
       ],
       "commandPalette": [
@@ -607,6 +611,12 @@
           "type": "webview",
           "id": "xmlView",
           "name": "XML View"
+        },
+        {
+          "type": "webview",
+          "id": "experimentalView",
+          "name": "Experimental View",
+          "visibility": "collapsed"
         }
       ]
     }
