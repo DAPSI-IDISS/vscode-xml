@@ -96,6 +96,13 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     commands.registerCommand('experimentalView.clearSnippets', () => {
       experimentalViewProvider.clearSnippets();
     }));
+
+  context.subscriptions.push(
+    languages.registerDocumentSymbolProvider(
+      {scheme: "file", language: "xml"}, 
+      new SyntaxBindingDocumentSymbolProvider())
+  );
+
   // Register a command that is invoked when the status bar item is selected
   const statusMessageCommand = 'idiss.showSelectionCount';
   context.subscriptions.push(vscode.commands.registerCommand(statusMessageCommand, () => {
@@ -124,6 +131,31 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 export async function deactivate(): Promise<void> {
   if (languageClient) {
     await languageClient.stop();
+  }
+}
+
+class SyntaxBindingDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
+  public provideDocumentSymbols(
+    document: vscode.TextDocument,
+    token: vscode.CancellationToken): Promise<vscode.DocumentSymbol[]> {
+    return new Promise((resolve, reject) => {
+      let symbols: vscode.DocumentSymbol[] = [];
+      for (let i = 0; i < document.lineCount; i++) {
+        const line = document.lineAt(i);
+        if (line.text.includes("/rsm:")) {
+          // Some hacky JS slice'n'dice way with hardcoded values/offsets ... should be replaced with some regexp
+          let name = line.text.slice(line.text.lastIndexOf('/', line.text.lastIndexOf('/') - 1) + 1, line.text.lastIndexOf('/'));
+            name = name.slice(0, name.indexOf('"'));
+          let colPosition = line.text.indexOf('"', line.text.indexOf('"') + 1) + 7 - name.length;
+          let symbol = new vscode.DocumentSymbol(
+            name, `Syntax Binding [Ln ${i + 1}, Col ${colPosition}]`,
+            vscode.SymbolKind.Function,
+            line.range, line.range)
+          symbols.push(symbol)
+        }
+      }
+      resolve(symbols);
+    });
   }
 }
 
