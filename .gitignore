@@ -7,3 +7,7 @@ dist/
 .idea/
 .vscode-test/
 .DS_Store
+xmlData.json
+_xmlData.json
+semanticData.json
+_semanticData.json

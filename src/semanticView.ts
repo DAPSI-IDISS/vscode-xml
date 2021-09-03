@@ -1,49 +1,21 @@
 import * as vscode from 'vscode';
 
-const sampleData = {
-  'rsm:CrossIndustryInvoice' : {
-    'rsm:ExchangedDocument' : {
-      'ram:IncludedNote' : {},
-    },
-  },
-  'rsm:ExchangedDocumentContext' : {},
-  'rsm:SupplyChainTradeTransaction' : {
-    'ram:ApplicableHeaderTradeSettlement' : {
-      'ram:InvoiceReferencedDocument' : {},
-    },
-    'ram:ApplicableHeaderTradeAgreement' : {
-      'ram:SellerTradeParty' : {
-        'ram:PostalTradeAddress(1)' : {},
-        'ram:DefinedTradeContact(1)' : {},
-      },
-      'ram:BuyerTradeParty' : {
-        'ram:PostalTradeAddress(2)' : {},
-        'ram:DefinedTradeContact(2)' : {},
-      },
-      'ram:PayeeTradeParty' : {},
-      'ram:SellerTaxRepresentativeTradeParty' : {
-        'ram:PostalTradeAddress(3)' : {},
-      },
-      'ram:ShipToTradeParty' : {
-        'ram:PostalTradeAddress(4)' : {},
-      },
-      'ram:BillingSpecifiedPeriod' : {},
-      'ram:SpecifiedTradeSettlementPaymentMeans' : {
-        'ram:PayeePartyCreditorFinancialAccount' : {},
-        'ram:ApplicableTradeSettlementFinancialCard' : {},
-      },
-      'ram:SpecifiedTradeAllowanceCharge' : {},
-      'ram:SpecifiedTradeSettlementHeaderMonetarySummation' : {},
-    },
-  },
-};
+// Top-level-await with import would be a better solution but requires to use system: esnext and target: es2017 or higher >> ts(1378)
+// See: https://v8.dev/features/top-level-await#dependency-fallbacks and https://github.com/tc39/proposal-top-level-await#dependency-fallbacks
+// (it should be safe to use in VSCode - chromium, however, for now we just use a conditional require)
+let semanticData;
+try {
+  semanticData = require('./../sample-data/semanticData.json');
+} catch {
+  semanticData = require('./../sample-data/semanticData_public.json');
+}
 
 export class SemanticView implements vscode.TreeDataProvider<Node> {
   private _onDidChangeTreeData: vscode.EventEmitter<Node[] | undefined> = new vscode.EventEmitter<Node[] | undefined>();
   // We want to use an array as the event type, so we use the proposed onDidChangeTreeData2.
   public onDidChangeTreeData2: vscode.Event<Node[] | undefined> = this._onDidChangeTreeData.event;
   // Add sample tree data
-  public tree = sampleData;
+  public tree = semanticData; // TODO: correctly parse the keys required for Tree elements/nodes so we can get rid of the empty object props and provide additional infos in the JSON
   // Keep track of any nodes we create so that we can re-use the same objects.
   private nodes = {};
 
