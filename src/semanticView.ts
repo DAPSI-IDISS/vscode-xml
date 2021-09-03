@@ -56,10 +56,15 @@ export class SemanticView implements vscode.TreeDataProvider<Node> {
         await view.reveal({ key }, { focus: true, select: false, expand: true });
       }
     });
-    vscode.commands.registerCommand('semanticView.changeTitle', async () => {
+    vscode.commands.registerCommand('semanticView.changeTitle', async (args) => {
+      if (args.title && args.description) {
+        view.title = args.title;
+        view.description = args.description;
+      } else {
       const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Semantic View', placeHolder: view.title });
       if (title) {
         view.title = title;
+        }
       }
     });
     vscode.commands.registerCommand('semanticView.searchEntry', (node: Node) => vscode.commands.executeCommand('search.action.openNewEditor', {query: node.key}));

@@ -520,7 +520,8 @@
       },
       {
         "command": "semanticView.changeTitle",
-        "title": "Semantic View: Change Title"
+        "title": "Semantic View: Change Title",
+        "args": "title"
       },
       {
         "command": "semanticView.searchEntry",

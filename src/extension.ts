@@ -36,6 +36,8 @@ import { SemanticView } from './semanticView';
 import { XMLView } from './xmlView';
 
 let languageClient: LanguageClient;
+// DAPSI additions
+let idissStatusBarItem: vscode.StatusBarItem;
 
 export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
@@ -93,6 +95,26 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
     commands.registerCommand('experimentalView.clearSnippets', () => {
       experimentalViewProvider.clearSnippets();
     }));
+  // Register a command that is invoked when the status bar item is selected
+  const statusMessageCommand = 'idiss.showSelectionCount';
+  context.subscriptions.push(vscode.commands.registerCommand(statusMessageCommand, () => {
+    const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantics');
+    const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'xml');
+    vscode.window.showInformationMessage(`${semanticsCount} Semantic(s) found, ${xmlCount} XML Bindings(s) found`);
+  }));
+
+  // Create a new status bar item that we can now manage
+  idissStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  idissStatusBarItem.command = statusMessageCommand;
+  context.subscriptions.push(idissStatusBarItem);
+
+  // Register some listener that make sure the status bar item is always up-to-date
+  context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem));
+  context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
+
+  // Update status bar item once at start
+  updateStatusBarItem();
+
   // -- DAPSI addition end -->
 
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
@@ -104,6 +126,31 @@ export async function deactivate(): Promise<void> {
   }
 }
 
+const updateStatusBarItem = (): void => {
+  const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantics');
+  const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'xml');
+  if (semanticsCount > 0) {
+    idissStatusBarItem.text = `$(combine) ${semanticsCount} Semantic(s) found, ${xmlCount} XML Bindings(s) found`;
+    idissStatusBarItem.show();
+  } else {
+    idissStatusBarItem.hide();
+  }
+  // For now, update TreeView title & description at the same time (update "fake badge" via description)
+  vscode.commands.executeCommand('semanticView.changeTitle', {title: 'Semantic View', description: `(${semanticsCount})`});
+}
+
+const getNumberFromSemanticsAttribute = (editor: vscode.TextEditor | undefined, attributeName: string): number => {
+  let lines = 0;
+  if (editor) {
+    const line = editor.document.lineAt(1); // assuming <semantics ...> is always at line 2 for now
+    if (line.text.includes("semantics")) {
+      const regex = new RegExp(`${attributeName}\=\"([A-Za-z0-9 _]*)\"`);
+      lines = parseInt(regex.exec(line.text)[1], 10);
+    }
+  }
+
+  return lines;
+}
 
 const getNumberOfSearchItemOccurrence = (editor: vscode.TextEditor | undefined, searchItem: string): number => {
   let matches = 0;
