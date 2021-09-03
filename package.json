@@ -523,6 +523,11 @@
         "title": "Semantic View: Change Title"
       },
       {
+        "command": "semanticView.searchEntry",
+        "title": "Semantic View: Search Entry",
+        "icon": "$(search)"
+      },
+      {
         "command": "xmlView.addSnippet",
         "title": "XML View: Add Snippet"
       },
@@ -562,6 +567,13 @@
           "command": "experimentalView.clearSnippets",
           "group": "navigation",
           "when": "view == experimentalView"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "semanticView.searchEntry",
+          "when": "view == semanticView",
+          "group": "inline"
         }
       ],
       "commandPalette": [

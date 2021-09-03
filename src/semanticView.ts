@@ -62,6 +62,7 @@ export class SemanticView implements vscode.TreeDataProvider<Node> {
         view.title = title;
       }
     });
+    vscode.commands.registerCommand('semanticView.searchEntry', (node: Node) => vscode.commands.executeCommand('search.action.openNewEditor', {query: node.key}));
   }
 
   // Tree data provider 
