@@ -29,6 +29,7 @@ import { ExternalXmlSettings } from "./settings/externalXmlSettings";
 import { getXMLConfiguration } from './settings/settings';
 import { Telemetry } from './telemetry';
 // DAPSI additions
+import * as vscode from 'vscode'; // TODO: Fix imports to only require the ones we use
 import { commands, window } from "vscode";
 import { ExperimentalView } from './experimentalView';
 import { SemanticView } from './semanticView';
@@ -73,7 +74,9 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   // <-- DAPSI addition start
   new SemanticView(context);
 
-  const xmlViewProvider = new XMLView(context.extensionUri);
+  // Register decoration
+  const decorationProvider = new DecorationProvider();
+  vscode.window.registerFileDecorationProvider(decorationProvider);
 
   const experimentalViewProvider = new ExperimentalView(context.extensionUri);
 
@@ -98,5 +101,38 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
 export async function deactivate(): Promise<void> {
   if (languageClient) {
     await languageClient.stop();
+  }
+}
+
+
+const getNumberOfSearchItemOccurrence = (editor: vscode.TextEditor | undefined, searchItem: string): number => {
+  let matches = 0;
+  if (editor) {
+    const query = new RegExp(searchItem, 'g');
+    matches = (editor.document.getText().match(query) || []).length;
+  }
+
+  return matches;
+}
+
+// Git-like badges (badge API?) seems to be not exposed yet - https://github.com/Microsoft/vscode/issues/62783 (Workaround: Showing a number in the Tree View Title or Description per view, and via DecorationProvider per node is possible)
+// Following is just a test to add a "fake badge" to Tree View node labels and pass counts retrieved from here to the node's tooltip
+class DecorationProvider implements vscode.FileDecorationProvider {
+  public provideDecoratorPerScheme = (uri: vscode.Uri, color?: vscode.ThemeColor) => {
+    const count = getNumberOfSearchItemOccurrence(vscode.window.activeTextEditor, uri.path);
+    return {
+      badge: `${count > 99 ? '∞' : count}`, // Seems to be limited to a string length of 2 ... alternatives could be 'GT' or '>' = Greater Than, '‰' per mile (per thousand?) '∞' infinite (of course not the correct meaning but 99+ can be infinite)
+      // debugTokenExpression.boolean = semantic blue ... debugTokenExpression.string = path value red ... couldn't figure out the "real" color definition used for the Syntax Highlighting yet
+      color, 
+      tooltip: `${count} result(s) in current file`,
+    };
+  }
+
+  onDidChangeFileDecorations?: vscode.Event<vscode.Uri | vscode.Uri[] | undefined>;
+  provideFileDecoration(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<vscode.FileDecoration> {
+    // Apply different decorators per view "uri.scheme"
+    if(uri.scheme === 'semanticView') {
+      return this.provideDecoratorPerScheme(uri);
+    }
   }
 }

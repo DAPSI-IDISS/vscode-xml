@@ -179,13 +179,13 @@ export class SemanticView implements vscode.TreeDataProvider<Node> {
   _getTreeItem(key: string): vscode.TreeItem {
     const treeElement = this._getTreeElement(key);
     // An example of how to use codicons in a MarkdownString in a tree item tooltip.
-    const tooltip = new vscode.MarkdownString(`$(arrow-right) Jump to '${key}' mapping in .XXX`, true);
     return {
       label: /**vscode.TreeItemLabel**/<any>{ label: key }, // TreeItemLabel not implemented yet?
-      tooltip,
+      tooltip: key,
       // Use TreeItemCollapsibleState.Collapsed instead of .Expanded for a compact view by default (could be added to settings)
       collapsibleState: treeElement && Object.keys(treeElement).length ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None,
-      resourceUri: vscode.Uri.parse(`/tmp/${key}`),
+      resourceUri: vscode.Uri.parse(`semanticView:${key}`),
+      iconPath: new vscode.ThemeIcon('symbol-variable'),
     };
   }
 
