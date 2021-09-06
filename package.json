@@ -531,16 +531,16 @@
       },
       {
         "command": "xmlView.reveal",
-        "title": "Semantic View: Reveal"
+        "title": "XML View: Reveal"
       },
       {
         "command": "xmlView.changeTitle",
-        "title": "Semantic View: Change Title",
+        "title": "XML View: Change Title",
         "args": "title"
       },
       {
         "command": "xmlView.searchEntry",
-        "title": "Semantic View: Search Entry",
+        "title": "XML View: Search Entry",
         "icon": "$(search)"
       },
       {
