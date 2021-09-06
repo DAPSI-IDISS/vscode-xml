@@ -125,10 +125,16 @@ export class XMLView implements vscode.TreeDataProvider<number> {
   }
 
   private getElementOffsetByPath(path: string): number {
-    const pathString = (path.length && path[0] === '/') ? path.slice(1) : path; // remove preceding slash
-    const nodePath: json.JSONPath = pathString.split('/');
+    // remove preceding slash
+    const pathString = (path.length && path[0] === '/') ? path.slice(1) : path;
+    // split path to a sequence of strings (representing an object property) or converted numbers (for array indices)
+    const nodePath: json.JSONPath = pathString.split('/').map(str => this.isNumeric(str) ? Number(str) : str);
     const nodeElement = json.findNodeAtLocation(this.tree, nodePath);
 
     return nodeElement.offset;
+  }
+
+  private isNumeric = (num: string) => {
+    return !isNaN(num as unknown as number)
   }
 }
