@@ -24,9 +24,9 @@ export class XMLView implements vscode.TreeDataProvider<number> {
     const view = vscode.window.createTreeView('xmlView', { treeDataProvider: this, showCollapseAll: true, canSelectMany: true });
     context.subscriptions.push(view);
     vscode.commands.registerCommand('xmlView.reveal', async () => {
-      const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the XML item to reveal' });
+      const key = await vscode.window.showInputBox({ placeHolder: 'Type the Node Path of the XML item to reveal' });
       if (key) {
-        // await view.reveal({ key }, { focus: true, select: false, expand: true }); // TODO: fix reveal function
+        view.reveal(this.getElementOffsetByPath(key), { focus: true, select: false, expand: true });
       }
     });
     vscode.commands.registerCommand('xmlView.changeTitle', async (args) => {
@@ -56,6 +56,7 @@ export class XMLView implements vscode.TreeDataProvider<number> {
       return Promise.resolve(this.tree ? this.getChildrenOffsets(this.tree) : []);
     }
   }
+
   public getTreeItem(offset: number): vscode.TreeItem {
     const valueNode = this.getValueNode(offset);
     if (valueNode) {
@@ -70,6 +71,11 @@ export class XMLView implements vscode.TreeDataProvider<number> {
       return treeItem;
     }
     return undefined;
+  }
+
+  // required to allow TreeView.reveal
+  public getParent(offset?: number): number {
+    return 0;
   }
 
   // ----------------------------------------
@@ -116,5 +122,13 @@ export class XMLView implements vscode.TreeDataProvider<number> {
     const valueNode = json.findNodeAtLocation(this.tree, path);
 
     return valueNode;
+  }
+
+  private getElementOffsetByPath(path: string): number {
+    const pathString = (path.length && path[0] === '/') ? path.slice(1) : path; // remove preceding slash
+    const nodePath: json.JSONPath = pathString.split('/');
+    const nodeElement = json.findNodeAtLocation(this.tree, nodePath);
+
+    return nodeElement.offset;
   }
 }
