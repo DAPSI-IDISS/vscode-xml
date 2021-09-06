@@ -1,31 +1,32 @@
 import * as vscode from 'vscode';
+import * as json from 'jsonc-parser';
 
 // Top-level-await with import would be a better solution but requires to use system: esnext and target: es2017 or higher >> ts(1378)
 // See: https://v8.dev/features/top-level-await#dependency-fallbacks and https://github.com/tc39/proposal-top-level-await#dependency-fallbacks
 // (it should be safe to use in VSCode - chromium, however, for now we just use a conditional require)
-let xmlData;
+let xmlData: JSON;
 try {
   xmlData = require('./../sample-data/xmlData.json');
 } catch {
   xmlData = require('./../sample-data/xmlData_public.json');
 }
 
-export class XMLView implements vscode.TreeDataProvider<Node> {
-  private _onDidChangeTreeData: vscode.EventEmitter<Node[] | undefined> = new vscode.EventEmitter<Node[] | undefined>();
-  // We want to use an array as the event type, so we use the proposed onDidChangeTreeData2.
-  public onDidChangeTreeData2: vscode.Event<Node[] | undefined> = this._onDidChangeTreeData.event;
-  // Add sample tree data
-  public tree = xmlData; // TODO: correctly parse the keys required for Tree elements/nodes so we can get rid of the empty object props and provide additional infos in the JSON
-  // Keep track of any nodes we create so that we can re-use the same objects.
-  private nodes = {};
+export class XMLView implements vscode.TreeDataProvider<number> {
+  private _onDidChangeTreeData: vscode.EventEmitter<number | undefined> = new vscode.EventEmitter<number | undefined>();
+  readonly onDidChangeTreeData: vscode.Event<number | undefined> = this._onDidChangeTreeData.event;
+  private tree: json.Node;
+  private text: string;
 
-  constructor(context: vscode.ExtensionContext) {
+  constructor(private context: vscode.ExtensionContext) {
+    // Add sample tree data
+    this.parseTree();
+
     const view = vscode.window.createTreeView('xmlView', { treeDataProvider: this, showCollapseAll: true, canSelectMany: true });
     context.subscriptions.push(view);
     vscode.commands.registerCommand('xmlView.reveal', async () => {
       const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the XML item to reveal' });
       if (key) {
-        await view.reveal({ key }, { focus: true, select: false, expand: true });
+        // await view.reveal({ key }, { focus: true, select: false, expand: true }); // TODO: fix reveal function
       }
     });
     vscode.commands.registerCommand('xmlView.changeTitle', async (args) => {
@@ -41,175 +42,79 @@ export class XMLView implements vscode.TreeDataProvider<Node> {
     });
     // probably better practice than 'search.action.openNewEditor' to allow quickly jumping to the lines in the current file
     // FindInFilesCommand details: https://github.com/microsoft/vscode/blob/17de08a829e56657e44213a70cf69d18f06e74a5/src/vs/workbench/contrib/search/browser/searchActions.ts#L160-L188
-    vscode.commands.registerCommand('xmlView.searchEntry', (node: Node) => vscode.commands.executeCommand('workbench.action.findInFiles', {query: node.key, isCaseSensitive: true}));
+    vscode.commands.registerCommand('xmlView.searchEntry', (offset: number) => vscode.commands.executeCommand('workbench.action.findInFiles', {query: this.getLabel(this.getValueNode(offset)), isCaseSensitive: true}));
   }
 
   // Tree data provider 
 
-  public getChildren(element: Node): Node[] {
-    return this._getChildren(element ? element.key : undefined).map(key => this._getNode(key));
-  }
-
-  public getTreeItem(element: Node): vscode.TreeItem {
-    const treeItem = this._getTreeItem(element.key);
-    treeItem.id = element.key;
-    // treeItem.resourceUri = vscode.Uri.parse('xmlView:' + treeItem.id);
-    return treeItem;
-  }
-  public getParent(element: Node): Node {
-    return this._getParent(element.key);
-  }
-
-  dispose(): void {
-    console.log('destroy');
-  }
-
-  // Drag and drop controller (requires update)
-
-  public async onDrop(sources: Node[], target: Node): Promise<void> {
-    let roots = this._getLocalRoots(sources);
-    // Remove nodes that are already target's parent nodes
-    roots = roots.filter(r => !this._isChild(this._getTreeElement(r.key), target));
-    if (roots.length > 0) {
-      // Reload parents of the moving elements
-      const parents = roots.map(r => this.getParent(r));
-      roots.forEach(r => this._reparentNode(r, target));
-      this._onDidChangeTreeData.fire([...parents, target]);
+  public getChildren(offset?: number): Thenable<number[]> {
+    if (offset) {
+      const path = json.getLocation(this.text, offset).path;
+      const node = json.findNodeAtLocation(this.tree, path);
+      return Promise.resolve(this.getChildrenOffsets(node));
+    } else {
+      return Promise.resolve(this.tree ? this.getChildrenOffsets(this.tree) : []);
     }
+  }
+  public getTreeItem(offset: number): vscode.TreeItem {
+    const valueNode = this.getValueNode(offset);
+    if (valueNode) {
+      const hasChildren = valueNode.type === 'object' || valueNode.type === 'array' ? valueNode.children.length ? true : false : false;
+      const treeItem: vscode.TreeItem = new vscode.TreeItem(this.getLabel(valueNode));
+      treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
+      treeItem.iconPath = new vscode.ThemeIcon('symbol-field');
+      treeItem.contextValue = valueNode.type;
+      treeItem.resourceUri = vscode.Uri.parse(`xmlView:${this.getLabel(valueNode)}`);
+      treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
+
+      return treeItem;
+    }
+    return undefined;
   }
 
   // ----------------------------------------
   // Helper methods
   // ----------------------------------------
 
-  _isChild(node: Node, child: Node): boolean {
-    for (const prop in node) {
-      if (prop === child.key) {
-        return true;
-      } else {
-        const isChild = this._isChild(node[prop], child);
-        if (isChild) {
-          return isChild;
-        }
-      }
-    }
-    return false;
+  private parseTree(): void {
+    this.text = JSON.stringify(xmlData).toString();
+    this.tree = json.parseTree(this.text);
   }
 
-  // From the given nodes, filter out all nodes who's parent is already in the the array of Nodes.
-  _getLocalRoots(nodes: Node[]): Node[] {
-    const localRoots = [];
-    for (let i = 0; i < nodes.length; i++) {
-      const parent = this.getParent(nodes[i]);
-      if (parent) {
-        const isInList = nodes.find(n => n.key === parent.key);
-        if (isInList === undefined) {
-          localRoots.push(nodes[i]);
-        }
-      } else {
-        localRoots.push(nodes[i]);
+  private getChildrenOffsets(node: json.Node): number[] {
+    const offsets: number[] = [];
+    for (const child of node.children) {
+      const childPath = json.getLocation(this.text, child.offset).path;
+      const childNode = json.findNodeAtLocation(this.tree, childPath);
+      if (childNode) {
+        offsets.push(childNode.offset);
       }
     }
-    return localRoots;
+    return offsets;
   }
-
-  // Remove node from current position and add node to new target element
-  _reparentNode(node: Node, target: Node): void {
-    const element = {};
-    element[node.key] = this._getTreeElement(node.key);
-    const elementCopy = { ...element };
-    this._removeNode(node);
-    const targetElement = this._getTreeElement(target.key);
-    if (Object.keys(element).length === 0) {
-      targetElement[node.key] = {};
+  
+  private getLabel(node: json.Node): string {
+    if (node.parent.type === 'array') {
+      const prefix = node.parent.children.indexOf(node).toString();
+      if (node.type === 'object' || node.type === 'array') {
+        return prefix;
+      }
+      return prefix + ':' + node.value.toString();
     } else {
-      Object.assign(targetElement, elementCopy);
-    }
-  }
-
-  // Remove node from tree
-  _removeNode(element: Node, tree?: any): void {
-    const subTree = tree ? tree : this.tree;
-    for (const prop in subTree) {
-      if (prop === element.key) {
-        const parent = this.getParent(element);
-        if (parent) {
-          const parentObject = this._getTreeElement(parent.key);
-          delete parentObject[prop];
-        } else {
-          delete this.tree[prop];
-        }
-      } else {
-        this._removeNode(element, subTree[prop]);
+      const property = node.parent.children[0].value.toString();
+      if (node.type === 'array' || node.type === 'object') {
+        return property;
       }
+      const value = node.value;
+
+      return `${property}: ${value}`;
     }
   }
 
-  _getChildren(key: string): string[] {
-    if (!key) {
-      return Object.keys(this.tree);
-    }
-    const treeElement = this._getTreeElement(key);
-    if (treeElement) {
-      return Object.keys(treeElement);
-    }
-    return [];
+  private getValueNode(offset: number): json.Node {
+    const path = json.getLocation(this.text, offset).path;
+    const valueNode = json.findNodeAtLocation(this.tree, path);
+
+    return valueNode;
   }
-
-  _getTreeItem(key: string): vscode.TreeItem {
-    const treeElement = this._getTreeElement(key);
-    // An example of how to use codicons in a MarkdownString in a tree item tooltip.
-    // const tooltip = new vscode.MarkdownString(`$(arrow-right) Jump to '${key}' mapping in .ssb`, true);
-    return {
-      label: /**vscode.TreeItemLabel**/<any>{ label: key }, // TreeItemLabel not implemented yet?
-      tooltip: key,
-      // Use TreeItemCollapsibleState.Collapsed instead of .Expanded for a compact view by default (could be added to settings)
-      collapsibleState: treeElement && Object.keys(treeElement).length ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None,
-      resourceUri: vscode.Uri.parse(`xmlView:${key}`),
-      iconPath: new vscode.ThemeIcon('symbol-field'),
-    };
-  }
-
-  _getTreeElement(element: string, tree?: any): Node {
-    const currentNode = tree ?? this.tree;
-    for (const prop in currentNode) {
-      if (prop === element) {
-        return currentNode[prop];
-      } else {
-        const treeElement = this._getTreeElement(element, currentNode[prop]);
-        if (treeElement) {
-          return treeElement;
-        }
-      }
-    }
-  }
-
-  _getParent(element: string, parent?: string, tree?): any {
-    const currentNode = tree ?? this.tree;
-    for (const prop in currentNode) {
-      if (prop === element && parent) {
-        return this._getNode(parent);
-      } else {
-        const parent = this._getParent(element, prop, currentNode[prop]);
-        if (parent) {
-          return parent;
-        }
-      }
-    }
-  }
-
-  _getNode(key: string): Node {
-    if (!this.nodes[key]) {
-      this.nodes[key] = new Key(key);
-    }
-    return this.nodes[key];
-  }
-}
-
-type Node = { 
-  key: string,
-};
-
-class Key {
-  constructor(readonly key: string) { }
 }
