@@ -106,8 +106,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   // Register a command that is invoked when the status bar item is selected
   const statusMessageCommand = 'idiss.showSelectionCount';
   context.subscriptions.push(vscode.commands.registerCommand(statusMessageCommand, () => {
-    const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantics');
-    const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'xml');
+    const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantic-nodes');
+    const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'syntax-nodes');
     vscode.window.showInformationMessage(`${semanticsCount} Semantic(s) found, ${xmlCount} XML Bindings(s) found`);
   }));
 
@@ -160,8 +160,8 @@ class SyntaxBindingDocumentSymbolProvider implements vscode.DocumentSymbolProvid
 }
 
 const updateStatusBarItem = (): void => {
-  const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantics');
-  const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'xml');
+  const semanticsCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'semantic-nodes');
+  const xmlCount = getNumberFromSemanticsAttribute(vscode.window.activeTextEditor, 'syntax-nodes');
   if (semanticsCount > 0) {
     idissStatusBarItem.text = `$(combine) ${semanticsCount} Semantic(s) found, ${xmlCount} XML Bindings(s) found`;
     idissStatusBarItem.show();
