@@ -41,7 +41,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       }
     });
     vscode.commands.registerCommand('semanticView.searchEntry', (offset: number) => {
-      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.getLabel(this.getValueNode(offset))});
+      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.getUriValue(this.getValueNode(offset))});
     });
   }
 
@@ -65,7 +65,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
       treeItem.iconPath = new vscode.ThemeIcon('symbol-variable');
       treeItem.contextValue = valueNode.type;
-      treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.getLabel(valueNode)}`);
+      treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.getUriValue(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
 
       return treeItem;
@@ -114,6 +114,21 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       const value = node.value;
 
       return `${property}: ${value}`;
+    }
+  }
+
+  // pass relevant "searchable" values instead of labels to DecorationProvider for the semantic badge counter
+  private getUriValue(node: json.Node): string {
+    if (node.parent.type === 'array') {
+      return;
+    } else {
+      const property = node.parent.children[0].value.toString();
+      if (node.type === 'array' || node.type === 'object') {
+        return property;
+      }
+      const value = node.value;
+
+      return `${property}="${value}"`;
     }
   }
 
