@@ -9,6 +9,7 @@
           "dom"
       ],
       "sourceMap": true,
+      "resolveJsonModule": true,
       "rootDir": "."
   },
   "exclude": [

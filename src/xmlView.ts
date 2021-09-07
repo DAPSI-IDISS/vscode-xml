@@ -1,15 +1,6 @@
 import * as vscode from 'vscode';
 import * as json from 'jsonc-parser';
-
-// Top-level-await with import would be a better solution but requires to use system: esnext and target: es2017 or higher >> ts(1378)
-// See: https://v8.dev/features/top-level-await#dependency-fallbacks and https://github.com/tc39/proposal-top-level-await#dependency-fallbacks
-// (it should be safe to use in VSCode - chromium, however, for now we just use a conditional require)
-let xmlData: JSON;
-try {
-  xmlData = require('./../sample-data/xmlData.json');
-} catch {
-  xmlData = require('./../sample-data/xmlData_public.json');
-}
+import * as xmlData from './../sample-data/xmlData.json';
 
 export class XMLView implements vscode.TreeDataProvider<number> {
   private _onDidChangeTreeData: vscode.EventEmitter<number | undefined> = new vscode.EventEmitter<number | undefined>();
