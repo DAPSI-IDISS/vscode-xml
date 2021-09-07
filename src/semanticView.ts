@@ -34,6 +34,14 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     vscode.commands.registerCommand('semanticView.searchEntry', (offset: number) => {
       vscode.commands.executeCommand('search.action.openNewEditor', {query: this.getUriValue(this.getValueNode(offset))});
     });
+    // Adds snippet based on Node Path array index and its children (properties)
+    vscode.commands.registerCommand('semanticView.addEntry', (offset: number) => {
+      const snippet = new vscode.SnippetString();
+      const nodeValue = this.getValueNode(offset);
+      snippet.appendText(`<semantic ${this.getSemanticAttributes(nodeValue)}/>`);
+      // TODO: get correct cursor position before inserting snippet
+      vscode.window.activeTextEditor.insertSnippet(snippet);
+    });
   }
 
   // Tree data provider 
@@ -105,6 +113,16 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       const value = node.value;
 
       return `${property}: ${value}`;
+    }
+  }
+
+  private getSemanticAttributes(node: json.Node): string {
+    if (node.parent.type === 'array') {
+      const attributes: string[] = [];
+      for (const child of node.children) {
+        attributes.push(`${child.children[0].value}="${child.children[1].value}"`);
+      }
+      return attributes.join(' ');
     }
   }
 

@@ -530,6 +530,11 @@
         "icon": "$(search)"
       },
       {
+        "command": "semanticView.addEntry",
+        "title": "Semantic View: Add Entry",
+        "icon": "$(add)"
+      },
+      {
         "command": "xmlView.reveal",
         "title": "XML View: Reveal"
       },
@@ -542,6 +547,11 @@
         "command": "xmlView.searchEntry",
         "title": "XML View: Search Entry",
         "icon": "$(search)"
+      },
+      {
+        "command": "xmlView.addEntry",
+        "title": "XML View: Add Entry",
+        "icon": "$(add)"
       },
       {
         "command": "experimentalView.addSnippet",
@@ -588,7 +598,17 @@
           "group": "inline"
         },
         {
+          "command": "semanticView.addEntry",
+          "when": "view == semanticView",
+          "group": "inline"
+        },
+        {
           "command": "xmlView.searchEntry",
+          "when": "view == xmlView",
+          "group": "inline"
+        },
+        {
+          "command": "xmlView.addEntry",
           "when": "view == xmlView",
           "group": "inline"
         }

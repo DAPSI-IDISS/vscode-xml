@@ -33,7 +33,20 @@ export class XMLView implements vscode.TreeDataProvider<number> {
     });
     // probably better practice than 'search.action.openNewEditor' to allow quickly jumping to the lines in the current file
     // FindInFilesCommand details: https://github.com/microsoft/vscode/blob/17de08a829e56657e44213a70cf69d18f06e74a5/src/vs/workbench/contrib/search/browser/searchActions.ts#L160-L188
-    vscode.commands.registerCommand('xmlView.searchEntry', (offset: number) => vscode.commands.executeCommand('workbench.action.findInFiles', {query: this.getLabel(this.getValueNode(offset)), isCaseSensitive: true}));
+    vscode.commands.registerCommand('xmlView.searchEntry', (offset: number) => { 
+      vscode.commands.executeCommand('workbench.action.findInFiles', {query: this.getLabel(this.getValueNode(offset)), isCaseSensitive: true});
+    });
+    // Adds snippet based on Node Path
+    vscode.commands.registerCommand('xmlView.addEntry', (offset: number) => {
+      const snippet = new vscode.SnippetString();
+      const nodeValue = this.getValueNode(offset);
+      const label = this.getLabel(nodeValue);
+      // if label starts with '@' the type is 'ATTRIBUTE', otherwise 'ELEMENT'
+      const xmlType = (label.length && label[0] === '@') ? 'ATTRIBUTE' : 'ELEMENT';
+      snippet.appendText(`<xml path="/${json.getNodePath(nodeValue).join('/')}" type="${xmlType}"/>`);
+      // TODO: get correct cursor position before inserting snippet
+      vscode.window.activeTextEditor.insertSnippet(snippet);
+    });
   }
 
   // Tree data provider 
