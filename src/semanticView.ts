@@ -11,6 +11,8 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   private treeData = idissConfig.get('useReducedTestData') ? semanticTestData : semanticData;
   private tree: json.Node;
   private text: string;
+  private editor: vscode.TextEditor;
+  private document: vscode.TextDocument;
 
   constructor(private context: vscode.ExtensionContext) {
     // Add sample tree data
@@ -40,11 +42,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     });
     // Adds snippet based on Node Path array index and its children (properties)
     vscode.commands.registerCommand('semanticView.addEntry', (offset: number) => {
-      const snippet = new vscode.SnippetString();
-      const nodeValue = this.getValueNode(offset);
-      snippet.appendText(`<semantic ${this.getSemanticAttributes(nodeValue)}/>`);
-      // TODO: get correct cursor position before inserting snippet
-      vscode.window.activeTextEditor.insertSnippet(snippet);
+      this.createSemanticSnippet(offset);
     });
   }
 
@@ -132,6 +130,12 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     }
   }
 
+  private getSemanticId(node: json.Node): string {
+    if (node.parent.type === 'array') {
+      return node.children[0].children[1].value;
+    }
+  }
+
   // pass relevant "searchable" values instead of labels to DecorationProvider for the semantic badge counter
   private getUriValue(node: json.Node): string {
     if (node.parent.type === 'array') {
@@ -166,5 +170,102 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
 
   private isNumeric = (num: string) => {
     return !isNaN(num as unknown as number)
+  }
+
+  private isSemanticClosingLine = (textLine: string): boolean => {
+    // TODO: self-closing multi-line semantic tag is currently ignored
+    return textLine.includes('</semantic>') || textLine.includes('<semantic ') && textLine.includes('/>');
+  }
+
+  private isRelatedIdGroupLine = (textLine: string, idGroup: string): boolean => {
+    return textLine.includes('<semantic ') && textLine.includes(`id="${idGroup}`);
+  }
+
+  private getSemanticElementId = (textLine: string): any => {
+    const regex = new RegExp('id\=\"([A-Z-0-9]*)\"');
+    return regex.exec(textLine)[1];
+  }
+
+  private getSemanticIdGroup = (id: string): string => {
+    return id.slice(0, 2); // BT, BG
+  }
+
+  private getSemanticIdNumber = (id: string): number => {
+    return parseInt(id.slice(3), 10);
+  }
+
+  private createSemanticSnippet(offset: number): void {
+    /* TODO: Add treatment for: 
+    *  - previous element is <semantics> (doesn't insert before the first <semantic> yet)
+    *  - sub ids like BT-30-1 or BT-158-2 (not sorted correctly yet - inserts currently before BT-30 / BT-158)
+    *  - id group (BT/BG) doesn't exist yet AND cursor is not inside a <semantic> range (just inserts on current cursor position)
+    *  - correctly insert BT after BG or BG before BT if one of the id groups doesnt exist yet
+    *  - no semantic element exists yet (just inserts on current cursor position, should indent correctly)
+    *  - self-closing multi-line semantic tag (skips to the next semantic with self-closing single-line or with closing tag)
+    */
+    
+    const snippet = new vscode.SnippetString();
+    const nodeValue = this.getValueNode(offset);
+    const idGroup = this.getSemanticIdGroup(this.getSemanticId(nodeValue));
+    const idNumber = this.getSemanticIdNumber(this.getSemanticId(nodeValue));
+
+    // self-closing snippet:
+    // snippet.appendText(`\n<semantic ${this.getSemanticAttributes(nodeValue)}/>`);
+
+    // multi-line snippet with placeholder (snippet variants could be triggered via context menu, alt+click, or a default insert mode switch via settings):
+    snippet.appendText(`\n<semantic ${this.getSemanticAttributes(nodeValue)}>`);
+    snippet.appendText(`\n\t<!-- [Select XML] Create a binding by adding elements from the XML View -->`);
+    snippet.appendText(`\n</semantic>`);
+    
+    // get current document
+    this.editor = vscode.window.activeTextEditor;
+    this.document = this.editor.document;
+
+    // get current cursor position
+    const position = this.editor.selection.active;
+    // get current line
+    let line = this.document.lineAt(position);
+    // variable lines/positions
+    let previousSemanticIdLine: number;
+    let startingPositionLine: number;
+    let nextSemanticEndLine: number;
+    let nextSemanticEndPosition: number;
+    let lastRelatedIdGroupElementLine: number;
+    
+    // get the line with the next lower id value from the related id group
+    // loop reverse from last line, as we can assume it will be most likely added to the end of the list
+    for (let i = this.document.lineCount-1; i > 0; i--) {
+      line = this.document.lineAt(i);
+      if (this.isRelatedIdGroupLine(line.text, idGroup)) {
+        const elementId = this.getSemanticElementId(line.text);
+        if (this.getSemanticIdNumber(elementId) < idNumber) {
+          previousSemanticIdLine = i;
+          break;
+        }
+        lastRelatedIdGroupElementLine = i;
+      }
+    }
+    // if no lower previous id exists
+    if (!previousSemanticIdLine && lastRelatedIdGroupElementLine) {
+      previousSemanticIdLine = lastRelatedIdGroupElementLine-1;
+    }
+    // use current cursor position if no matching element can be retrieved
+    startingPositionLine = previousSemanticIdLine ? previousSemanticIdLine : position.line;
+
+    // get line/end position of the next semantic closing tag
+    for (let i = startingPositionLine; i < this.document.lineCount; i++) {
+      line = this.document.lineAt(i);
+      if (this.isSemanticClosingLine(line.text)) {
+        nextSemanticEndLine = i;
+        nextSemanticEndPosition = line.range.end.character;
+        break;
+      }
+    }
+    // set cursor and insert snippet
+    const targetPosition = position.with(nextSemanticEndLine, nextSemanticEndPosition);
+    const targetSelection = new vscode.Selection(targetPosition, targetPosition);
+    
+    this.editor.selection = targetSelection;
+    this.editor.insertSnippet(snippet);
   }
 }
