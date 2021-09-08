@@ -102,6 +102,11 @@
       "type": "object",
       "title": "XML",
       "properties": {
+        "idiss.useReducedTestData": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Use small test datasets for semanticView & xmlView (Useful for a bit faster extension init during testing/development)."
+        },
         "redhat.telemetry.enabled": {
           "type": "boolean",
           "default": null,

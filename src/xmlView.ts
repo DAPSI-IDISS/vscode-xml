@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
 import * as json from 'jsonc-parser';
 import * as xmlData from './../sample-data/xmlData.json';
+import * as xmlTestData from './../sample-data/xmlTestData.json';
+
+const idissConfig = vscode.workspace.getConfiguration('idiss');
 
 export class XMLView implements vscode.TreeDataProvider<number> {
   private _onDidChangeTreeData: vscode.EventEmitter<number | undefined> = new vscode.EventEmitter<number | undefined>();
   readonly onDidChangeTreeData: vscode.Event<number | undefined> = this._onDidChangeTreeData.event;
+  private treeData = idissConfig.get('useReducedTestData') ? xmlTestData : xmlData;
   private tree: json.Node;
   private text: string;
 
@@ -87,7 +91,7 @@ export class XMLView implements vscode.TreeDataProvider<number> {
   // ----------------------------------------
 
   private parseTree(): void {
-    this.text = JSON.stringify(xmlData).toString();
+    this.text = JSON.stringify(this.treeData).toString();
     this.tree = json.parseTree(this.text);
   }
 

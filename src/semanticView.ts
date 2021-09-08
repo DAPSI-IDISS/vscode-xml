@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
 import * as json from 'jsonc-parser';
 import * as semanticData from './../sample-data/semanticData.json';
+import * as semanticTestData from './../sample-data/semanticTestData.json';
+
+const idissConfig = vscode.workspace.getConfiguration('idiss');
 
 export class SemanticView implements vscode.TreeDataProvider<number> {
   private _onDidChangeTreeData: vscode.EventEmitter<number | undefined> = new vscode.EventEmitter<number | undefined>();
   readonly onDidChangeTreeData: vscode.Event<number | undefined> = this._onDidChangeTreeData.event;
+  private treeData = idissConfig.get('useReducedTestData') ? semanticTestData : semanticData;
   private tree: json.Node;
   private text: string;
 
@@ -82,7 +86,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   // ----------------------------------------
 
   private parseTree(): void {
-    this.text = JSON.stringify(semanticData).toString();
+    this.text = JSON.stringify(this.treeData).toString();
     this.tree = json.parseTree(this.text);
   }
 
