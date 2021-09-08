@@ -63,9 +63,11 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   public getTreeItem(offset: number): vscode.TreeItem {
     const valueNode = this.getValueNode(offset);
     if (valueNode) {
-      const hasChildren = valueNode.type === 'object' || valueNode.type === 'array' ? valueNode.children.length ? true : false : false;
       const treeItem: vscode.TreeItem = new vscode.TreeItem(this.getLabel(valueNode));
-      treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
+      const hasChildren = valueNode.type === 'object' || valueNode.type === 'array' ? valueNode.children.length ? true : false : false;
+      const defaultCollapsibleState = idissConfig.get('expandTreeViewsOnInit') ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+      // second defaultCollapsibleState can be used to differ for array types 
+      treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? defaultCollapsibleState : defaultCollapsibleState : vscode.TreeItemCollapsibleState.None;
       treeItem.iconPath = new vscode.ThemeIcon('symbol-variable');
       treeItem.contextValue = valueNode.type;
       treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.getUriValue(valueNode)}`);

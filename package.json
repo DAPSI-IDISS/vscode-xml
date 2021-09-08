@@ -107,6 +107,11 @@
           "default": false,
           "markdownDescription": "Use small test datasets for semanticView & xmlView (Useful for a bit faster extension init during testing/development)."
         },
+        "idiss.expandTreeViewsOnInit": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Default 'collapsibleState' for the semanticView & xmlView TreeItems. Note: The nested TreeItems are not indexed (searchable) before expanding their parent nodes."
+        },
         "redhat.telemetry.enabled": {
           "type": "boolean",
           "default": null,
