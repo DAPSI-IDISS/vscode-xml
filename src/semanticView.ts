@@ -177,6 +177,23 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     return textLine.includes('</semantic>') || textLine.includes('<semantic ') && textLine.includes('/>');
   }
 
+  private isSemanticOpeningLine = (textLine: string): boolean => {
+    return textLine.includes('<semantic ') && textLine.includes('id="');
+  }
+
+  private isSemanticsRootLine = (textLine: string): boolean => {
+    return (textLine.includes('<semantics ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation')) && textLine.includes('>');
+  }
+
+  private getTabsCount = (textLine: string): number => {
+    let count = 0;
+    let index = 0;
+    while (textLine.charAt(index++) === "\t") {
+      count++;
+    }
+    return count;
+  }
+
   private isRelatedIdGroupLine = (textLine: string, idGroup: string): boolean => {
     return textLine.includes('<semantic ') && textLine.includes(`id="${idGroup}`);
   }
@@ -196,10 +213,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
 
   private createSemanticSnippet(offset: number): void {
     /* TODO: Add treatment for: 
-    *  - previous element is <semantics> (doesn't insert before the first <semantic> yet)
     *  - sub ids like BT-30-1 or BT-158-2 (not sorted correctly yet - inserts currently before BT-30 / BT-158)
-    *  - id group (BT/BG) doesn't exist yet AND cursor is not inside a <semantic> range (just inserts on current cursor position)
-    *  - correctly insert BT after BG or BG before BT if one of the id groups doesnt exist yet
     *  - no semantic element exists yet (just inserts on current cursor position, should indent correctly)
     *  - self-closing multi-line semantic tag (skips to the next semantic with self-closing single-line or with closing tag)
     */
@@ -208,15 +222,8 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     const nodeValue = this.getValueNode(offset);
     const idGroup = this.getSemanticIdGroup(this.getSemanticId(nodeValue));
     const idNumber = this.getSemanticIdNumber(this.getSemanticId(nodeValue));
-
-    // self-closing snippet:
-    // snippet.appendText(`\n<semantic ${this.getSemanticAttributes(nodeValue)}/>`);
-
-    // multi-line snippet with placeholder (snippet variants could be triggered via context menu, alt+click, or a default insert mode switch via settings):
-    snippet.appendText(`\n<semantic ${this.getSemanticAttributes(nodeValue)}>`);
-    snippet.appendText(`\n\t<!-- [Select XML] Create a binding by adding elements from the XML View -->`);
-    snippet.appendText(`\n</semantic>`);
-    
+    let rootIndent: string = '';
+        
     // get current document
     this.editor = vscode.window.activeTextEditor;
     this.document = this.editor.document;
@@ -226,43 +233,72 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     // get current line
     let line = this.document.lineAt(position);
     // variable lines/positions
-    let previousSemanticIdLine: number;
     let startingPositionLine: number;
-    let nextSemanticEndLine: number;
-    let nextSemanticEndPosition: number;
+    let nextClosingTagLine: number;
+    let nextClosingTagEndPosition: number;
     let lastRelatedIdGroupElementLine: number;
+    let lastUnrelatedIdGroupElementLine: number;
     
     // get the line with the next lower id value from the related id group
     // loop reverse from last line, as we can assume it will be most likely added to the end of the list
     for (let i = this.document.lineCount-1; i > 0; i--) {
       line = this.document.lineAt(i);
+      // if we insert BT and the id group doesn't exist (exit early as it always appends to the end)
+      if (idGroup === 'BT' && lastUnrelatedIdGroupElementLine) {
+        startingPositionLine = lastUnrelatedIdGroupElementLine;
+        break;
+      }
       if (this.isRelatedIdGroupLine(line.text, idGroup)) {
         const elementId = this.getSemanticElementId(line.text);
         if (this.getSemanticIdNumber(elementId) < idNumber) {
-          previousSemanticIdLine = i;
+          startingPositionLine = i;
           break;
         }
         lastRelatedIdGroupElementLine = i;
+      } else if (this.isSemanticOpeningLine(line.text)) {
+        lastUnrelatedIdGroupElementLine = i;
+      }
+    }
+    // if we insert BG and the id group doesn't exist (get line after the loop)
+    if (!startingPositionLine && !lastRelatedIdGroupElementLine){
+      if (idGroup === 'BG' && lastUnrelatedIdGroupElementLine) {
+        startingPositionLine = lastUnrelatedIdGroupElementLine-1;
       }
     }
     // if no lower previous id exists
-    if (!previousSemanticIdLine && lastRelatedIdGroupElementLine) {
-      previousSemanticIdLine = lastRelatedIdGroupElementLine-1;
+    if (!startingPositionLine && lastRelatedIdGroupElementLine) {
+      startingPositionLine = lastRelatedIdGroupElementLine-1;
     }
-    // use current cursor position if no matching element can be retrieved
-    startingPositionLine = previousSemanticIdLine ? previousSemanticIdLine : position.line;
-
-    // get line/end position of the next semantic closing tag
-    for (let i = startingPositionLine; i < this.document.lineCount; i++) {
-      line = this.document.lineAt(i);
-      if (this.isSemanticClosingLine(line.text)) {
-        nextSemanticEndLine = i;
-        nextSemanticEndPosition = line.range.end.character;
-        break;
+    // if line is semantics root
+    if (startingPositionLine && this.isSemanticsRootLine(this.document.lineAt(startingPositionLine).text)) {
+      rootIndent = this.getTabsCount(this.document.lineAt(startingPositionLine).text) < 1 ? '\t' : '';
+      // use line/end position of the semantics root closing tag
+      nextClosingTagLine = startingPositionLine;
+      nextClosingTagEndPosition = this.document.lineAt(startingPositionLine).range.end.character;
+    } else {
+      // use current cursor position if no matching element can be retrieved
+      startingPositionLine = startingPositionLine ? startingPositionLine : position.line;
+      // get line/end position of the next semantic closing tag
+      for (let i = startingPositionLine; i < this.document.lineCount; i++) {
+        line = this.document.lineAt(i);
+        if (this.isSemanticClosingLine(line.text)) {
+          nextClosingTagLine = i;
+          nextClosingTagEndPosition = line.range.end.character;
+          break;
+        }
       }
     }
+
+    // self-closing snippet:
+    // snippet.appendText(`\n<semantic ${this.getSemanticAttributes(nodeValue)}/>`);
+
+    // multi-line snippet with placeholder (snippet variants could be triggered via context menu, alt+click, or a default insert mode switch via settings):
+    snippet.appendText(`\n${rootIndent}<semantic ${this.getSemanticAttributes(nodeValue)}>`);
+    snippet.appendText(`\n${rootIndent}\t<!-- [Select XML] Create a binding by adding elements from the XML View -->`);
+    snippet.appendText(`\n${rootIndent}</semantic>`);
+
     // set cursor and insert snippet
-    const targetPosition = position.with(nextSemanticEndLine, nextSemanticEndPosition);
+    const targetPosition = position.with(nextClosingTagLine, nextClosingTagEndPosition);
     const targetSelection = new vscode.Selection(targetPosition, targetPosition);
     
     this.editor.selection = targetSelection;
