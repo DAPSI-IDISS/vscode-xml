@@ -11,6 +11,8 @@ export class XMLView implements vscode.TreeDataProvider<number> {
   private treeData = idissConfig.get('useReducedTestData') ? xmlTestData : xmlData;
   private tree: json.Node;
   private text: string;
+  private editor: vscode.TextEditor;
+  private document: vscode.TextDocument;
 
   constructor(private context: vscode.ExtensionContext) {
     // Add sample tree data
@@ -42,14 +44,7 @@ export class XMLView implements vscode.TreeDataProvider<number> {
     });
     // Adds snippet based on Node Path
     vscode.commands.registerCommand('xmlView.addEntry', (offset: number) => {
-      const snippet = new vscode.SnippetString();
-      const nodeValue = this.getValueNode(offset);
-      const label = this.getLabel(nodeValue);
-      // if label starts with '@' the type is 'ATTRIBUTE', otherwise 'ELEMENT'
-      const xmlType = (label.length && label[0] === '@') ? 'ATTRIBUTE' : 'ELEMENT';
-      snippet.appendText(`<xml path="/${json.getNodePath(nodeValue).join('/')}" type="${xmlType}"/>`);
-      // TODO: get correct cursor position before inserting snippet
-      vscode.window.activeTextEditor.insertSnippet(snippet);
+      this.createXMLSnippet(offset);
     });
   }
 
@@ -146,5 +141,81 @@ export class XMLView implements vscode.TreeDataProvider<number> {
 
   private isNumeric = (num: string) => {
     return !isNaN(num as unknown as number)
+  }
+
+  private isSemanticClosingLine = (textLine: string): boolean => {
+    // TODO: self-closing multi-line semantic tag is currently ignored
+    return textLine.includes('</semantic>') || textLine.includes('<semantic ') && textLine.includes('/>');
+  }
+
+  private isSemanticsRootLine = (textLine: string): boolean => {
+    return (textLine.includes('<semantics ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation')) && textLine.includes('>');
+  }
+
+  private isOutOfSemanticScope = (textLine: string): boolean => {
+    // TODO: would be more accurate to check if we are really in the range of <semantic>...</semantic> elements
+    return this.isSemanticsRootLine(textLine) || textLine.includes('<?xml');
+  }
+
+  private isPlaceHolderLine = (textLine: string): boolean => {
+    return textLine.includes('<!-- [Select XML]');
+  }
+
+  private getTabsCount = (textLine: string): number => {
+    let count = 0;
+    let index = 0;
+    while (textLine.charAt(index++) === "\t") {
+      count++;
+    }
+    return count;
+  }
+
+  private createXMLSnippet(offset: number): void {
+    const snippet = new vscode.SnippetString();
+    const nodeValue = this.getValueNode(offset);
+    const label = this.getLabel(nodeValue);
+    // if label starts with '@' the type is 'ATTRIBUTE', otherwise 'ELEMENT'
+    const xmlType = (label.length && label[0] === '@') ? 'ATTRIBUTE' : 'ELEMENT';
+
+    // get current document
+    this.editor = vscode.window.activeTextEditor;
+    this.document = this.editor.document;
+
+    // get current cursor position
+    const position = this.editor.selection.active;
+    // get current line
+    let line = this.document.lineAt(position);
+    // variable lines/positions
+    let nextClosingTagLine: number;
+    let nextClosingTagEndPosition: number;
+
+    // get line/end position of the next semantic closing tag and go 1 line back as we always append to the end of xml list
+    for (let i = position.line; i < this.document.lineCount; i++) {
+      line = this.document.lineAt(i);
+      if (this.isSemanticClosingLine(line.text)) {
+        line = this.document.lineAt(i-1);
+        nextClosingTagLine = i-1;
+        nextClosingTagEndPosition = line.range.end.character;
+        break;
+      }
+      if (this.isOutOfSemanticScope(line.text)) {
+        break;
+      }
+    }
+
+    if (nextClosingTagLine) {
+      // TODO: open semantic element if its self-closing and append closing tag after xml
+      snippet.appendText(`${this.isPlaceHolderLine(line.text) ? '' : '\n'}<xml path="/${json.getNodePath(nodeValue).join('/')}" type="${xmlType}"/>`);
+
+      // set cursor and insert snippet, select whole line (exept tabs) to replace if its a placeholder  
+      const anchorPosition = position.with(nextClosingTagLine, this.isPlaceHolderLine(line.text) ? this.getTabsCount(line.text) : nextClosingTagEndPosition);
+      const targetPosition = position.with(nextClosingTagLine, nextClosingTagEndPosition);
+      const targetSelection = new vscode.Selection(anchorPosition, targetPosition);
+      
+      this.editor.selection = targetSelection;
+      this.editor.insertSnippet(snippet);
+    } else {
+      vscode.window.showErrorMessage(`No semantic element selected.`)
+    }
   }
 }
