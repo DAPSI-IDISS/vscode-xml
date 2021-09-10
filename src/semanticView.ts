@@ -61,7 +61,8 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   public getTreeItem(offset: number): vscode.TreeItem {
     const valueNode = this.getValueNode(offset);
     if (valueNode) {
-      const treeItem: vscode.TreeItem = new vscode.TreeItem(this.getLabel(valueNode));
+      const treeItemLabel = this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getLabel(valueNode);
+      const treeItem: vscode.TreeItem = new vscode.TreeItem(treeItemLabel);
       const hasChildren = valueNode.type === 'object' || valueNode.type === 'array' ? valueNode.children.length ? true : false : false;
       const defaultCollapsibleState = idissConfig.get('expandTreeViewsOnInit') ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
       // second defaultCollapsibleState can be used to differ for array types 
@@ -127,6 +128,14 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
         attributes.push(`${child.children[0].value}="${child.children[1].value}"`);
       }
       return attributes.join(' ');
+    }
+  }
+
+  private getSemanticAttributeValue(node: json.Node, attribute: string): string {
+    if (node.parent.type === 'array') {
+      const attributeValue = node.children.find(child => child.children[0].value === 'bt').children[1].value;
+
+      return attributeValue;
     }
   }
 
