@@ -67,7 +67,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       // second defaultCollapsibleState can be used to differ for array types 
       treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? defaultCollapsibleState : defaultCollapsibleState : vscode.TreeItemCollapsibleState.None;
       treeItem.iconPath = new vscode.ThemeIcon('symbol-variable');
-      treeItem.contextValue = valueNode.type;
+      treeItem.contextValue = this.isSemanticNode(valueNode) ? 'semantic' : valueNode.type;
       treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.getUriValue(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
 
@@ -149,6 +149,10 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
 
       return `${property}="${value}"`;
     }
+  }
+
+  private isSemanticNode(node: json.Node): boolean {
+    return node.parent.type === 'array' && this.getLabel(node.parent) === 'semantics';
   }
 
   private getValueNode(offset: number): json.Node {

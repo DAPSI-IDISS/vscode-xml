@@ -609,7 +609,7 @@
         },
         {
           "command": "semanticView.addEntry",
-          "when": "view == semanticView",
+          "when": "view == semanticView && viewItem == semantic",
           "group": "inline"
         },
         {
