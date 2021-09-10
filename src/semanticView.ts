@@ -38,7 +38,8 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       }
     });
     vscode.commands.registerCommand('semanticView.searchEntry', (offset: number) => {
-      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.getUriValue(this.getValueNode(offset))});
+      const valueNode = this.getValueNode(offset);
+      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode)});
     });
     // Adds snippet based on Node Path array index and its children (properties)
     vscode.commands.registerCommand('semanticView.addEntry', (offset: number) => {
