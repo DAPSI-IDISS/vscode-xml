@@ -232,8 +232,19 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     return textLine.includes('<semantic ') && textLine.includes('id="');
   }
 
-  private isSemanticsRootLine = (textLine: string): boolean => {
-    return (textLine.includes('<semantics ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation')) && textLine.includes('>');
+  private isSemanticsRootLine = (lineNumber: number): boolean => {
+    let isSemanticsRootElement = false;
+    let textLine = this.document.lineAt(lineNumber).text;
+    if (textLine.includes('>') && !textLine.includes('<semantic ') && !textLine.includes('</semantic') && !textLine.includes('<xml ') && !textLine.includes('</xml')) {
+      for (let i = lineNumber; i > 0; i--) {
+        textLine = this.document.lineAt(i).text;
+        if (textLine.includes('<semantics ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation') || textLine.includes('syntax-nodes')) {
+          isSemanticsRootElement = true;
+          break;
+        }
+      }
+    }
+    return isSemanticsRootElement;
   }
 
   private getTabsCount = (textLine: string): number => {
@@ -321,7 +332,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       startingPositionLine = lastRelatedIdGroupElementLine-1;
     }
     // if line is semantics root
-    if (startingPositionLine && this.isSemanticsRootLine(this.document.lineAt(startingPositionLine).text)) {
+    if (startingPositionLine && this.isSemanticsRootLine(startingPositionLine)) {
       rootIndent = this.getTabsCount(this.document.lineAt(startingPositionLine).text) < 1 ? '\t' : '';
       // use line/end position of the semantics root closing tag
       nextClosingTagLine = startingPositionLine;
