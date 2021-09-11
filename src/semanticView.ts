@@ -72,11 +72,14 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
           clearTimeout(timeout);
         }
         timeout = setTimeout(() => {
-          // async update tree view
-          this.unusedSemantics = this.getUnusedSemantics();
-          vscode.commands.executeCommand('setContext', 'unusedSemantics', this.unusedSemantics).then(() => {
-            this.refresh(0); // refresh the whole Tree - TODO: refresh only the changed semantics here
-          });
+          // async update tree view (only update if unusedSemantics changed)
+          let changedUnusedSemantics = this.getUnusedSemantics();
+          if (this.unusedSemantics.toString() !== changedUnusedSemantics.toString()) {
+            this.unusedSemantics = changedUnusedSemantics;
+            vscode.commands.executeCommand('setContext', 'unusedSemantics', this.unusedSemantics).then(() => {
+              this.refresh(0); // refresh the whole Tree - TODO: refresh only the changed semantics here
+            });
+          }
         }, 500);
       }
     });
