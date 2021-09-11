@@ -6,20 +6,27 @@ import * as semanticTestData from './../sample-data/semanticTestData.json';
 const idissConfig = vscode.workspace.getConfiguration('idiss');
 
 export class SemanticView implements vscode.TreeDataProvider<number> {
-  private _onDidChangeTreeData: vscode.EventEmitter<number | undefined> = new vscode.EventEmitter<number | undefined>();
-  readonly onDidChangeTreeData: vscode.Event<number | undefined> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<number | undefined | void> = new vscode.EventEmitter<number | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<number | undefined | void> = this._onDidChangeTreeData.event;
   private treeData = idissConfig.get('useReducedTestData') ? semanticTestData : semanticData;
   private tree: json.Node;
   private text: string;
   private editor: vscode.TextEditor;
   private document: vscode.TextDocument;
+  private unusedSemantics = [];
 
   constructor(private context: vscode.ExtensionContext) {
+    let timeout = undefined;
     // Add sample tree data
     this.parseTree();
+    // update once at TreeView init to get "enablement" of unusedSemantics
+    this.unusedSemantics = this.getUnusedSemantics();
+    vscode.commands.executeCommand('setContext', 'unusedSemantics', this.unusedSemantics);
 
     const view = vscode.window.createTreeView('semanticView', { treeDataProvider: this, showCollapseAll: true, canSelectMany: true });
     context.subscriptions.push(view);
+
+    // register commands
     vscode.commands.registerCommand('semanticView.reveal', async () => {
       const key = await vscode.window.showInputBox({ placeHolder: 'Type the Node Path of the Semantic item to reveal' });
       if (key) {
@@ -43,7 +50,35 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     });
     // Adds snippet based on Node Path array index and its children (properties)
     vscode.commands.registerCommand('semanticView.addEntry', (offset: number) => {
-      this.createSemanticSnippet(offset);
+      this.createSemanticSnippet(offset).then(() => {
+        // async update tree view
+        const valueNode = this.getValueNode(offset);
+        // remove item directly so we don't have to iterate over the whole array.map -> document ids per item
+        this.removeItem(this.unusedSemantics, json.getNodePath(valueNode).join('/'));
+        vscode.commands.executeCommand('setContext', 'unusedSemantics', this.unusedSemantics).then(() => {
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          this.refresh(offset); // refresh only this TreeItem
+        });
+      });
+    });
+
+    // register workspace event listeners
+    vscode.workspace.onDidChangeTextDocument(changeEvent => {
+      if (changeEvent.document.languageId === 'xml') {
+        // use a threshold for update trigger
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+          // async update tree view
+          this.unusedSemantics = this.getUnusedSemantics();
+          vscode.commands.executeCommand('setContext', 'unusedSemantics', this.unusedSemantics).then(() => {
+            this.refresh(0); // refresh the whole Tree - TODO: refresh only the changed semantics here
+          });
+        }, 500);
+      }
     });
   }
 
@@ -68,8 +103,8 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       const defaultCollapsibleState = idissConfig.get('expandTreeViewsOnInit') ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
       // second defaultCollapsibleState can be used to differ for array types 
       treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? defaultCollapsibleState : defaultCollapsibleState : vscode.TreeItemCollapsibleState.None;
-      treeItem.iconPath = this.isSemanticNode(valueNode) ? new vscode.ThemeIcon('symbol-variable') : '';
-      treeItem.contextValue = this.isSemanticNode(valueNode) ? 'semantic' : valueNode.type;
+      treeItem.iconPath = this.isSemanticNode(valueNode) ? new vscode.ThemeIcon('symbol-variable') : undefined;
+      treeItem.contextValue = this.isSemanticNode(valueNode) ? json.getNodePath(valueNode).join('/') : undefined;
       treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
 
@@ -81,6 +116,10 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   // required to allow TreeView.reveal
   public getParent(offset?: number): number {
     return 0;
+  }
+
+  public refresh(offset?: number): void {
+    this._onDidChangeTreeData.fire(offset);
   }
 
   // ----------------------------------------
@@ -223,7 +262,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     return parseInt(id.slice(3), 10);
   }
 
-  private createSemanticSnippet(offset: number): void {
+  private createSemanticSnippet = async (offset: number): Promise<void> => {
     /* TODO: Add treatment for: 
     *  - sub ids like BT-30-1 or BT-158-2 (not sorted correctly yet - inserts currently before BT-30 / BT-158)
     *  - no semantic element exists yet (just inserts on current cursor position, should indent correctly)
@@ -314,6 +353,47 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     const targetSelection = new vscode.Selection(targetPosition, targetPosition);
     
     this.editor.selection = targetSelection;
-    this.editor.insertSnippet(snippet);
+    await this.editor.insertSnippet(snippet);
+  }
+
+  // it would make more sense to just collect already used semantics but the "not in" operator is still missing for "when clauses"
+  // therefore we have to collect unused ones and check via the "in" operator to control the "enablement" per viewItem
+  // see: https://github.com/microsoft/vscode/issues/131819#issuecomment-917228191
+  private getUnusedSemantics(): Array<string> {
+    const unusedSemantics = this.getSemanticsPathList();
+    // get current document
+    this.editor = vscode.window.activeTextEditor;
+    this.document = this.editor.document;
+
+    let line: vscode.TextLine;
+
+    for (let i = 0; i < this.document.lineCount; i++) {
+      line = this.document.lineAt(i);
+      if (this.isSemanticOpeningLine(line.text)) {
+        for (const semanticPath of unusedSemantics) {
+          if (this.getSemanticElementId(line.text) === this.getSemanticAttributeValue(this.getValueNode(this.getElementOffsetByPath(semanticPath)), 'id')) {
+            this.removeItem(unusedSemantics, semanticPath);
+            break;
+          }
+        }
+      }
+    }
+
+    return unusedSemantics;
+  }
+
+  private getSemanticsPathList(): Array<string> {
+    // TODO: index values shouldn't be hardcoded here
+    return this.tree.children[3].children[1].children.map(child => {
+      return json.getNodePath(child).join('/');
+    });
+  }
+
+  private removeItem<T>(arr: Array<T>, value: T): Array<T> { 
+    const index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
   }
 }

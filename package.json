@@ -542,7 +542,8 @@
       {
         "command": "semanticView.addEntry",
         "title": "Semantic View: Add Entry",
-        "icon": "$(add)"
+        "icon": "$(add)",
+        "enablement": "viewItem =~ /^([semantics]+?)\/[0-9]/ && viewItem in unusedSemantics"
       },
       {
         "command": "xmlView.reveal",
@@ -609,7 +610,7 @@
         },
         {
           "command": "semanticView.addEntry",
-          "when": "view == semanticView && viewItem == semantic",
+          "when": "view == semanticView && viewItem =~ /^([semantics]+?)\/[0-9]/",
           "group": "inline"
         },
         {
