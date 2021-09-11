@@ -134,9 +134,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
 
   private getSemanticAttributeValue(node: json.Node, attribute: string): string {
     if (node.parent.type === 'array') {
-      const attributeValue = node.children.find(child => child.children[0].value === 'bt').children[1].value;
-
-      return attributeValue;
+      return node.children.find(child => child.children[0].value === attribute).children[1].value;
     }
   }
 
