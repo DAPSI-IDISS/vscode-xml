@@ -174,16 +174,20 @@ const updateStatusBarItem = (): void => {
 }
 
 const getNumberFromSemanticsAttribute = (editor: vscode.TextEditor | undefined, attributeName: string): number => {
-  let lines = 0;
+  let number = 0;
   if (editor) {
-    const line = editor.document.lineAt(1); // assuming <semantics ...> is always at line 2 for now
-    if (line.text.includes("semantics")) {
-      const regex = new RegExp(`${attributeName}\=\"([A-Za-z0-9 _]*)\"`);
-      lines = parseInt(regex.exec(line.text)[1], 10);
+    let line: vscode.TextLine;
+    for (let i = 0; i < editor.document.lineCount; i++) {
+      line = editor.document.lineAt(i);
+      if (line.text.includes(attributeName)) {
+        const regex = new RegExp(`${attributeName}\=\"([A-Za-z0-9 _]*)\"`);
+        number = parseInt(regex.exec(line.text)[1], 10);
+        break;
+      }
     }
   }
 
-  return lines;
+  return number;
 }
 
 const getNumberOfSearchItemOccurrence = (editor: vscode.TextEditor | undefined, searchItem: string): number => {
