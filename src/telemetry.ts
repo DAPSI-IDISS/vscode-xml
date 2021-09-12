@@ -28,6 +28,7 @@ export namespace Telemetry {
    * @throws Error if the telemetry service has already been started
    */
   export async function startTelemetry(context: ExtensionContext): Promise<void> {
+    return undefined;
     if (!!_telemetryManager) {
       throw new Error("The telemetry service for vscode-xml has already been started")
     }
@@ -44,6 +45,7 @@ export namespace Telemetry {
    * @throws Error if the telemetry service has not been started yet
    */
   export async function sendTelemetry(eventName: string, data?: any): Promise<void> {
+    return undefined;
     if (!_telemetryManager) {
       throw new Error("The telemetry service for vscode-xml has not been started yet");
     }
