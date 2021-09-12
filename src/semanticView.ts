@@ -13,7 +13,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
   private text: string;
   private editor: vscode.TextEditor;
   private document: vscode.TextDocument;
-  private unusedSemantics = [];
+  public unusedSemantics = [];
 
   constructor(private context: vscode.ExtensionContext) {
     let timeout = undefined;
@@ -108,7 +108,7 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       treeItem.collapsibleState = hasChildren ? valueNode.type === 'object' ? defaultCollapsibleState : defaultCollapsibleState : vscode.TreeItemCollapsibleState.None;
       treeItem.iconPath = this.isSemanticNode(valueNode) ? new vscode.ThemeIcon('symbol-variable') : undefined;
       treeItem.contextValue = this.isSemanticNode(valueNode) ? json.getNodePath(valueNode).join('/') : undefined;
-      treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode)}`);
+      treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.isSemanticNode(valueNode) ? `${this.getSemanticAttributeValue(valueNode, 'bt')}&nodePath=${json.getNodePath(valueNode).join('/')}` : this.getUriValue(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
 
       return treeItem;

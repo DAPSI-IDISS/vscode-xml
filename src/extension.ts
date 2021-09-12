@@ -38,6 +38,7 @@ import { XMLView } from './xmlView';
 let languageClient: LanguageClient;
 // DAPSI additions
 let idissStatusBarItem: vscode.StatusBarItem;
+let semanticView: SemanticView;
 
 export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
@@ -74,7 +75,7 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   languageClient = await startLanguageClient(context, serverOptions, logfile, externalXmlSettings, requirementsData);
 
   // <-- DAPSI addition start
-  new SemanticView(context);
+  semanticView = new SemanticView(context);
   new XMLView(context);
 
   // Register decoration
@@ -193,7 +194,8 @@ const getNumberFromSemanticsAttribute = (editor: vscode.TextEditor | undefined, 
 const getNumberOfSearchItemOccurrence = (editor: vscode.TextEditor | undefined, searchItem: string): number => {
   let matches = 0;
   if (editor) {
-    const query = new RegExp(searchItem, 'g');
+    const escapedSearchItem = searchItem.includes('&nodePath=') ? searchItem.split('&nodePath=')[0] : searchItem;
+    const query = new RegExp(escapedSearchItem, 'g');
     matches = (editor.document.getText().match(query) || []).length;
   }
 
@@ -217,6 +219,14 @@ class DecorationProvider implements vscode.FileDecorationProvider {
   provideFileDecoration(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<vscode.FileDecoration> {
     // Apply different decorators per view "uri.scheme"
     if(uri.scheme === 'semanticView') {
+      // TODO: make use of uri.query / uri.fragment and a parser integration to efficiently use additonal uri data (e.g. 'nodePath') and keep the uri.path clean
+      let nodePathUri = uri.path.includes('&nodePath=') ? uri.path.split('&nodePath=')[1] : undefined;
+      if (semanticView.unusedSemantics.includes(nodePathUri)) {
+        return this.provideDecoratorPerScheme(uri, new vscode.ThemeColor('debugTokenExpression.boolean'));
+      }
+      if (nodePathUri && !semanticView.unusedSemantics.find(node => node === nodePathUri)) {
+        return this.provideDecoratorPerScheme(uri, new vscode.ThemeColor('gitDecoration.ignoredResourceForeground'));
+      }
       return this.provideDecoratorPerScheme(uri);
     }
     if(uri.scheme === 'xmlView') {
