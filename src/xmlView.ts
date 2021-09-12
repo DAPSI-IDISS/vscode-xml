@@ -40,6 +40,9 @@ export class XMLView implements vscode.TreeDataProvider<number> {
     // probably better practice than 'search.action.openNewEditor' to allow quickly jumping to the lines in the current file
     // FindInFilesCommand details: https://github.com/microsoft/vscode/blob/17de08a829e56657e44213a70cf69d18f06e74a5/src/vs/workbench/contrib/search/browser/searchActions.ts#L160-L188
     vscode.commands.registerCommand('xmlView.searchEntry', (offset: number) => { 
+      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.getLabel(this.getValueNode(offset)), isCaseSensitive: true});
+    });
+    vscode.commands.registerCommand('xmlView.searchEntryInline', (offset: number) => { 
       vscode.commands.executeCommand('workbench.action.findInFiles', {query: this.getLabel(this.getValueNode(offset)), isCaseSensitive: true});
     });
     // Adds snippet based on Node Path
@@ -72,6 +75,10 @@ export class XMLView implements vscode.TreeDataProvider<number> {
       treeItem.contextValue = valueNode.type;
       treeItem.resourceUri = vscode.Uri.parse(`xmlView:${this.getLabel(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
+      treeItem.command = {
+        command: undefined, // disable collapsible on label click
+        title: '',
+      };
 
       return treeItem;
     }

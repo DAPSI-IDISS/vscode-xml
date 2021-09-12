@@ -536,8 +536,13 @@
       },
       {
         "command": "semanticView.searchEntry",
-        "title": "Semantic View: Search Entry",
+        "title": "Semantic View: Search Entry in a new Window",
         "icon": "$(search)"
+      },
+      {
+        "command": "semanticView.searchEntryInline",
+        "title": "Semantic View: Search Entry",
+        "icon": "$(list-selection)"
       },
       {
         "command": "semanticView.addEntry",
@@ -556,8 +561,13 @@
       },
       {
         "command": "xmlView.searchEntry",
-        "title": "XML View: Search Entry",
+        "title": "XML View: Search Entry in a new Window",
         "icon": "$(search)"
+      },
+      {
+        "command": "xmlView.searchEntryInline",
+        "title": "XML View: Search Entry",
+        "icon": "$(list-selection)"
       },
       {
         "command": "xmlView.addEntry",
@@ -609,12 +619,22 @@
           "group": "inline"
         },
         {
+          "command": "semanticView.searchEntryInline",
+          "when": "view == semanticView",
+          "group": "inline"
+        },
+        {
           "command": "semanticView.addEntry",
           "when": "view == semanticView && viewItem =~ /^([semantics]+?)\/[0-9]/",
           "group": "inline"
         },
         {
           "command": "xmlView.searchEntry",
+          "when": "view == xmlView",
+          "group": "inline"
+        },
+        {
+          "command": "xmlView.searchEntryInline",
           "when": "view == xmlView",
           "group": "inline"
         },

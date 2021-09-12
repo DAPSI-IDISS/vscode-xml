@@ -46,7 +46,11 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
     });
     vscode.commands.registerCommand('semanticView.searchEntry', (offset: number) => {
       const valueNode = this.getValueNode(offset);
-      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode)});
+      vscode.commands.executeCommand('search.action.openNewEditor', {query: this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode), isCaseSensitive: true});
+    });
+    vscode.commands.registerCommand('semanticView.searchEntryInline', (offset: number) => {
+      const valueNode = this.getValueNode(offset);
+      vscode.commands.executeCommand('workbench.action.findInFiles', {query: this.isSemanticNode(valueNode) ? this.getSemanticAttributeValue(valueNode, 'bt') : this.getUriValue(valueNode), isCaseSensitive: true});
     });
     // Adds snippet based on Node Path array index and its children (properties)
     vscode.commands.registerCommand('semanticView.addEntry', (offset: number) => {
@@ -110,6 +114,10 @@ export class SemanticView implements vscode.TreeDataProvider<number> {
       treeItem.contextValue = this.isSemanticNode(valueNode) ? json.getNodePath(valueNode).join('/') : undefined;
       treeItem.resourceUri = vscode.Uri.parse(`semanticView:${this.isSemanticNode(valueNode) ? `${this.getSemanticAttributeValue(valueNode, 'bt')}&nodePath=${json.getNodePath(valueNode).join('/')}` : this.getUriValue(valueNode)}`);
       treeItem.tooltip = `Node Path: '${json.getNodePath(valueNode).join('/')}'`;
+      treeItem.command = {
+        command: undefined, // disable collapsible on label click
+        title: '',
+      };
 
       return treeItem;
     }
