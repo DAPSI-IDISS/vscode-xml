@@ -39,6 +39,8 @@ let languageClient: LanguageClient;
 // DAPSI additions
 let idissStatusBarItem: vscode.StatusBarItem;
 let semanticView: SemanticView;
+let decorationProvider: DecorationProvider;
+let decorationProviderDisposable: vscode.Disposable;
 
 export async function activate(context: ExtensionContext): Promise<XMLExtensionApi> {
 
@@ -79,8 +81,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   new XMLView(context);
 
   // Register decoration
-  const decorationProvider = new DecorationProvider();
-  vscode.window.registerFileDecorationProvider(decorationProvider);
+  decorationProvider = new DecorationProvider();
+  decorationProviderDisposable = vscode.window.registerFileDecorationProvider(decorationProvider);
 
   const experimentalViewProvider = new ExperimentalView(context.extensionUri);
 
@@ -124,6 +126,8 @@ export async function activate(context: ExtensionContext): Promise<XMLExtensionA
   // Update status bar item once at start
   updateStatusBarItem();
 
+  // Register listener to update decorators
+  context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(updateDecorationProvider));
   // -- DAPSI addition end -->
 
   return getXmlExtensionApiImplementation(languageClient, logfile, externalXmlSettings, requirementsData);
@@ -203,19 +207,27 @@ const getNumberOfSearchItemOccurrence = (editor: vscode.TextEditor | undefined, 
 }
 
 // Git-like badges (badge API?) seems to be not exposed yet - https://github.com/Microsoft/vscode/issues/62783 (Workaround: Showing a number in the Tree View Title or Description per view, and via DecorationProvider per node is possible)
-// Following is just a test to add a "fake badge" to Tree View node labels and pass counts retrieved from here to the node's tooltip
+// Following is just a workaround sample to add a "fake badge" to Tree View node labels, pass counts retrieved from here to the node's tooltip and colorize some items
 class DecorationProvider implements vscode.FileDecorationProvider {
+  public _onDidChangeDecorations = new vscode.EventEmitter<vscode.Uri | vscode.Uri[]>();
+  onDidChangeFileDecorations?: vscode.Event<vscode.Uri | vscode.Uri[]> = this._onDidChangeDecorations.event;
+
+  public collectedDecoratorUris: string[] = [];
+
   public provideDecoratorPerScheme = (uri: vscode.Uri, color?: vscode.ThemeColor) => {
+    // collect URI as string that we want to update again
+    if (this.collectedDecoratorUris.indexOf(uri.toString()) === -1) {
+      this.collectedDecoratorUris.push(uri.toString());
+    }
     const count = getNumberOfSearchItemOccurrence(vscode.window.activeTextEditor, uri.path);
     return {
       badge: `${count > 99 ? '∞' : count}`, // Seems to be limited to a string length of 2 ... alternatives could be 'GT' or '>' = Greater Than, '‰' per mile (per thousand?) '∞' infinite (of course not the correct meaning but 99+ can be infinite)
-      // debugTokenExpression.boolean = semantic blue ... debugTokenExpression.string = path value red ... couldn't figure out the "real" color definition used for the Syntax Highlighting yet
+      // See ThemeColors used in provideFileDecoration below - Samples: debugTokenExpression.boolean = semantic blue ... debugTokenExpression.string = path value red ... gitDecoration.ignoredResourceForeground = light grey
+      // couldn't figure out the "real" color definition used for the Syntax Highlighting yet
       color, 
       tooltip: `${count} result(s) in current file`,
     };
   }
-
-  onDidChangeFileDecorations?: vscode.Event<vscode.Uri | vscode.Uri[] | undefined>;
   provideFileDecoration(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<vscode.FileDecoration> {
     // Apply different decorators per view "uri.scheme"
     if(uri.scheme === 'semanticView') {
@@ -233,4 +245,31 @@ class DecorationProvider implements vscode.FileDecorationProvider {
       return this.provideDecoratorPerScheme(uri, new vscode.ThemeColor('debugTokenExpression.string'));
     }
   }
+}
+
+let timeout;
+
+const updateDecorationProvider = (changeEvent): void => {
+  if (changeEvent.document.languageId === 'xml') {
+    // use a threshold for update trigger
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      // TODO: find a better way to handle the dispose to avoid flickering of the decorators (due to resetDecorationProvider)... 
+      // for now just discard everything after collecting 250 items and recreate the DecorationProvider to avoid getting out of sync and free resources
+      if (decorationProvider.collectedDecoratorUris.length > 250) {
+        resetDecorationProvider();
+      } else {
+        // map URI strings back to fire update per vscode.Uri
+        decorationProvider._onDidChangeDecorations.fire(decorationProvider.collectedDecoratorUris.map(uri => vscode.Uri.parse(uri)));
+      }
+    }, 500); // keep timeout >= semanticView timeout in onDidChangeTextDocument, otherwise decorator still has the old semanticView.unusedSemantics state
+  }
+}
+
+const resetDecorationProvider = (): void => {
+  decorationProviderDisposable.dispose();
+  decorationProvider = new DecorationProvider();
+  decorationProviderDisposable = vscode.window.registerFileDecorationProvider(decorationProvider);
 }
