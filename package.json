@@ -659,7 +659,7 @@
       {
         "id": "xml",
         "extensions": [
-          ".ssb",
+          ".syb",
           ".ent",
           ".mod"
         ]
