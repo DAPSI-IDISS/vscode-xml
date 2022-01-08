@@ -2,7 +2,7 @@
   "name": "semantic-crosswalk-editor",
   "displayName": "Semantic Crosswalk Editor",
   "description": "Semantic Crosswalk for XML formats by DAPSI-IDISS, based on the XML extension by Red Hat",
-  "version": "0.18.3",
+  "version": "0.18.2-IDISS",
   "author": "DAPSI-IDISS",
   "publisher": "DAPSI-IDISS",
   "icon": "icons/idiss-icon128.png",
@@ -16,7 +16,7 @@
     "dtd"
   ],
   "xmlServer": {
-    "version": "0.18.2"
+    "version": "0.18.2-IDISS"
   },
   "binaryServerDownloadUrl": {
     "linux": "https://download.jboss.org/jbosstools/vscode/snapshots/lemminx-binary/LATEST/lemminx-linux.zip",
