@@ -90,7 +90,7 @@
     "expand-home-dir": "^0.0.3",
     "find-java-home": "1.2.2",
     "fs-extra": "^8.1.0",
-    "glob": "^7.1.4",
+    "glob": "^7.1.7",
     "path-exists": "^4.0.0",
     "vscode-languageclient": "^7.0.0",
     "yauzl": "^2.10.0"
