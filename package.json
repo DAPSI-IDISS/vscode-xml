@@ -112,12 +112,6 @@
           "default": true,
           "markdownDescription": "Default 'collapsibleState' for the semanticView & xmlView TreeItems. Note: The nested TreeItems are not indexed (searchable) before expanding their parent nodes."
         },
-        "redhat.telemetry.enabled": {
-          "type": "boolean",
-          "default": null,
-          "markdownDescription": "Enable usage data and errors to be sent to Red Hat servers. Read our [privacy statement](https://developers.redhat.com/article/tool-data-collection).",
-          "scope": "window"
-        },
         "xml.java.home": {
           "type": [
             "string",
