@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://purl.org/p2p-o/documentline#"
+     xml:base="https://purl.org/p2p-o/documentline"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:item="https://purl.org/p2p-o/item#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:vann="http://purl.org/vocab/vann/"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:AnnotationVocabulary="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+    <owl:Ontology rdf:about="https://purl.org/p2p-o/documentline">
+        <owl:imports rdf:resource="https://purl.org/p2p-o/item"/>
+        <owl:imports rdf:resource="https://purl.org/p2p-o/price"/>
+        <dc:description xml:lang="en">This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1.</dc:description>
+        <dc:title xml:lang="en">Document-Line Module of P2P-O</dc:title>
+        <terms:license>https://opensource.org/licenses/MIT</terms:license>
+        <vann:preferredNamespacePrefix>p2p-o-doc-line</vann:preferredNamespacePrefix>
+        <vann:preferredNamespaceUri>https://purl.org/p2p-o/documentline</vann:preferredNamespaceUri>
+        <rdfs:label xml:lang="en">Document-Line Module of P2P-O</rdfs:label>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasGrosspriceOfItem -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasGrosspriceOfItem">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney"/>
+        <rdfs:label xml:lang="en">has grossprice of item</rdfs:label>
+        <item:seeEN16931-1-2017>BT-148</item:seeEN16931-1-2017>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasItem -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasItem">
+        <owl:inverseOf rdf:resource="https://purl.org/p2p-o/documentline#isItemOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://purl.org/p2p-o/item#Item"/>
+        <rdfs:label xml:lang="en">has item</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasLineNetAmount -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasLineNetAmount">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney"/>
+        <rdfs:label xml:lang="en">has line net amount</rdfs:label>
+        <item:seeEN16931-1-2017>BT-131</item:seeEN16931-1-2017>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasLineObjectIdentifier -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasLineObjectIdentifier">
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://purl.org/p2p-o/organization#Identifier"/>
+        <rdfs:comment xml:lang="en">An identifier for an object on which the invoice line is based, given by the Seller.</rdfs:comment>
+        <rdfs:label xml:lang="en">has line object identifier</rdfs:label>
+        <item:seeEN16931-1-2017>BT-128</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">It may be a subscription number, telephone number, meter point etc., as applicable.</AnnotationVocabulary:usageNote>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasNetPriceOfItem -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasNetPriceOfItem">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney"/>
+        <rdfs:label xml:lang="en">has net price of item</rdfs:label>
+        <item:seeEN16931-1-2017>BT-146</item:seeEN16931-1-2017>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#hasPriceDiscountOfItem -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#hasPriceDiscountOfItem">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney"/>
+        <rdfs:label xml:lang="en">has price discount of item</rdfs:label>
+        <item:seeEN16931-1-2017>BT-147</item:seeEN16931-1-2017>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#isItemOf -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/documentline#isItemOf">
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/item#Item"/>
+        <rdfs:range rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:label xml:lang="en">is item of</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#invoicedQuantity -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#invoicedQuantity">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">The quantity of items (goods or services) that is charged in the Document line.</rdfs:comment>
+        <rdfs:label xml:lang="en">invoiced quantity</rdfs:label>
+        <item:seeEN16931-1-2017>BT-129</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-149</item:seeEN16931-1-2017>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#invoicedQuantityUnitOfMeasure -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#invoicedQuantityUnitOfMeasure">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">The unit of measure that applies to the invoiced quantity.</rdfs:comment>
+        <rdfs:label xml:lang="en">invoiced quantity unit of measure</rdfs:label>
+        <item:seeEN16931-1-2017>BT-130</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-150</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">The unit of measure shall be chosen from the lists in UN/ECE Recommendation N°. 20 “Codes for Units of Measure Used in International Trade” and UN/ECE Recommendation N° 21 “Codes for Passengers, Types of Cargo, Packages and Packaging Materials (with Complementary Codes for Package Names)”  applying the method described in UN/ECE Rec N° 20 Intro 2.a). Note that in most cases it is not needed for Buyers and Sellers to implement these lists fully in their software. Sellers need only to support the units needed for their goods and services; Buyers only need to verify that the units used in the Invoice are equal to the units used in other documents (such as Contract, Catalogue, Order and Despatch advice).</AnnotationVocabulary:usageNote>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#lineBuyerAccountingReference -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#lineBuyerAccountingReference">
+        <rdfs:comment xml:lang="en">A textual value that specifies where to book the relevant data into the Buyer&apos;s financial accounts.</rdfs:comment>
+        <rdfs:label xml:lang="en">line buyer accounting reference</rdfs:label>
+        <item:seeEN16931-1-2017>BT-133</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">If required, this reference shall be provided by the Buyer to the Seller prior to the issuing of the Invoice.</AnnotationVocabulary:usageNote>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#lineIdentifier -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#lineIdentifier">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">line identifier</rdfs:label>
+        <item:seeEN16931-1-2017>BT-126</item:seeEN16931-1-2017>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#lineItemIdentifierBuyer -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#lineItemIdentifierBuyer">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">line item identifier buyer</rdfs:label>
+        <item:seeEN16931-1-2017>BT-156</item:seeEN16931-1-2017>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#lineItemIdentifierSeller -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#lineItemIdentifierSeller">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">line item identifier seller</rdfs:label>
+        <item:seeEN16931-1-2017>BT-155</item:seeEN16931-1-2017>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#lineNote -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/documentline#lineNote">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">line note</rdfs:label>
+        <item:seeEN16931-1-2017>BT-127</item:seeEN16931-1-2017>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#DocumentLine -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/documentline#DocumentLine">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/p2p-o/documentline#invoicedQuantity"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/p2p-o/documentline#invoicedQuantityUnitOfMeasure"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/p2p-o/documentline#lineIdentifier"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">abstract class, only use subclasses
+
+provides information on document line level about quantity of an item, unit of measure code, price of an item and others</rdfs:comment>
+        <rdfs:label xml:lang="en">document line</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#InvoiceLine -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/documentline#InvoiceLine">
+        <rdfs:subClassOf rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <owl:disjointWith rdf:resource="https://purl.org/p2p-o/documentline#PurchaseOrderLine"/>
+        <rdfs:comment xml:lang="en">provides information on invoice line level about quantity of an item, unit of measure code, price of an item and others on</rdfs:comment>
+        <rdfs:label xml:lang="en">invoice line</rdfs:label>
+        <item:seeEN16931-1-2017>BG-25</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#PurchaseOrderLine -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/documentline#PurchaseOrderLine">
+        <rdfs:subClassOf rdf:resource="https://purl.org/p2p-o/documentline#DocumentLine"/>
+        <rdfs:comment xml:lang="en">provides information on purchase order line level about quantity of an item, unit of measure code, price of an item and others on</rdfs:comment>
+        <rdfs:label xml:lang="en">purchase order line</rdfs:label>
+        <item:seeEN16931-1-2017>BT-132</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/item#Item -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/item#Item"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/item#ItemAttribute -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/item#ItemAttribute"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/organization#Identifier -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/organization#Identifier"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <rdf:Description rdf:about="https://purl.org/p2p-o/price#hasVATCategoryCode">
+        <item:seeEN16931-1-2017>BG-30</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-151</item:seeEN16931-1-2017>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://purl.org/p2p-o/price#hasVATCategoryRate">
+        <item:seeEN16931-1-2017>BG-30</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-125</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-152</item:seeEN16931-1-2017>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/p2p-o/documentline#DocumentLine"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/item#Item"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/item#ItemAttribute"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+<!--
+Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+
+
+<!-- Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/ -->
+
+<!-- 
+EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de. -->
+
+
+<!-- This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE. -->

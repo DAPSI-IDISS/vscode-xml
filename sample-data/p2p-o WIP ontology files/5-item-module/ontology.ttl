@@ -1,0 +1,192 @@
+@prefix : <https://purl.org/p2p-o/item#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://purl.org/p2p-o/item> .
+
+<https://purl.org/p2p-o/item> rdf:type owl:Ontology ;
+                               owl:versionIRI <https://purl.org/p2p-o/item/0.9.0> ;
+                               <http://purl.org/dc/elements/1.1/description> "This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1."@en ;
+                               <http://purl.org/dc/elements/1.1/title> "Item module of P2P-O"@en ;
+                               <http://purl.org/dc/terms/license> "https://opensource.org/licenses/MIT" ;
+                               <http://purl.org/vocab/vann/preferredNamespacePrefix> "p2p-o-item" ;
+                               <http://purl.org/vocab/vann/preferredNamespaceUri> "https://purl.org/p2p-o/item" ;
+                               rdfs:label "Item module of P2P-O"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/contributor
+<http://purl.org/dc/elements/1.1/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/creator
+<http://purl.org/dc/elements/1.1/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+<http://purl.org/dc/elements/1.1/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+<http://www.w3.org/2004/02/skos/core#altLabel> rdf:type owl:AnnotationProperty .
+
+
+###  https://purl.org/p2p-o/item#seeEN16931-1-2017
+:seeEN16931-1-2017 rdf:type owl:AnnotationProperty ;
+                   rdfs:comment "provides the identifier for information elements or groups of information elements in EN16931-1:2017"@en ;
+                   rdfs:label "see EN16931-1:2017"@en .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://purl.org/p2p-o/item#hasAttribute
+:hasAttribute rdf:type owl:ObjectProperty ;
+              owl:inverseOf :isAttributeOf ;
+              rdfs:domain :Item ;
+              rdfs:range :ItemAttribute ;
+              rdfs:label "has attribute"@en .
+
+
+###  https://purl.org/p2p-o/item#isAttributeOf
+:isAttributeOf rdf:type owl:ObjectProperty ;
+               rdfs:domain :ItemAttribute ;
+               rdfs:range :Item ;
+               rdfs:label "is attribute of"@en .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://purl.org/p2p-o/item#attributeName
+:attributeName rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain :ItemAttribute ;
+               rdfs:range xsd:string ;
+               rdfs:label "attribute name"@en ;
+               :seeEN16931-1-2017 "BT-160" .
+
+
+###  https://purl.org/p2p-o/item#attributeValue
+:attributeValue rdf:type owl:DatatypeProperty ;
+                rdfs:domain :ItemAttribute ;
+                rdfs:range xsd:string ;
+                rdfs:label "attribute value"@en ;
+                :seeEN16931-1-2017 "BT-161" .
+
+
+###  https://purl.org/p2p-o/item#itemClassificationIdentifier
+:itemClassificationIdentifier rdf:type owl:DatatypeProperty ;
+                              rdfs:domain :Item ;
+                              rdfs:range xsd:string ;
+                              rdfs:label "item classification identifier"@en ;
+                              :seeEN16931-1-2017 "BT-158" .
+
+
+###  https://purl.org/p2p-o/item#itemDescription
+:itemDescription rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :Item ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "item description"@en ;
+                 :seeEN16931-1-2017 "BT-154" .
+
+
+###  https://purl.org/p2p-o/item#itemName
+:itemName rdf:type owl:DatatypeProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:domain :Item ;
+          rdfs:range xsd:string ;
+          rdfs:label "item name"@en ;
+          :seeEN16931-1-2017 "BT-153" .
+
+
+###  https://purl.org/p2p-o/item#itemStandardIdentifier
+:itemStandardIdentifier rdf:type owl:DatatypeProperty ,
+                                 owl:FunctionalProperty ;
+                        rdfs:domain :Item ;
+                        rdfs:range xsd:string ;
+                        rdfs:label "item standard identifier"@en ;
+                        :seeEN16931-1-2017 "BT-157" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://purl.org/p2p-o/item#Item
+:Item rdf:type owl:Class ;
+      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                        owl:onProperty :itemName ;
+                        owl:someValuesFrom xsd:string
+                      ] ;
+      owl:disjointWith :ItemAttribute ;
+      rdfs:comment "invoiced goods and services"@en ;
+      rdfs:label "item"@en ;
+      <http://www.w3.org/2004/02/skos/core#altLabel> "product"@en ;
+      :seeEN16931-1-2017 "BG-31" .
+
+
+###  https://purl.org/p2p-o/item#ItemAttribute
+:ItemAttribute rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty :attributeName ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :attributeValue ;
+                                 owl:someValuesFrom xsd:string
+                               ] ;
+               rdfs:comment "a property of an item"@en ;
+               rdfs:label "item attribute"@en ;
+               :seeEN16931-1-2017 "BG-32" .
+
+### Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+### Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/
+
+### EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+### This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+### CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de.
+
+### This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council
+### Permission is hereby granted, free of charge, to any person obtaining a copy of
+### this software and associated documentation files (the "Software"), to deal in
+### the Software without restriction, including without limitation the rights to
+### use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+### the Software, and to permit persons to whom the Software is furnished to do so,
+### subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all
+### copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+### IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+### FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+### AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+### LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+### SOFTWARE.

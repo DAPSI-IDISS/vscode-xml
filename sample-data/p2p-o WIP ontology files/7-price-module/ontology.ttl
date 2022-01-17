@@ -1,0 +1,237 @@
+@prefix : <https://purl.org/p2p-o/price#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://purl.org/p2p-o/price> .
+
+<https://purl.org/p2p-o/price> rdf:type owl:Ontology ;
+                                owl:versionIRI <https://purl.org/p2p-o/price/0.9.0> ;
+                                <http://purl.org/dc/elements/1.1/description> "This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1."@en ;
+                                <http://purl.org/dc/elements/1.1/title> "Price module of P2P-O"@en ;
+                                <http://purl.org/dc/terms/license> "https://opensource.org/licenses/MIT" ;
+                                <http://purl.org/vocab/vann/preferredNamespaceUri> "https://purl.org/p2p-o/price" ,
+                                                                                   "p2p-o-price" ;
+                                rdfs:label "Price module of P2P-O"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/contributor
+<http://purl.org/dc/elements/1.1/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/creator
+<http://purl.org/dc/elements/1.1/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+<http://purl.org/dc/elements/1.1/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  https://purl.org/p2p-o/item#seeEN16931-1-2017
+<https://purl.org/p2p-o/item#seeEN16931-1-2017> rdf:type owl:AnnotationProperty ;
+                                                rdfs:comment "provides the identifier for information elements or groups of information elements in EN16931-1:2017"@en ;
+                                                rdfs:label "see EN16931-1:2017"@en .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote
+<https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://purl.org/p2p-o/price#hasVATCategoryTaxAmount
+:hasVATCategoryTaxAmount rdf:type owl:ObjectProperty ;
+                         rdfs:domain :ValueAddedTax ;
+                         rdfs:range <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+                         rdfs:comment "The total VAT amount for a given VAT category."@en ;
+                         rdfs:label "has VAT category tax amount"@en ;
+                         <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                         "BT-117" ;
+                         <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Calculated by multiplying the VAT category taxable amount with the VAT category rate for the relevant VAT category."@en .
+
+
+###  https://purl.org/p2p-o/price#hasVATCategoryTaxableAmount
+:hasVATCategoryTaxableAmount rdf:type owl:ObjectProperty ;
+                             rdfs:domain :ValueAddedTax ;
+                             rdfs:range <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+                             rdfs:comment "Sum of all taxable amounts subject to a specific VAT category code and VAT category rate (if the VAT category rate is applicable)."@en ;
+                             rdfs:label "has VAT category taxable amount"@en ;
+                             <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                             "BT-116" ;
+                             <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "The sum of Invoice line net amount minus allowances plus charges on document level which are subject to a specific VAT category code and VAT category rate (if the VAT category rate is applicable)."@en .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/hasBaseMoneyUnit
+<https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/hasBaseMoneyUnit> rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://purl.org/p2p-o/price#hasVATCategoryCode
+:hasVATCategoryCode rdf:type owl:DatatypeProperty ;
+                    rdfs:domain [ rdf:type owl:Class ;
+                                  owl:unionOf ( <https://purl.org/p2p-o/documentline#InvoiceLine>
+                                                :AllowanceAmountOfMoney
+                                                :ChargeAmountOfMoney
+                                                :ValueAddedTax
+                                              )
+                                ] ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "Coded identification of a VAT category."@en ;
+                    rdfs:label "has VAT category code"@en ;
+                    <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                    "BT-102" ,
+                                                                    "BT-118" ,
+                                                                    "BT-95" ;
+                    <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> """The following entries of UNTDID 5305 are used (further clarification between brackets):
+- Standard rate (Liable for VAT in a standard way)
+- Zero rated goods (Liable for VAT with a percentage rate of zero)
+- Exempt from tax (VAT/IGIC/IPSI)
+- VAT Reverse Charge (Reverse charge VAT/IGIC/IPSI rules apply)
+- VAT exempt for intra community supply of goods (VAT/IGIC/IPSI not levied due to Intra-community supply rules)
+- Free export item, tax not charged (VAT/IGIC/IPSI not levied due to export outside of the EU)
+- Services outside scope of tax (Sale is not subject to VAT/IGIC/IPSI)
+- Canary Islands General Indirect Tax (Liable for IGIC tax)
+- Liable for IPSI (Ceuta/Melilla tax)"""@en .
+
+
+###  https://purl.org/p2p-o/price#hasVATCategoryRate
+:hasVATCategoryRate rdf:type owl:DatatypeProperty ;
+                    rdfs:domain [ rdf:type owl:Class ;
+                                  owl:unionOf ( <https://purl.org/p2p-o/documentline#InvoiceLine>
+                                                :AllowanceAmountOfMoney
+                                                :ChargeAmountOfMoney
+                                                :ValueAddedTax
+                                              )
+                                ] ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "The VAT rate, represented as percentage that applies for the relevant VAT category."@en ;
+                    rdfs:label "has VAT category rate"@en ;
+                    <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                    "BT-103" ,
+                                                                    "BT-119" ,
+                                                                    "BT-96" ;
+                    <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "The VAT category code and the VAT category rate shall be consistent."@en .
+
+
+###  https://purl.org/p2p-o/price#hasVATExemptionReasonCode
+:hasVATExemptionReasonCode rdf:type owl:DatatypeProperty ;
+                           rdfs:domain :ValueAddedTax ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "A coded statement of the reason for why the amount is exempted from VAT."@en ;
+                           rdfs:label "has VAT exemption reason code"@en ;
+                           <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                           "BT-121" ;
+                           <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Code list issued and maintained by the Connecting Europe Facility."@en .
+
+
+###  https://purl.org/p2p-o/price#hasVATexemptionReason
+:hasVATexemptionReason rdf:type owl:DatatypeProperty ;
+                       rdfs:domain :ValueAddedTax ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "A textual statement of the reason why the amount is exempted from VAT or why no VAT is being charged."@en ;
+                       rdfs:label "has VAT exemption reason text"@en ;
+                       <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" ,
+                                                                       "BT-120" ;
+                       <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Articles 226 items 11 to 15 Directive 2006/112/EC."@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://purl.org/p2p-o/documentline#InvoiceLine
+<https://purl.org/p2p-o/documentline#InvoiceLine> rdf:type owl:Class .
+
+
+###  https://purl.org/p2p-o/price#AllowanceAmountOfMoney
+:AllowanceAmountOfMoney rdf:type owl:Class ;
+                        rdfs:subClassOf <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+                        rdfs:comment "The amount of an allowance, without VAT."@en ;
+                        rdfs:label "allowance amount of money"@en ;
+                        <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-92" .
+
+
+###  https://purl.org/p2p-o/price#ChargeAmountOfMoney
+:ChargeAmountOfMoney rdf:type owl:Class ;
+                     rdfs:subClassOf <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> ;
+                     rdfs:comment "The amount of a charge, without VAT."@en ;
+                     rdfs:label "charge amount of money"@en ;
+                     <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-99" .
+
+
+###  https://purl.org/p2p-o/price#ValueAddedTax
+:ValueAddedTax rdf:type owl:Class ;
+               rdfs:comment "With this Class, VAT breakdown by different categories, rates and exemption reasons is possible"@en ;
+               rdfs:label "value added tax"@en ;
+               <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-23" .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney
+<https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/AmountOfMoney> rdf:type owl:Class ;
+                                                                                        rdfs:subClassOf <https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue> ,
+                                                                                                        [ rdf:type owl:Restriction ;
+                                                                                                          owl:onProperty <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/hasBaseMoneyUnit> ;
+                                                                                                          owl:allValuesFrom <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency>
+                                                                                                        ] ;
+                                                                                        <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-29" .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency
+<https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency> rdf:type owl:Class .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue
+<https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue> rdf:type owl:Class .
+
+### Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+### Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/
+
+### EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+### This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+### CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de.
+
+### This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council
+### Permission is hereby granted, free of charge, to any person obtaining a copy of
+### this software and associated documentation files (the "Software"), to deal in
+### the Software without restriction, including without limitation the rights to
+### use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+### the Software, and to permit persons to whom the Software is furnished to do so,
+### subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all
+### copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+### IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+### FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+### AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+### LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+### SOFTWARE.

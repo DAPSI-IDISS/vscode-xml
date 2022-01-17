@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="https://purl.org/p2p-o#" xml:base="https://purl.org/p2p-o" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns="http://www.w3.org/2003/06/sw-vocab-status/ns#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:item="https://purl.org/p2p-o/item#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:vann="http://purl.org/vocab/vann/" xmlns:terms="http://purl.org/dc/terms/" xmlns:Relations="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/" xmlns:ontodebug="http://ainf.aau.at/ontodebug#" xmlns:organization="https://purl.org/p2p-o/organization#" xmlns:AnnotationVocabulary="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+    <owl:Ontology rdf:about="https://purl.org/p2p-o">
+		<owl:versionIRI rdf:resource="https://purl.org/p2p-o/0.9.0"/>
+        <owl:imports rdf:resource="https://purl.org/p2p-o/invoice"/>
+        <owl:imports rdf:resource="https://purl.org/p2p-o/process"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox10"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox11"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox12"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox13"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox14"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox2"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox3"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox4"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox5"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox6"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox7"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox8"/>
+        <ontodebug:testCase rdf:resource="_:genid-nodeid-node1esavteqox9"/>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+        <ontodebug:testCase>
+            <rdf:Description/>
+        </ontodebug:testCase>
+
+        
+        <dc:description xml:lang="en">This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and presents a purchase-to-pay ontology and vocabulary for describing purchase-to-pay processes and electronic invoices. It reuses parts of the European Standard EN 16931-1.</dc:description>
+        <dc:title xml:lang="en">P2P-O: A Purchase-To-Pay Ontology</dc:title>
+        <terms:license>https://opensource.org/licenses/MIT</terms:license>
+        <vann:preferredNamespacePrefix>p2p-o</vann:preferredNamespacePrefix>
+        <vann:preferredNamespaceUri>https://purl.org/p2p-o</vann:preferredNamespaceUri>
+        <rdfs:label xml:lang="en">P2P-O: A Purchase-To-Pay Ontology</rdfs:label>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://ainf.aau.at/ontodebug#axiom -->
+
+
+    <owl:AnnotationProperty rdf:about="http://ainf.aau.at/ontodebug#axiom">
+        <rdfs:subPropertyOf rdf:resource="http://ainf.aau.at/ontodebug#testCase"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://ainf.aau.at/ontodebug#testCase -->
+
+
+    <owl:AnnotationProperty rdf:about="http://ainf.aau.at/ontodebug#testCase"/>
+    
+
+
+    <!-- http://ainf.aau.at/ontodebug#type -->
+
+
+    <owl:AnnotationProperty rdf:about="http://ainf.aau.at/ontodebug#type">
+        <rdfs:subPropertyOf rdf:resource="http://ainf.aau.at/ontodebug#testCase"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/contributor -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/contributor"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/creator -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/creator"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/title -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+    
+
+
+    <!-- http://purl.org/vocab/vann/preferredNamespacePrefix -->
+
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespacePrefix"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/organization#globalLocationNumber -->
+
+
+    <owl:AnnotationProperty rdf:about="https://purl.org/p2p-o/organization#globalLocationNumber"/>
+    
+
+
+    <!-- https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/hasFormalName -->
+
+
+    <owl:AnnotationProperty rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/hasFormalName"/>
+    <rdf:Description rdf:nodeID="genid15">
+        <ontodebug:axiom>CommercialInvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid16">
+        <ontodebug:axiom>IncidentalPurchaseOrderProcess SubClassOf PurchaseToPayProcess</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid17">
+        <ontodebug:axiom>CommercialInvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid18">
+        <ontodebug:axiom>E-PrePaymentInvoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid19">
+        <ontodebug:axiom>E-PrePaymentInvoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid20">
+        <ontodebug:axiom>PurchaseOrderLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid21">
+        <ontodebug:axiom>Address EquivalentTo Address</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid22">
+        <ontodebug:axiom>Item SubClassOf ItemAttribute</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid23">
+        <ontodebug:axiom>Item SubClassOf ItemAttribute</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid24">
+        <ontodebug:axiom>CommercialInvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid25">
+        <ontodebug:axiom>IncidentalPurchaseOrderProcess SubClassOf PurchaseToPayProcess</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid26">
+        <ontodebug:axiom>Item SubClassOf ItemAttribute</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid27">
+        <ontodebug:axiom>hasAddress EquivalentTo hasAddress</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid28">
+        <ontodebug:axiom>AmountOfMoney SubClassOf E-Invoice</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid29">
+        <ontodebug:axiom>E-CreditNote SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid30">
+        <ontodebug:axiom>E-CreditNote SubClassOf ReceivingAdvice</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid31">
+        <ontodebug:axiom>E-Invoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid32">
+        <ontodebug:axiom>Address EquivalentTo Address</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid33">
+        <ontodebug:axiom>PurchaseOrderLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid34">
+        <ontodebug:axiom>SupportingDocument SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid35">
+        <ontodebug:axiom>SupportingDocument SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid36">
+        <ontodebug:axiom>Address EquivalentTo Address</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid37">
+        <ontodebug:axiom>E-CreditNote SubClassOf ReceivingAdvice</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid38">
+        <ontodebug:axiom>InvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid39">
+        <ontodebug:axiom>E-Invoice EquivalentTo AmountOfMoney</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid40">
+        <ontodebug:axiom>E-CreditNote SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid41">
+        <ontodebug:axiom>hasAddress EquivalentTo hasAddress</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid42">
+        <ontodebug:axiom>PurchaseOrderLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid43">
+        <ontodebug:axiom>E-Invoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid44">
+        <ontodebug:axiom>AmountOfMoney SubClassOf E-Invoice</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid45">
+        <ontodebug:axiom>E-CreditNote SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid46">
+        <ontodebug:axiom>E-CreditNote SubClassOf ReceivingAdvice</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid47">
+        <ontodebug:axiom>E-Invoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid48">
+        <ontodebug:axiom>InvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid49">
+        <ontodebug:axiom>SupportingDocument SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid50">
+        <ontodebug:axiom>hasAddress EquivalentTo hasAddress</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid51">
+        <ontodebug:axiom>IncidentalPurchaseOrderProcess SubClassOf PurchaseToPayProcess</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid52">
+        <ontodebug:axiom>E-Invoice EquivalentTo AmountOfMoney</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid53">
+        <ontodebug:axiom>E-PrePaymentInvoice SubClassOf Document</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+    <rdf:Description rdf:nodeID="genid54">
+        <ontodebug:axiom>InvoiceLine SubClassOf DocumentLine</ontodebug:axiom>
+        <ontodebug:type rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</ontodebug:type>
+    </rdf:Description>
+</rdf:RDF>
+
+
+<!--
+Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+
+
+<!-- Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/ -->
+
+<!-- 
+EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de. -->
+
+
+<!-- This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE. -->

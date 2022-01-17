@@ -1,0 +1,466 @@
+@prefix : <https://purl.org/p2p-o/organization#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://purl.org/p2p-o/organization> .
+
+<https://purl.org/p2p-o/organization> rdf:type owl:Ontology ;
+                                       owl:versionIRI <https://purl.org/p2p-o/organization/0.9.0> ;
+                                       <http://purl.org/dc/elements/1.1/description> "This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1."@en ;
+                                       <http://purl.org/dc/elements/1.1/title> "Organization Module of P2P-O"@en ;
+                                       <http://purl.org/dc/terms/license> "https://opensource.org/licenses/MIT" ;
+                                       <http://purl.org/vocab/vann/preferredNamespacePrefix> "p2p-o-org" ;
+                                       <http://purl.org/vocab/vann/preferredNamespaceUri> "https://purl.org/p2p-o/organization" ;
+                                       rdfs:label "Organization Module of P2P-O"@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/contributor
+<http://purl.org/dc/elements/1.1/contributor> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/creator
+<http://purl.org/dc/elements/1.1/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+<http://purl.org/dc/elements/1.1/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2003/06/sw-vocab-status/ns#term_status
+<http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+<http://www.w3.org/2004/02/skos/core#altLabel> rdf:type owl:AnnotationProperty .
+
+
+###  https://purl.org/p2p-o/item#seeEN16931-1-2017
+<https://purl.org/p2p-o/item#seeEN16931-1-2017> rdf:type owl:AnnotationProperty ;
+                                                rdfs:comment "provides the identifier for information elements or groups of information elements in EN16931-1:2017"@en ;
+                                                rdfs:label "see EN16931-1:2017"@en .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote
+<https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.w3.org/2006/vcard/ns#hasEmail
+<http://www.w3.org/2006/vcard/ns#hasEmail> rdf:type owl:ObjectProperty ;
+                                           rdfs:domain :ContactPoint ;
+                                           <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-43" ,
+                                                                                           "BT-58" .
+
+
+###  http://www.w3.org/2006/vcard/ns#hasTelephone
+<http://www.w3.org/2006/vcard/ns#hasTelephone> rdf:type owl:ObjectProperty ;
+                                               rdfs:domain :ContactPoint ;
+                                               <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-42" ,
+                                                                                               "BT-57" .
+
+
+###  https://purl.org/p2p-o/organization#hasAddress
+:hasAddress rdf:type owl:ObjectProperty ;
+            owl:inverseOf :isAddressOf ;
+            rdf:type owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ;
+            rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+            rdfs:range :Address ;
+            rdfs:comment "For relating a less restrictive address occasionally found in invoices to an organization. For ordinary addresses, http://www.w3.org/2006/vcard/ns#Address is recommended."@en ;
+            rdfs:label "has address"@en .
+
+
+###  https://purl.org/p2p-o/organization#hasBuyerContactPoint
+:hasBuyerContactPoint rdf:type owl:ObjectProperty ;
+                      rdfs:range :ContactPoint ;
+                      rdfs:label "has buyer contact point"@en ;
+                      <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-56" .
+
+
+###  https://purl.org/p2p-o/organization#hasCity
+:hasCity rdf:type owl:ObjectProperty ;
+         owl:inverseOf :isCityOf ;
+         rdf:type owl:FunctionalProperty ,
+                  owl:AsymmetricProperty ,
+                  owl:IrreflexiveProperty ;
+         rdfs:domain :Address ;
+         rdfs:range :City ;
+         rdfs:label "has city"@en ;
+         <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-37" ,
+                                                         "BT-52" .
+
+
+###  https://purl.org/p2p-o/organization#hasCustomer
+:hasCustomer rdf:type owl:ObjectProperty ;
+             owl:inverseOf :isCustomerIn ;
+             rdf:type owl:FunctionalProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain :BusinessRelationship ;
+             rdfs:range <http://www.w3.org/ns/org#FormalOrganization> ;
+             rdfs:label "has customer"@en .
+
+
+###  https://purl.org/p2p-o/organization#hasElectronicAddress
+:hasElectronicAddress rdf:type owl:ObjectProperty ;
+                      rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                      rdfs:range :Identifier ;
+                      rdfs:comment "Identifies the organization's electronic address to which the application level response to the invoice may be delivered."@en ;
+                      rdfs:label "has electronic address"@en ;
+                      <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-34" ,
+                                                                      "BT-49" .
+
+
+###  https://purl.org/p2p-o/organization#hasLegalRegistrationIdentifier
+:hasLegalRegistrationIdentifier rdf:type owl:ObjectProperty ;
+                                rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                                rdfs:range :Identifier ;
+                                rdfs:comment "An identifier issued by an official registrar that identifies the Seller as a legal entity or person."@en ;
+                                rdfs:label "has legal registration identifier"@en ;
+                                <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-30" ,
+                                                                                "BT-47" ;
+                                <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> """If no identification scheme is specified, it should be known by Buyer and Seller.
+
+If used, the identification scheme shall be chosen from the entries of the list published by the ISO/IEC 6523 maintenance agency."""@en .
+
+
+###  https://purl.org/p2p-o/organization#hasOrganizationIdentifier
+:hasOrganizationIdentifier rdf:type owl:ObjectProperty ;
+                           rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                           rdfs:range :Identifier ;
+                           rdfs:comment "An identification of the organization."@en ;
+                           rdfs:label "has organization identifier"@en ;
+                           <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-29" ,
+                                                                           "BT-46" ;
+                           <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> """For many systems, the Seller identifier is a key piece of information. Multiple Seller identifiers may be assigned or specified. They may be differentiated by using various identification schemes. If no scheme is specified, it should be known by Buyer and Seller, e.g. a previously exchanged Buyer assigned identifier of the Seller.
+
+If used, the identification scheme identifier shall be chosen from the entries of the list published by the ISO/IEC 6523 maintenance agency."""@en .
+
+
+###  https://purl.org/p2p-o/organization#hasOrganizationTaxRegistrationIdentifier
+:hasOrganizationTaxRegistrationIdentifier rdf:type owl:ObjectProperty ;
+                                          rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                                          rdfs:range :Identifier ;
+                                          rdfs:comment "The local identification (defined by the organization’s address) of the organization for tax purposes or a reference that enables the organization to state his registered tax status."@en ;
+                                          rdfs:label "has organization tax registration identifier"@en ;
+                                          <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-32" ;
+                                          <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "This information may affect how the Buyer settles the payment (such as for social security fees). E.g. in some countries, if the Seller is not registered as a tax paying entity then the Buyer is required to withhold the amount of the tax and pay it on behalf of the Seller."@en .
+
+
+###  https://purl.org/p2p-o/organization#hasOrganizationVATIdentifier
+:hasOrganizationVATIdentifier rdf:type owl:ObjectProperty ;
+                              rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                              rdfs:range :Identifier ;
+                              rdfs:comment "The organization's VAT identifier (also known as organization VAT identification number)."@en ;
+                              rdfs:label "has organization VAT identifier"@en ;
+                              <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-31" ,
+                                                                              "BT-48" ;
+                              <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "VAT number prefixed by a country code. A VAT registered Supplier shall include his VAT ID, except when he uses a tax representative."@en .
+
+
+###  https://purl.org/p2p-o/organization#hasSellerContactPoint
+:hasSellerContactPoint rdf:type owl:ObjectProperty ;
+                       rdfs:range :ContactPoint ;
+                       rdfs:label "has seller contact point"@en ;
+                       <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-41" .
+
+
+###  https://purl.org/p2p-o/organization#hasSupplier
+:hasSupplier rdf:type owl:ObjectProperty ;
+             owl:inverseOf :isSupplierIn ;
+             rdf:type owl:FunctionalProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain :BusinessRelationship ;
+             rdfs:range <http://www.w3.org/ns/org#FormalOrganization> ;
+             rdfs:label "has supplier"@en .
+
+
+###  https://purl.org/p2p-o/organization#isAddressOf
+:isAddressOf rdf:type owl:ObjectProperty ;
+             rdfs:domain :Address ;
+             rdfs:range <http://www.w3.org/ns/org#FormalOrganization> ;
+             rdfs:label "is address of"@en .
+
+
+###  https://purl.org/p2p-o/organization#isCityOf
+:isCityOf rdf:type owl:ObjectProperty ;
+          rdfs:domain :City ;
+          rdfs:range :Address ;
+          rdfs:label "is city of"@en ;
+          <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-37" ,
+                                                          "BT-52" .
+
+
+###  https://purl.org/p2p-o/organization#isCountryOf
+:isCountryOf rdf:type owl:ObjectProperty ;
+             owl:inverseOf <https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/hasCountry> ;
+             rdfs:domain <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country> ;
+             rdfs:range :Address ;
+             rdfs:label "is country of"@en .
+
+
+###  https://purl.org/p2p-o/organization#isCustomerIn
+:isCustomerIn rdf:type owl:ObjectProperty ;
+              rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+              rdfs:range :BusinessRelationship ;
+              rdfs:label "is customer in"@en .
+
+
+###  https://purl.org/p2p-o/organization#isSupplierIn
+:isSupplierIn rdf:type owl:ObjectProperty ;
+              rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+              rdfs:range :BusinessRelationship ;
+              rdfs:label "is supplier in"@en .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/hasCountry
+<https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/hasCountry> rdf:type owl:ObjectProperty ;
+                                                                            rdfs:domain :Address ;
+                                                                            rdfs:range <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country> ;
+                                                                            <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-40" ,
+                                                                                                                            "BT-55" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.w3.org/2006/vcard/ns#country-name
+<http://www.w3.org/2006/vcard/ns#country-name> rdf:type owl:DatatypeProperty ;
+                                               rdfs:domain <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country> ;
+                                               <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-40" ,
+                                                                                               "BT-55" .
+
+
+###  http://www.w3.org/2006/vcard/ns#postal-code
+<http://www.w3.org/2006/vcard/ns#postal-code> rdf:type owl:DatatypeProperty ;
+                                              rdfs:domain :Address ;
+                                              <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-38" ,
+                                                                                              "BT-53" .
+
+
+###  http://www.w3.org/2006/vcard/ns#street-address
+<http://www.w3.org/2006/vcard/ns#street-address> rdf:type owl:DatatypeProperty ;
+                                                 rdfs:domain :Address .
+
+
+###  https://purl.org/p2p-o/organization#VATIdentifier
+:VATIdentifier rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+               rdfs:range xsd:string ;
+               rdfs:comment "value added tax identifier"@en ;
+               rdfs:label "VAT identifier"@en ;
+               <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-31" ,
+                                                               "BT-48" ,
+                                                               "BT-63" .
+
+
+###  https://purl.org/p2p-o/organization#additionalLegalInformation
+:additionalLegalInformation rdf:type owl:DatatypeProperty ;
+                            rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                            rdfs:range xsd:string ;
+                            rdfs:comment "Additional legal information relevant for the organization."@en ;
+                            rdfs:label "additional legal information"@en ;
+                            <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-33" ;
+                            <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Such as share capital."@en .
+
+
+###  https://purl.org/p2p-o/organization#countrySubdivision
+:countrySubdivision rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :Address ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "The subdivision of a country."@en ;
+                    rdfs:label "country subdivision"@en ;
+                    <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-39" ,
+                                                                    "BT-54" ;
+                    <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Such as a region, a county, a state, a province, etc."@en .
+
+
+###  https://purl.org/p2p-o/organization#customerNumber
+:customerNumber rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain :BusinessRelationship ;
+                rdfs:range xsd:string ;
+                rdfs:label "customer number"@en .
+
+
+###  https://purl.org/p2p-o/organization#formalName
+:formalName rdf:type owl:DatatypeProperty ;
+            rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+            rdfs:range xsd:string ;
+            rdfs:comment "The full formal name by which the organization is registered in the national registry of legal entities or as a Taxable person or otherwise trades as a person or persons."@en ;
+            rdfs:label "formal name"@en ;
+            <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-27" ,
+                                                            "BT-44" .
+
+
+###  https://purl.org/p2p-o/organization#globalLocationNumber
+:globalLocationNumber rdf:type owl:DatatypeProperty ;
+                      rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+                      rdfs:range xsd:string ;
+                      rdfs:label "global location number"@en ;
+                      rdfs:seeAlso "https://www.gs1.org/standards/id-keys/gln"@en .
+
+
+###  https://purl.org/p2p-o/organization#identifierScheme
+:identifierScheme rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Identifier ;
+                  rdfs:range xsd:string ;
+                  rdfs:label "identifier scheme"@en .
+
+
+###  https://purl.org/p2p-o/organization#tradingName
+:tradingName rdf:type owl:DatatypeProperty ;
+             rdfs:domain <http://www.w3.org/ns/org#FormalOrganization> ;
+             rdfs:range xsd:string ;
+             rdfs:comment "A name by which the organization is known, other than formal name (also known as business name)."@en ;
+             rdfs:label "trading name"@en ;
+             <http://www.w3.org/2004/02/skos/core#altLabel> "business name"@en ;
+             <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BT-28" ,
+                                                             "BT-45" ;
+             <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "This may be used if different from the formal name."@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.w3.org/ns/org#FormalOrganization
+<http://www.w3.org/ns/org#FormalOrganization> rdf:type owl:Class ;
+                                              rdfs:subClassOf <http://www.w3.org/ns/org#Organization> ,
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty :hasAddress ;
+                                                                owl:someValuesFrom :Address
+                                                              ] .
+
+
+###  http://www.w3.org/ns/org#Organization
+<http://www.w3.org/ns/org#Organization> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://xmlns.com/foaf/0.1/Agent> .
+
+
+###  http://xmlns.com/foaf/0.1/Agent
+<http://xmlns.com/foaf/0.1/Agent> rdf:type owl:Class .
+
+
+###  https://purl.org/p2p-o/organization#Address
+:Address rdf:type owl:Class ;
+         rdfs:comment "In contrast to http://www.w3.org/2006/vcard/ns#Address, less restrictive class for addresses on electronic invoices. In line with EN 16931-1:2017, as a minimum requirement only information about the country is required. For ordinary addresses, http://www.w3.org/2006/vcard/ns#Address is recommended."@en ;
+         rdfs:label "address"@en ;
+         <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-5" ,
+                                                         "BG-8" ,
+                                                         "BT-162" ,
+                                                         "BT-163" ,
+                                                         "BT-35" ,
+                                                         "BT-36" ,
+                                                         "BT-50" ,
+                                                         "BT-51" .
+
+
+###  https://purl.org/p2p-o/organization#BusinessRelationship
+:BusinessRelationship rdf:type owl:Class ;
+                      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasCustomer ;
+                                        owl:someValuesFrom <http://www.w3.org/ns/org#FormalOrganization>
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasSupplier ;
+                                        owl:someValuesFrom <http://www.w3.org/ns/org#FormalOrganization>
+                                      ] ;
+                      rdfs:comment "A dyadic business relationship in which one party is the supplier and the other party is the customer."@en ;
+                      rdfs:label "business relationship"@en .
+
+
+###  https://purl.org/p2p-o/organization#City
+:City rdf:type owl:Class ;
+      rdfs:comment "The common name of the city, town or village, where the address is located."@en ;
+      rdfs:label "City"@en .
+
+
+###  https://purl.org/p2p-o/organization#ContactPoint
+:ContactPoint rdf:type owl:Class ;
+              rdfs:comment "A contact point for a legal entity or person."@en ;
+              rdfs:label "Contact point"@en ;
+              <https://purl.org/p2p-o/item#seeEN16931-1-2017> "BG-6" ,
+                                                              "BG-9" ,
+                                                              "BT-41" ,
+                                                              "BT-56" ;
+              <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote> "Such as person name, contact identification, department or office identification."@en .
+
+
+###  https://purl.org/p2p-o/organization#Identifier
+:Identifier rdf:type owl:Class ;
+            rdfs:comment "Identifiers (IDs) are keys that are issued by the sender or recipient of a document or by a third party. For each identifier in the model it is stated whether an identification scheme or a scheme version ID may or shall be defined and if so, from what list the identification schemes may be chosen."@en ;
+            rdfs:label "identifier"@en .
+
+
+###  https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country
+<https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country> rdf:type owl:Class .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <http://xmlns.com/foaf/0.1/Agent>
+                :Address
+                :BusinessRelationship
+                :City
+                <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country>
+              )
+] .
+
+### Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+### Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/
+
+### EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+### This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+### CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de.
+
+### This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council
+### Permission is hereby granted, free of charge, to any person obtaining a copy of
+### this software and associated documentation files (the "Software"), to deal in
+### the Software without restriction, including without limitation the rights to
+### use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+### the Software, and to permit persons to whom the Software is furnished to do so,
+### subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all
+### copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+### IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+### FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+### AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+### LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+### SOFTWARE.

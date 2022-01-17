@@ -1,0 +1,225 @@
+@prefix : <https://purl.org/p2p-o/process#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://purl.org/p2p-o/process> .
+
+<https://purl.org/p2p-o/process> rdf:type owl:Ontology ;
+                                  owl:imports <https://purl.org/p2p-o/document> ;
+                                  <http://purl.org/dc/elements/1.1/description> "This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1."@en ;
+                                  <http://purl.org/dc/elements/1.1/title> "Process Module of P2P-O"@en ;
+                                  <http://purl.org/dc/terms/license> "https://opensource.org/licenses/MIT" ;
+                                  <http://purl.org/vocab/vann/preferredNamespacePrefix> "p2p-o-proc"@en ;
+                                  <http://purl.org/vocab/vann/preferredNamespaceUri> "https://purl.org/p2p-o/process"@en ;
+                                  rdfs:label "Process Module of P2P-O"@en .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://purl.org/p2p-o/process#followsDocument
+:followsDocument rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :precedesDocument ;
+                 rdf:type owl:TransitiveProperty ;
+                 rdfs:domain <http://xmlns.com/foaf/0.1/Document> ;
+                 rdfs:range <http://xmlns.com/foaf/0.1/Document> ;
+                 rdfs:label "follows document"@en .
+
+
+###  https://purl.org/p2p-o/process#hasDocument
+:hasDocument rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :hasProcessElement ;
+             owl:inverseOf :isDocumentIn ;
+             rdfs:domain :PurchaseToPayProcess ;
+             rdfs:range <http://xmlns.com/foaf/0.1/Document> ;
+             rdfs:label "has document"@en .
+
+
+###  https://purl.org/p2p-o/process#hasProcessElement
+:hasProcessElement rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :isProcessElementIn ;
+                   rdf:type owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
+                   rdfs:domain :PurchaseToPayProcess ;
+                   rdfs:range [ rdf:type owl:Class ;
+                                owl:unionOf ( <http://www.w3.org/ns/org#FormalOrganization>
+                                              <http://xmlns.com/foaf/0.1/Document>
+                                            )
+                              ] ;
+                   rdfs:label "has process element"@en .
+
+
+###  https://purl.org/p2p-o/process#isDocumentIn
+:isDocumentIn rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isProcessElementIn ;
+              rdfs:domain <http://xmlns.com/foaf/0.1/Document> ;
+              rdfs:range :PurchaseToPayProcess ;
+              rdfs:label "is document in"@en .
+
+
+###  https://purl.org/p2p-o/process#isProcessElementIn
+:isProcessElementIn rdf:type owl:ObjectProperty ;
+                    rdfs:domain [ rdf:type owl:Class ;
+                                  owl:unionOf ( <http://www.w3.org/ns/org#FormalOrganization>
+                                                <http://xmlns.com/foaf/0.1/Document>
+                                              )
+                                ] ;
+                    rdfs:range :PurchaseToPayProcess ;
+                    rdfs:label "is process element in"@en .
+
+
+###  https://purl.org/p2p-o/process#precedesDocument
+:precedesDocument rdf:type owl:ObjectProperty ,
+                           owl:TransitiveProperty ;
+                  rdfs:domain <http://xmlns.com/foaf/0.1/Document> ;
+                  rdfs:range <http://xmlns.com/foaf/0.1/Document> ;
+                  rdfs:label "precedes document"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://purl.org/p2p-o/documentline#DocumentLine
+<https://purl.org/p2p-o/documentline#DocumentLine> rdf:type owl:Class .
+
+
+###  https://purl.org/p2p-o/process#CorrectiveInvoicingProcess
+:CorrectiveInvoicingProcess rdf:type owl:Class ;
+                            rdfs:subClassOf :PurchaseToPayProcess ;
+                            rdfs:label "corrective invoicing process"@en ;
+                            rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#DespatchAdviceAndReceivingAdviceProcess
+:DespatchAdviceAndReceivingAdviceProcess rdf:type owl:Class ;
+                                         rdfs:subClassOf :PurchaseToPayProcess ;
+                                         rdfs:label "process with despatch advice and receiving advice"@en ;
+                                         rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#InAdvanceWithPurchaseOrderProcess
+:InAdvanceWithPurchaseOrderProcess rdf:type owl:Class ;
+                                   rdfs:subClassOf :PurchaseToPayProcess ;
+                                   rdfs:label "process with in advance purchase order"@en ;
+                                   rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#IncidentalPurchaseOrderProcess
+:IncidentalPurchaseOrderProcess rdf:type owl:Class ;
+                                rdfs:subClassOf :PurchaseToPayProcess ;
+                                rdfs:label "process with incidental purchase order"@en ;
+                                rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#NegativeInvoicingProcess
+:NegativeInvoicingProcess rdf:type owl:Class ;
+                          rdfs:subClassOf :PurchaseToPayProcess ;
+                          rdfs:label "negative invoicing process"@en ;
+                          rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#PartialAndFinalInvoicingProcess
+:PartialAndFinalInvoicingProcess rdf:type owl:Class ;
+                                 rdfs:subClassOf :PurchaseToPayProcess ;
+                                 rdfs:label "partial and final invoicing process"@en ;
+                                 rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#PeriodicProcess
+:PeriodicProcess rdf:type owl:Class ;
+                 rdfs:subClassOf :PurchaseToPayProcess ;
+                 rdfs:label "periodic process"@en ;
+                 rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#PrePaymentProcess
+:PrePaymentProcess rdf:type owl:Class ;
+                   rdfs:subClassOf :PurchaseToPayProcess ;
+                   rdfs:label "pre payment process"@en ;
+                   rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#PurchaseOrderAndContractProcess
+:PurchaseOrderAndContractProcess rdf:type owl:Class ;
+                                 rdfs:subClassOf :PurchaseToPayProcess ;
+                                 rdfs:label "process with purchase order and contract"@en ;
+                                 rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#PurchaseToPayProcess
+:PurchaseToPayProcess rdf:type owl:Class ;
+                      rdfs:comment "Abstract class for purchase-to-pay processes. For describing concrete purchase-to-pay processes, sub-classes of this class are recommended."@en ;
+                      rdfs:label "purchase-to-pay process"@en .
+
+
+###  https://purl.org/p2p-o/process#SelfBillingProcess
+:SelfBillingProcess rdf:type owl:Class ;
+                    rdfs:subClassOf :PurchaseToPayProcess ;
+                    rdfs:label "self billing process"@en ;
+                    rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#SpotPaymentProcess
+:SpotPaymentProcess rdf:type owl:Class ;
+                    rdfs:subClassOf :PurchaseToPayProcess ;
+                    rdfs:label "process with spot payment"@en ;
+                    rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+###  https://purl.org/p2p-o/process#WithDespatchAdviceProcess
+:WithDespatchAdviceProcess rdf:type owl:Class ;
+                           rdfs:subClassOf :PurchaseToPayProcess ;
+                           rdfs:label "process with despatch advice"@en ;
+                           rdfs:seeAlso "DIN EN 16931-1:2017" .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <http://xmlns.com/foaf/0.1/Agent>
+                <http://xmlns.com/foaf/0.1/Document>
+                <https://purl.org/p2p-o/documentline#DocumentLine>
+                <https://purl.org/p2p-o/item#Item>
+                <https://purl.org/p2p-o/item#ItemAttribute>
+                <https://purl.org/p2p-o/organization#Address>
+                <https://purl.org/p2p-o/organization#BusinessRelationship>
+                <https://purl.org/p2p-o/organization#City>
+                :PurchaseToPayProcess
+                <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency>
+                <https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue>
+                <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country>
+              )
+] .
+
+### Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+### Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/
+
+### EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+### This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+### CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de.
+
+### This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council
+### Permission is hereby granted, free of charge, to any person obtaining a copy of
+### this software and associated documentation files (the "Software"), to deal in
+### the Software without restriction, including without limitation the rights to
+### use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+### the Software, and to permit persons to whom the Software is furnished to do so,
+### subject to the following conditions:
+### The above copyright notice and this permission notice shall be included in all
+### copies or substantial portions of the Software.
+### THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+### IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+### FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+### AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+### LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+### OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+### SOFTWARE.

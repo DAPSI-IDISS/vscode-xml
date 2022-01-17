@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="https://purl.org/p2p-o/document#" xml:base="https://purl.org/p2p-o/document" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns="http://www.w3.org/2003/06/sw-vocab-status/ns#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:item="https://purl.org/p2p-o/item#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:vann="http://purl.org/vocab/vann/" xmlns:terms="http://purl.org/dc/terms/" xmlns:AnnotationVocabulary="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+    <owl:Ontology rdf:about="https://purl.org/p2p-o/document">
+        <owl:imports rdf:resource="https://purl.org/p2p-o/organization"/>
+        <dc:description xml:lang="en">This ongoing research work is developed at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH). It is work in progress and is part of the Purchase-To-Pay Ontology P2P-O (https://purl.org/p2p-o). It reuses parts of the European Standard EN 16931-1.</dc:description>
+        <dc:title xml:lang="en">Document Module of P2P-O</dc:title>
+        <terms:license>https://opensource.org/licenses/MIT</terms:license>
+        <vann:preferredNamespacePrefix>p2p-o-doc</vann:preferredNamespacePrefix>
+        <vann:preferredNamespaceUri>https://purl.org/p2p-o/document</vann:preferredNamespaceUri>
+        <rdfs:label xml:lang="en">Document Module of P2P-O</rdfs:label>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#altLabel -->
+
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#altLabel"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/item#seeEN16931-1-2017 -->
+
+
+    <owl:AnnotationProperty rdf:about="https://purl.org/p2p-o/item#seeEN16931-1-2017"/>
+    
+
+
+    <!-- https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote -->
+
+
+    <owl:AnnotationProperty rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/usageNote"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://purl.org/p2p-o/document#isReferencedBy -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#isReferencedBy">
+        <owl:inverseOf rdf:resource="https://purl.org/p2p-o/document#references"/>
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">is referenced by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#received -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#received">
+        <owl:inverseOf rdf:resource="https://purl.org/p2p-o/document#wasReceivedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#FormalOrganization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">received</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#references -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#references">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">references</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#sent -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#sent">
+        <owl:inverseOf rdf:resource="https://purl.org/p2p-o/document#wasSentBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/org#FormalOrganization"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">sent</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#wasReceivedBy -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#wasReceivedBy">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/org#FormalOrganization"/>
+        <rdfs:label xml:lang="en">was received by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#wasSentBy -->
+
+
+    <owl:ObjectProperty rdf:about="https://purl.org/p2p-o/document#wasSentBy">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/org#FormalOrganization"/>
+        <rdfs:label xml:lang="en">was sent by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- https://purl.org/p2p-o/document#externalDocumentLocation -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/document#externalDocumentLocation">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">The URL (Uniform Resource Locator) that identifies where the external document is located.</rdfs:comment>
+        <rdfs:label xml:lang="en">external document location</rdfs:label>
+        <item:seeEN16931-1-2017>BT-124</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">A means of locating the resource including its primary access mechanism, e.g. http:// or ftp://.
+External document location shall be used if the Buyer requires additional information to support the Invoice.
+External documents do not form part of the invoice. Risks can be involved when accessing external documents.</AnnotationVocabulary:usageNote>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#supportingDocumentDescription -->
+
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/p2p-o/document#supportingDocumentDescription">
+        <rdfs:domain rdf:resource="https://purl.org/p2p-o/document#SupportingDocument"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment xml:lang="en">A description of a supporting document.</rdfs:comment>
+        <rdfs:label xml:lang="en">supporting document description</rdfs:label>
+        <item:seeEN16931-1-2017>BT-123</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">Such as: timesheet, usage report etc.</AnnotationVocabulary:usageNote>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    
+
+
+    <!-- http://www.w3.org/ns/org#FormalOrganization -->
+
+
+    <owl:Class rdf:about="http://www.w3.org/ns/org#FormalOrganization"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Agent -->
+
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Agent"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Document -->
+
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Document"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#DeliveryNote -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#DeliveryNote">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">delivery note</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#DespatchAdvice -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#DespatchAdvice">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">despatch advice</rdfs:label>
+        <item:seeEN16931-1-2017>BT-16</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#E-Invoice -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#E-Invoice">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:comment xml:lang="en">"‘electronic invoice’ means an invoice that has been issued, transmitted and received in a structured electronic format which allows for its automatic and electronic processing;"  (Directive 2014/55/EU)</rdfs:comment>
+        <rdfs:isDefinedBy>https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32014L0055</rdfs:isDefinedBy>
+        <rdfs:label xml:lang="en">e-invoice</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#ProjectDocument -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#ProjectDocument">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">project document</rdfs:label>
+        <item:seeEN16931-1-2017>BT-11</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#PurchaseOrder -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#PurchaseOrder">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">purchase order</rdfs:label>
+        <item:seeEN16931-1-2017>BT-13</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#ReceivingAdvice -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#ReceivingAdvice">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">receiving advice</rdfs:label>
+        <item:seeEN16931-1-2017>BT-15</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#SalesOrder -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#SalesOrder">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">sales order</rdfs:label>
+        <item:seeEN16931-1-2017>BT-14</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#SupportingDocument -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#SupportingDocument">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:comment xml:lang="en">Supporting document substantiating the claims made in the Invoice.</rdfs:comment>
+        <rdfs:label xml:lang="en">supporting document</rdfs:label>
+        <item:seeEN16931-1-2017>BG-24</item:seeEN16931-1-2017>
+        <item:seeEN16931-1-2017>BT-122</item:seeEN16931-1-2017>
+        <AnnotationVocabulary:usageNote xml:lang="en">The additional supporting documents can be used for both referencing a document number which is expected to be known by the receiver, an external document (referenced by a URL) or as an embedded document (such as a time report in pdf). The option to link to an external document will be needed, for example in the case of large attachments and/or when sensitive information, e.g. person-related services, has to be separated from the Invoice itself.</AnnotationVocabulary:usageNote>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/document#Tender -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/document#Tender">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <rdfs:label xml:lang="en">tender</rdfs:label>
+        <skos:altLabel xml:lang="en">lot</skos:altLabel>
+        <item:seeEN16931-1-2017>BT-17</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://purl.org/p2p-o/documentline#DocumentLine -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/documentline#DocumentLine"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/item#Item -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/item#Item"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/item#ItemAttribute -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/item#ItemAttribute"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/organization#Address -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/organization#Address"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/organization#BusinessRelationship -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/organization#BusinessRelationship"/>
+    
+
+
+    <!-- https://purl.org/p2p-o/organization#City -->
+
+
+    <owl:Class rdf:about="https://purl.org/p2p-o/organization#City"/>
+    
+
+
+    <!-- https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency -->
+
+
+    <owl:Class rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"/>
+    
+
+
+    <!-- https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/Contract -->
+
+
+    <owl:Class rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/Contract">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+        <item:seeEN16931-1-2017>BT-12</item:seeEN16931-1-2017>
+    </owl:Class>
+    
+
+
+    <!-- https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue -->
+
+
+    <owl:Class rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue"/>
+    
+
+
+    <!-- https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country -->
+
+
+    <owl:Class rdf:about="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://xmlns.com/foaf/0.1/Agent"/>
+            <rdf:Description rdf:about="http://xmlns.com/foaf/0.1/Document"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/documentline#DocumentLine"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/item#Item"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/item#ItemAttribute"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/organization#Address"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/organization#BusinessRelationship"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/organization#City"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/Currency"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/QuantityValue"/>
+            <rdf:Description rdf:about="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#DeliveryNote"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#DespatchAdvice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#E-Invoice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#ProjectDocument"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#ReceivingAdvice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#SalesOrder"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#SupportingDocument"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#Tender"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/Contract"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#DeliveryNote"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#DespatchAdvice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#E-Invoice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#PurchaseOrder"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#ReceivingAdvice"/>
+            <rdf:Description rdf:about="https://purl.org/p2p-o/document#Tender"/>
+            <rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/Contract"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+<!--
+Copyright 2022 Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+
+
+<!-- Generated by the OWL API (version 5.1.14) https://github.com/owlcs/owlapi/ -->
+
+<!-- 
+EN 16931-1:2017, Electronic invoicing - Part 1: Semantic data model of the core elements of an electronic invoice:
+This is an implementation of the publication (where according to EN 16931-1:2017 users are allowed to make derivative use of this publication) and such reproduction is with the permission of CEN and DIN as copyright owners.
+CEN and DIN bear no liability from the use of the content and implementation of such derivative application and give no warranties expressed or implied for any purpose of such implementation. In case of doubt, users shall always refer to the content of the publication provided by DIN which makes available the official authoritative text here: www.beuth.de. -->
+
+
+<!-- This ontology includes the The Financial Industry Business Ontology (FIBO): Copyright (c) 2020 Enterprise Data Management Council 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE. -->
