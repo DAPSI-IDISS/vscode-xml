@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<semantics xmlns="https://dapsi-idiss.github.io/semantic-crosswalk-editor"
+<syntax-binding xmlns="https://dapsi-idiss.github.io/semantic-crosswalk-editor"
 		semantic-name="Semantic data model of the core elements of an electronic invoice"
 		semantic-version="EN16931-1:2017+A1:2019+AC:2020"
 		semantic-grammar="https://www.beuth.de/de/norm/din-en-16931-1/327729047"
@@ -7,7 +7,7 @@
 		syntax-name="UN/CEFACT Cross Industry Invoice XML"
 		syntax-version="D16B"
 		syntax-grammar="https://unece.org/DAM/cefact/xml_schemas/D16B_SCRDM__Subset__CII.zip"
-		syntax-nodes="7"
+		syntax-nodes="7"		
 >
 	<semantic id="BT-1" level="1" card="1..1" bt="Invoice number" desc="A unique identification of the Invoice." datatype="ID">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:ID" type="ELEMENT" card="1..1"/>
@@ -25,4 +25,4 @@
 	<semantic id="BT-6" level="1" card="0..1" bt="VAT accounting currency code" desc="The currency used for VAT accounting" datatype="CODE">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeSettlement/ram:TaxCurrencyCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
 	</semantic>
-</semantics>
+</syntax-binding>

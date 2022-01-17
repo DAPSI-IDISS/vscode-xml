@@ -156,7 +156,7 @@ export class XMLView implements vscode.TreeDataProvider<number> {
   }
 
   private isSemanticsRootLine = (textLine: string): boolean => {
-    return (textLine.includes('<semantics ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation')) && textLine.includes('>');
+    return (textLine.includes('<syntax-binding ') || textLine.includes('xmlns') || textLine.includes('xmlns:xsi') || textLine.includes('xsi:schemaLocation')) && textLine.includes('>');
   }
 
   private isOutOfSemanticScope = (textLine: string): boolean => {
