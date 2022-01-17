@@ -9,17 +9,17 @@
 		syntax-grammar="https://unece.org/DAM/cefact/xml_schemas/D16B_SCRDM__Subset__CII.zip"
 		syntax-nodes="7"		
 >
-	<semantic id="BT-1" level="1" card="1..1" bt="Invoice number" desc="A unique identification of the Invoice." datatype="ID">
+	<semantic id="BT-1" level="1" card="1..1" bt="Invoice number" desc="A unique identification of the Invoice." datatype="ID" rdf="https://purl.org/p2p-o/invoice#invoiceNumber">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:ID" type="ELEMENT" card="1..1"/>
 	</semantic>
-	<semantic id="BT-2" level="1" card="1..1" bt="Invoice issue date" desc="The date when the Invoice was issued." datatype="DATE">
+	<semantic id="BT-2" level="1" card="1..1" bt="Invoice issue date" desc="The date when the Invoice was issued." datatype="DATE" rdf="https://purl.org/p2p-o/invoice#dateOfIssue">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:IssueDateTime/udt:DateTimeString" type="ELEMENT" card="1..1">@format = ”102”</xml>
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:IssueDateTime/udt:DateTimeString/@format" type="ATTRIBUTE">Only value “102”</xml>
 	</semantic>
 	<semantic id="BT-3" level="1" card="1..1" bt="Invoice type code" desc="A code specifying the functional type of the Invoice." datatype="CODE">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:TypeCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
 	</semantic>
-	<semantic id="BT-5" level="1" card="1..1" bt="Invoice currency code" desc="The currency in which all Invoice amounts are given." datatype="CODE">
+	<semantic id="BT-5" level="1" card="1..1" bt="Invoice currency code" desc="The currency in which all Invoice amounts are given." datatype="CODE" rdf="https://purl.org/p2p-o/invoice#currency">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeSettlement/ram:InvoiceCurrencyCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
 	</semantic>
 	<semantic id="BT-6" level="1" card="0..1" bt="VAT accounting currency code" desc="The currency used for VAT accounting" datatype="CODE">
