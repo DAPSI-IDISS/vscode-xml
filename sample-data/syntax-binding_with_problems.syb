@@ -10,20 +10,19 @@
 		syntax-nodes="6"
 		version="1.0.0"
 >
-	<semantic id="BT-1" level="1" card="1..1" bt="Invoice number" desc="A unique identification of the Invoice." datatype="ID" rdf="https://purl.org/p2p-o/invoice#invoiceNumber">
+	<semantic id="BT-1" level="1" card="trouble" bt="Invoice number" desc="A unique identification of the Invoice." datatype="ID" rdf="https://purl.org/p2p-o/invoice#invoiceNumber">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:ID" type="ELEMENT" card="1..1"/>
 	</semantic>
-	<semantic id="BT-2" level="1" card="1..1" bt="Invoice issue date" desc="The date when the Invoice was issued." datatype="DATE" rdf="https://purl.org/p2p-o/invoice#dateOfIssue">
-		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:IssueDateTime/udt:DateTimeString" type="ELEMENT" card="1..1">@format = ”102”</xml>
-		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:IssueDateTime/udt:DateTimeString/@format" type="ATTRIBUTE">Only value “102”</xml>
-	</semantic>
-	<semantic id="BT-3" level="1" card="1..1" bt="Invoice type code" desc="A code specifying the functional type of the Invoice." datatype="CODE">
+	<semantic id="BT-3" level="1" card="1..1" Svante="This is not the right description" desc="A code specifying the functional type of the Invoice." datatype="CODE">
 		<xml path="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:TypeCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
 	</semantic>
-	<semantic id="BT-5" level="1" card="1..1" bt="Invoice currency code" desc="The currency in which all Invoice amounts are given." datatype="CODE" rdf="https://purl.org/p2p-o/invoice#currency">
-		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeSettlement/ram:InvoiceCurrencyCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
-	</semantic>
 	<semantic id="BT-6" level="1" card="0..1" bt="VAT accounting currency code" desc="The currency used for VAT accounting" datatype="CODE">
-		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeSettlement/ram:TaxCurrencyCode" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
+		<xml path="/XXXXXXXX" type="ELEMENT" card="0..1" mismatches="CAR-2"/>
 	</semantic>
+	<semantic id="BG-7" level="1" card="1..1" bt="BUYER" desc="A group of business terms providing information about the Buyer.">
+		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeAgreement/ram:BuyerTradeParty" type="ELEMENT" card="0..1"/>
+	</semantic>	
+	<semantic id="BG-8" level="2" card="1..1" bt="BUYER POSTAL ADDRESS" desc="A group of business terms providing information about the postal address for the Buyer.">
+		<xml path="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeAgreement/ram:BuyerTradeParty/ram:PostalTradeAddress" type="ELEMENT" card="0..1"/>
+	</semantic>	
 </syntax-binding>
